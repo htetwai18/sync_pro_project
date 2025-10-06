@@ -31,20 +31,12 @@ class TaskDetailScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(AppString.taskDescription).mediumBold(AppColor.grey),
-            Measurement.generalSize8.height,
-            Container(
-              width: double.infinity,
-              padding: Measurement.generalSize16.horizontalIsToVertical,
-              decoration: BoxDecoration(
-                color: AppColor.blueField,
-                borderRadius: Measurement.generalSize12.allRadius,
-              ),
-              child: Text(item.description).mediumNormal(AppColor.white),
-            ),
+            const Text(AppString.taskDescription).mediumBold(AppColor.white),
+            Measurement.generalSize12.height,
+            Text(item.description).mediumNormal(AppColor.grey),
             Measurement.generalSize24.height,
-            const Text(AppString.assetUpper).mediumBold(AppColor.grey),
-            Measurement.generalSize8.height,
+            const Text(AppString.assetUpper).mediumBold(AppColor.white),
+            Measurement.generalSize12.height,
             Container(
               padding: Measurement.generalSize16.horizontalIsToVertical,
               decoration: BoxDecoration(
@@ -82,7 +74,7 @@ class TaskDetailScreen extends StatelessWidget {
             ),
             Measurement.generalSize24.height,
             const Text(AppString.timeline).mediumBold(AppColor.grey),
-            Measurement.generalSize8.height,
+            Measurement.generalSize12.height,
             _TimelineTile(
               icon: Icons.radio_button_unchecked,
               title: AppString.taskCreated,
@@ -102,8 +94,8 @@ class TaskDetailScreen extends StatelessWidget {
               subtitle: _format(item.completedAt),
             ),
             Measurement.generalSize24.height,
-            const Text(AppString.serviceReport).mediumBold(AppColor.grey),
-            Measurement.generalSize8.height,
+            const Text(AppString.serviceReport).mediumBold(AppColor.white),
+            Measurement.generalSize12.height,
             Container(
               padding: Measurement.generalSize16.horizontalIsToVertical,
               decoration: BoxDecoration(
@@ -137,43 +129,6 @@ class TaskDetailScreen extends StatelessWidget {
                   ),
                 ],
               ),
-            ),
-            Measurement.generalSize24.height,
-            Row(
-              children: [
-                Expanded(
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: AppColor.blueStatusInner,
-                      foregroundColor: AppColor.white,
-                      padding: Measurement.generalSize16.horizontalIsToVertical,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: Measurement.generalSize12.allRadius,
-                      ),
-                    ),
-                    onPressed: () {},
-                    child: const Text(AppString.approve)
-                        .mediumBold(AppColor.white),
-                  ),
-                ),
-                Measurement.generalSize16.width,
-                Expanded(
-                  child: OutlinedButton(
-                    style: OutlinedButton.styleFrom(
-                      side: const BorderSide(color: AppColor.greyPercentCircle),
-                      foregroundColor: AppColor.white,
-                      padding: Measurement.generalSize16.horizontalIsToVertical,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: Measurement.generalSize12.allRadius,
-                      ),
-                      backgroundColor: AppColor.blueField,
-                    ),
-                    onPressed: () {},
-                    child:
-                        const Text(AppString.reject).mediumBold(AppColor.white),
-                  ),
-                ),
-              ],
             ),
           ],
         ),
