@@ -16,11 +16,8 @@ class ReportDetailScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: AppColor.background,
       appBar: getAppBar(
+        context: context,
         title: AppString.reviewReport,
-        icon: Icons.arrow_back,
-        onTap: () {
-          Navigator.of(context).pop();
-        },
       ),
       body: SingleChildScrollView(
         padding: Measurement.generalSize16.horizontalIsToVertical,

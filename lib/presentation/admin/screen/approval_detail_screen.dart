@@ -17,11 +17,9 @@ class ApprovalDetailScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: AppColor.background,
       appBar: getAppBar(
+        context: context,
         title: AppString.approvalDetails,
-        icon: Icons.arrow_back,
-        onTap: () {
-          Navigator.of(context).pop();
-        },
+
       ),
       body: SingleChildScrollView(
         padding: Measurement.generalSize16.horizontalIsToVertical,

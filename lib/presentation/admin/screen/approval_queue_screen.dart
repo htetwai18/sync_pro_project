@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sync_pro/config/app_bar.dart';
+import 'package:sync_pro/config/app_drawer.dart';
 import 'package:sync_pro/config/app_color.dart';
 import 'package:sync_pro/config/app_string.dart';
 import 'package:sync_pro/config/extension.dart';
@@ -15,13 +16,9 @@ class ApprovalQueueScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColor.background,
-      appBar: getAppBar(
-        title: AppString.approvalQueue,
-        icon: Icons.menu,
-        onTap: () {
-
-        },
-      ),
+      appBar:
+          getAppBarWithDrawer(context: context, title: AppString.approvalQueue),
+      drawer: const AppDrawer(),
       body: ListView.builder(
         padding: Measurement.generalSize16.horizontalIsToVertical,
         itemCount: approvalItems.length,

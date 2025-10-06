@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sync_pro/config/app_bar.dart';
+import 'package:sync_pro/config/app_drawer.dart';
 import 'package:sync_pro/config/app_color.dart';
 import 'package:sync_pro/config/app_string.dart';
 import 'package:sync_pro/config/extension.dart';
@@ -37,13 +38,9 @@ class _ReportsReviewScreenState extends State<ReportsReviewScreen> {
 
     return Scaffold(
       backgroundColor: AppColor.background,
-      appBar: getAppBar(
-        title: AppString.reportsToBeReviewed,
-        icon: Icons.menu,
-        onTap: () {
-
-        },
-      ),
+      appBar: getAppBarWithDrawer(
+          context: context, title: AppString.reportsToBeReviewed),
+      drawer: const AppDrawer(),
       body: Column(
         children: [
           Padding(
