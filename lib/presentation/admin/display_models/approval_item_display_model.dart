@@ -5,11 +5,26 @@ class ApprovalItemDisplayModel {
   final String title;
   final String submittedBy;
   final IconData icon;
+  // detail fields
+  final String buildingName;
+  final String roomNumber;
+  final String assetType;
+  final String assetDescription;
+  final String statusText;
+  final String dateAdded;
+  final String lastUpdated;
 
   const ApprovalItemDisplayModel({
     required this.title,
     required this.submittedBy,
     required this.icon,
+    required this.buildingName,
+    required this.roomNumber,
+    required this.assetType,
+    required this.assetDescription,
+    required this.statusText,
+    required this.dateAdded,
+    required this.lastUpdated,
   });
 }
 
@@ -17,19 +32,39 @@ class ApprovalItemDisplayModel {
 /// will replace from api fetch later
 List<ApprovalItemDisplayModel> approvalItems = const [
   ApprovalItemDisplayModel(
-      title: 'New Building',
-      submittedBy: 'Sarah Miller',
-      icon: Icons.corporate_fare),
+    title: 'New Building',
+    submittedBy: 'Sarah Miller',
+    icon: Icons.corporate_fare,
+    buildingName: 'Corporate Headquarters',
+    roomNumber: '1402',
+    assetType: 'HVAC Unit',
+    assetDescription: 'Model #ABC-123, Serial #XYZ-987',
+    statusText: 'Pending Approval',
+    dateAdded: '2024-07-22',
+    lastUpdated: '2024-07-22',
+  ),
   ApprovalItemDisplayModel(
-      title: 'New Room', submittedBy: 'David Chen', icon: Icons.meeting_room),
+    title: 'New Room',
+    submittedBy: 'David Chen',
+    icon: Icons.meeting_room,
+    buildingName: 'West Campus',
+    roomNumber: 'B12',
+    assetType: 'Room',
+    assetDescription: 'Conference room renovation',
+    statusText: 'Pending Approval',
+    dateAdded: '2024-07-21',
+    lastUpdated: '2024-07-22',
+  ),
   ApprovalItemDisplayModel(
-      title: 'New Asset', submittedBy: 'Emily Carter', icon: Icons.inventory_2),
-  ApprovalItemDisplayModel(
-      title: 'New Building',
-      submittedBy: 'Michael Davis',
-      icon: Icons.corporate_fare),
-  ApprovalItemDisplayModel(
-      title: 'New Room', submittedBy: 'Olivia Brown', icon: Icons.meeting_room),
-  ApprovalItemDisplayModel(
-      title: 'New Asset', submittedBy: 'Ethan Clark', icon: Icons.inventory_2),
+    title: 'New Asset',
+    submittedBy: 'Emily Carter',
+    icon: Icons.inventory_2,
+    buildingName: 'R&D Center',
+    roomNumber: '220',
+    assetType: '3D Printer',
+    assetDescription: 'Model Mark X7',
+    statusText: 'Pending Approval',
+    dateAdded: '2024-07-20',
+    lastUpdated: '2024-07-21',
+  ),
 ];

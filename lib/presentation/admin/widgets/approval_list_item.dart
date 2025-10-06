@@ -4,7 +4,9 @@ import 'package:sync_pro/config/app_color.dart';
 import 'package:sync_pro/config/app_string.dart';
 import 'package:sync_pro/config/extension.dart';
 import 'package:sync_pro/config/measurement.dart';
+import 'package:sync_pro/config/routing.dart';
 import 'package:sync_pro/presentation/admin/display_models/approval_item_display_model.dart';
+import 'package:sync_pro/presentation/admin/screen/approval_detail_screen.dart';
 
 class ApprovalListItem extends StatelessWidget {
   final ApprovalItemDisplayModel item;
@@ -47,7 +49,7 @@ class ApprovalListItem extends StatelessWidget {
           color: AppColor.grey,
         ),
         onTap: () {
-          // Handle item tap
+          Routing.transition(context, ApprovalDetailScreen(item: item));
         },
       ),
     );
