@@ -52,7 +52,7 @@ Color getTaskStatusOuterColor(TaskStatus status) {
     case TaskStatus.inProgress:
       return AppColor.orangeStatusOuter;
     case TaskStatus.completed:
-      return AppColor.greyStatusOuter;
+      return AppColor.greenStatusOuter;
     case TaskStatus.overdue:
       return AppColor.redStatusOuter;
     default:
@@ -67,7 +67,7 @@ Color getTaskStatusInnerColor(TaskStatus status) {
     case TaskStatus.inProgress:
       return AppColor.orangeStatusInner;
     case TaskStatus.completed:
-      return AppColor.greyStatusInner;
+      return AppColor.greenStatusInner;
     case TaskStatus.overdue:
       return AppColor.redStatusInner;
     default:

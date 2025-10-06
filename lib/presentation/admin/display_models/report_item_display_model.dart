@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-
 class ReportItemDisplayModel {
   final String title;
   final String customer;

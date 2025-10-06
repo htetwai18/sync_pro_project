@@ -25,4 +25,12 @@ class AppString {
   static const String taskId = "Task ID";
   static const String engineer = "Engineer";
   static const String date = "Date";
+
+  // Tasks
+  static const String tasks = "Tasks";
+  static const String assigned = "Assigned";
+  static const String notStarted = "Not Started";
+  static const String inProgress = "In Progress";
+  static const String completed = "Completed";
+  static const String overdue = "Overdue";
 }
