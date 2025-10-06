@@ -33,4 +33,25 @@ class AppString {
   static const String inProgress = "In Progress";
   static const String completed = "Completed";
   static const String overdue = "Overdue";
+
+  // Create Task
+  static const String createNewTask = "Create New Task";
+  static const String taskTitle = "Task Title";
+  static const String titlePlaceholder = "Enter task title";
+  static const String description = "Description";
+  static const String descriptionPlaceholder = "Enter task description";
+  static const String selectCustomer = "Select Customer";
+  static const String customerLower = "Customer";
+  static const String building = "Building";
+  static const String selectBuilding = "Select Building";
+  static const String room = "Room";
+  static const String selectRoom = "Select Room";
+  static const String asset = "Asset";
+  static const String selectAsset = "Select Asset";
+  static const String assignedEngineer = "Assigned Engineer";
+  static const String selectEngineer = "Select Engineer";
+  static const String dueDate = "Due Date";
+  static const String priority = "Priority";
+  static const String selectPriority = "Select Priority";
+  static const String createTask = "Create Task";
 }

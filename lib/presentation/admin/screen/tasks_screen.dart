@@ -4,8 +4,10 @@ import 'package:sync_pro/config/app_string.dart';
 import 'package:sync_pro/config/measurement.dart';
 import 'package:sync_pro/config/extension.dart';
 import 'package:sync_pro/config/app_drawer.dart';
+import 'package:sync_pro/config/routing.dart';
 import 'package:sync_pro/presentation/admin/display_models/task_item_display_model.dart';
 import 'package:sync_pro/presentation/admin/widgets/task_list_item.dart';
+import 'package:sync_pro/presentation/admin/screen/create_task_screen.dart';
 
 class TasksScreen extends StatelessWidget {
   const TasksScreen({super.key});
@@ -27,7 +29,9 @@ class TasksScreen extends StatelessWidget {
         title: const Text(AppString.tasks),
         actions: [
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              Routing.transition(context, const CreateTaskScreen());
+            },
             icon: const Icon(Icons.add, color: AppColor.white),
           ),
         ],
