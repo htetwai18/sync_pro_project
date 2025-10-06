@@ -30,4 +30,7 @@ class Measurement {
   static const generalSize24 = 24.0;
   static const generalSize26 = 26.0;
   static const generalSize28 = 28.0;
+
+  ///big
+  static const generalSize48 = 48.0;
 }

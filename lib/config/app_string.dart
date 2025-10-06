@@ -1,6 +1,8 @@
 class AppString {
   static const String approvalQueue = "Approval Queue";
   static const String approvalDetails = "Approval Details";
+  static const String reportsToBeReviewed = "Reports to be Reviewed";
+  static const String searchReports = "Search reports";
 
   static const String customerSubmission = "Customer Submission";
   static const String buildingName = "Building Name";
@@ -14,4 +16,5 @@ class AppString {
   static const String submittedBy = "Submitted by";
   static const String approve = "Approve";
   static const String reject = "Reject";
+  static const String customer = "Customer";
 }
