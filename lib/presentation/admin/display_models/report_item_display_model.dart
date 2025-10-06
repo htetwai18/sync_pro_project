@@ -5,7 +5,6 @@ class ReportItemDisplayModel {
   final String customer;
   final String author;
   final String date; // ISO-like string for now
-  final IconData icon;
   // Detail fields
   final String content;
   final List<String> attachmentUrls;
@@ -17,7 +16,6 @@ class ReportItemDisplayModel {
     required this.customer,
     required this.author,
     required this.date,
-    required this.icon,
     required this.content,
     required this.attachmentUrls,
     required this.taskId,
@@ -31,7 +29,6 @@ const List<ReportItemDisplayModel> mockReports = [
     customer: 'Tech Solutions Inc.',
     author: 'Alex Johnson',
     date: '07/22/2024',
-    icon: Icons.description,
     content:
         'The installation of the new server rack was completed successfully. All systems are functioning as expected, and the network connectivity has been verified. The client expressed satisfaction with the work.',
     attachmentUrls: [
@@ -45,7 +42,6 @@ const List<ReportItemDisplayModel> mockReports = [
     customer: 'Global Innovations Ltd.',
     author: 'Sarah Williams',
     date: '07/21/2024',
-    icon: Icons.description,
     content:
         'Performed scheduled maintenance on servers. Replaced failing disk and updated firmware. All systems nominal.',
     attachmentUrls: [
@@ -59,7 +55,6 @@ const List<ReportItemDisplayModel> mockReports = [
     customer: 'Future Dynamics Corp.',
     author: 'Michael Brown',
     date: '07/20/2024',
-    icon: Icons.description,
     content:
         'Integrated new CRM with existing ERP. Validated data flows and trained staff.',
     attachmentUrls: [],
@@ -71,7 +66,6 @@ const List<ReportItemDisplayModel> mockReports = [
     customer: 'Apex Industries LLC',
     author: 'Emily Davis',
     date: '07/19/2024',
-    icon: Icons.description,
     content: 'Installed licensed software suite and configured user roles.',
     attachmentUrls: [],
     taskId: '#12343',
@@ -82,7 +76,6 @@ const List<ReportItemDisplayModel> mockReports = [
     customer: 'Quantum Systems Inc.',
     author: 'David Lee',
     date: '07/18/2024',
-    icon: Icons.description,
     content: 'Replaced power supply unit and validated thermal performance.',
     attachmentUrls: [],
     taskId: '#12345',
