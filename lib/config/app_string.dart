@@ -54,4 +54,17 @@ class AppString {
   static const String priority = "Priority";
   static const String selectPriority = "Select Priority";
   static const String createTask = "Create Task";
+
+  // Task Detail
+  static const String taskDetailsTitle = "Task Details";
+  static const String taskDescription = "Task Description";
+  static const String assetUpper = "Asset";
+  static const String assetID = "Asset ID";
+  static const String timeline = "Timeline";
+  static const String taskCreated = "Task Created";
+  static const String assignedToEngineer = "Assigned to Engineer";
+  static const String taskCompleted = "Task Completed";
+  static const String serviceReport = "Service Report";
+  static const String viewReport = "View Report";
+  static const String submittedOn = "Submitted on";
 }

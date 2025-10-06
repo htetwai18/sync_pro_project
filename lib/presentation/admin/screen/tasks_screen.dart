@@ -8,6 +8,7 @@ import 'package:sync_pro/config/routing.dart';
 import 'package:sync_pro/presentation/admin/display_models/task_item_display_model.dart';
 import 'package:sync_pro/presentation/admin/widgets/task_list_item.dart';
 import 'package:sync_pro/presentation/admin/screen/create_task_screen.dart';
+import 'package:sync_pro/presentation/admin/screen/task_detail_screen.dart';
 
 class TasksScreen extends StatelessWidget {
   const TasksScreen({super.key});
@@ -43,7 +44,16 @@ class TasksScreen extends StatelessWidget {
         separatorBuilder: (_, __) => Measurement.generalSize16.height,
         itemBuilder: (context, index) {
           final item = mockTasks[index];
-          return TaskListItem(item: item, onTap: () {});
+          return TaskListItem(
+            item: item,
+            onTap: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (_) => TaskDetailScreen(item: item),
+                ),
+              );
+            },
+          );
         },
       ),
     );
