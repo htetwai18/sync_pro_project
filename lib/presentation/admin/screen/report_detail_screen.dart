@@ -32,32 +32,31 @@ class ReportDetailScreen extends StatelessWidget {
             // Report Content section
             const Text(AppString.reportContent).mediumBold(AppColor.grey),
             Measurement.generalSize16.height,
-            const Text(
-              'The installation of the new server rack was completed successfully. All systems are functioning as expected, and the network connectivity has been verified. The client, Mr. Thompson, expressed satisfaction with the work. No issues were encountered during the process.',
-            ).mediumNormal(AppColor.white),
+            Text(item.content).mediumNormal(AppColor.white),
 
             Measurement.generalSize24.height,
             // Attachments
             const Text(AppString.attachments).mediumBold(AppColor.grey),
             Measurement.generalSize16.height,
-            ClipRRect(
-              borderRadius: Measurement.generalSize12.allRadius,
-              child: Image.network(
-                'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=1200',
-                fit: BoxFit.cover,
-              ),
-            ),
+            ...item.attachmentUrls.map((url) => Padding(
+                  padding:
+                      const EdgeInsets.only(bottom: Measurement.generalSize16),
+                  child: ClipRRect(
+                    borderRadius: Measurement.generalSize12.allRadius,
+                    child: Image.network(url, fit: BoxFit.cover),
+                  ),
+                )),
             Measurement.generalSize24.height,
             // Task Details
             const Text(AppString.taskDetails).mediumBold(AppColor.grey),
             Measurement.generalSize16.height,
-            _DetailRow(label: AppString.taskId, value: '#12345'),
+            _DetailRow(label: AppString.taskId, value: item.taskId),
             _Divider(),
             _DetailRow(label: AppString.engineer, value: item.author),
             _Divider(),
-            _DetailRow(label: AppString.date, value: 'July 26, 2024'),
+            _DetailRow(label: AppString.date, value: item.date),
             _Divider(),
-            _DetailRow(label: AppString.status, value: 'Completed'),
+            _DetailRow(label: AppString.status, value: item.status),
 
             Measurement.generalSize24.height,
             Row(

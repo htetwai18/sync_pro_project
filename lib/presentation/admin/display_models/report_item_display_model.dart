@@ -6,6 +6,11 @@ class ReportItemDisplayModel {
   final String author;
   final String date; // ISO-like string for now
   final IconData icon;
+  // Detail fields
+  final String content;
+  final List<String> attachmentUrls;
+  final String taskId;
+  final String status;
 
   const ReportItemDisplayModel({
     required this.title,
@@ -13,6 +18,10 @@ class ReportItemDisplayModel {
     required this.author,
     required this.date,
     required this.icon,
+    required this.content,
+    required this.attachmentUrls,
+    required this.taskId,
+    required this.status,
   });
 }
 
@@ -23,6 +32,13 @@ const List<ReportItemDisplayModel> mockReports = [
     author: 'Alex Johnson',
     date: '07/22/2024',
     icon: Icons.description,
+    content:
+        'The installation of the new server rack was completed successfully. All systems are functioning as expected, and the network connectivity has been verified. The client expressed satisfaction with the work.',
+    attachmentUrls: [
+      'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=1200',
+    ],
+    taskId: '#12340',
+    status: 'Completed',
   ),
   ReportItemDisplayModel(
     title: 'Task: Server Maintenance',
@@ -30,6 +46,13 @@ const List<ReportItemDisplayModel> mockReports = [
     author: 'Sarah Williams',
     date: '07/21/2024',
     icon: Icons.description,
+    content:
+        'Performed scheduled maintenance on servers. Replaced failing disk and updated firmware. All systems nominal.',
+    attachmentUrls: [
+      'https://images.unsplash.com/photo-1585079542156-2755d9b66b1e?w=800',
+    ],
+    taskId: '#12341',
+    status: 'Completed',
   ),
   ReportItemDisplayModel(
     title: 'Task: System Integration',
@@ -37,6 +60,11 @@ const List<ReportItemDisplayModel> mockReports = [
     author: 'Michael Brown',
     date: '07/20/2024',
     icon: Icons.description,
+    content:
+        'Integrated new CRM with existing ERP. Validated data flows and trained staff.',
+    attachmentUrls: [],
+    taskId: '#12342',
+    status: 'Pending Review',
   ),
   ReportItemDisplayModel(
     title: 'Task: Software Installation',
@@ -44,6 +72,10 @@ const List<ReportItemDisplayModel> mockReports = [
     author: 'Emily Davis',
     date: '07/19/2024',
     icon: Icons.description,
+    content: 'Installed licensed software suite and configured user roles.',
+    attachmentUrls: [],
+    taskId: '#12343',
+    status: 'Completed',
   ),
   ReportItemDisplayModel(
     title: 'Task: Hardware Repair',
@@ -51,5 +83,9 @@ const List<ReportItemDisplayModel> mockReports = [
     author: 'David Lee',
     date: '07/18/2024',
     icon: Icons.description,
+    content: 'Replaced power supply unit and validated thermal performance.',
+    attachmentUrls: [],
+    taskId: '#12345',
+    status: 'Completed',
   ),
 ];
