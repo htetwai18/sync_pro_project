@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sync_pro/config/app_bar.dart';
 import 'package:sync_pro/config/app_color.dart';
 import 'package:sync_pro/config/app_string.dart';
 import 'package:sync_pro/config/extension.dart';
@@ -14,15 +15,12 @@ class ReportDetailScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColor.background,
-      appBar: AppBar(
-        backgroundColor: AppColor.background,
-        elevation: Measurement.generalSize0,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: AppColor.white),
-          onPressed: () => Navigator.of(context).pop(),
-        ),
-        title: const Text(AppString.reviewReport).largeBold(AppColor.white),
-        centerTitle: true,
+      appBar: getAppBar(
+        title: AppString.reviewReport,
+        icon: Icons.arrow_back,
+        onTap: () {
+          Navigator.of(context).pop();
+        },
       ),
       body: SingleChildScrollView(
         padding: Measurement.generalSize16.horizontalIsToVertical,
