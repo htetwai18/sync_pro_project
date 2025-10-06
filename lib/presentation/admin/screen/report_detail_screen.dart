@@ -1,0 +1,136 @@
+import 'package:flutter/material.dart';
+import 'package:sync_pro/config/app_color.dart';
+import 'package:sync_pro/config/app_string.dart';
+import 'package:sync_pro/config/extension.dart';
+import 'package:sync_pro/config/measurement.dart';
+import 'package:sync_pro/presentation/admin/display_models/report_item_display_model.dart';
+
+class ReportDetailScreen extends StatelessWidget {
+  final ReportItemDisplayModel item;
+
+  const ReportDetailScreen({super.key, required this.item});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: AppColor.background,
+      appBar: AppBar(
+        backgroundColor: AppColor.background,
+        elevation: Measurement.generalSize0,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back, color: AppColor.white),
+          onPressed: () => Navigator.of(context).pop(),
+        ),
+        title: const Text(AppString.reviewReport).largeBold(AppColor.white),
+        centerTitle: true,
+      ),
+      body: SingleChildScrollView(
+        padding: Measurement.generalSize16.horizontalIsToVertical,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Report Content section
+            const Text(AppString.reportContent).mediumBold(AppColor.grey),
+            Measurement.generalSize16.height,
+            const Text(
+              'The installation of the new server rack was completed successfully. All systems are functioning as expected, and the network connectivity has been verified. The client, Mr. Thompson, expressed satisfaction with the work. No issues were encountered during the process.',
+            ).mediumNormal(AppColor.white),
+
+            Measurement.generalSize24.height,
+            // Attachments
+            const Text(AppString.attachments).mediumBold(AppColor.grey),
+            Measurement.generalSize16.height,
+            ClipRRect(
+              borderRadius: Measurement.generalSize12.allRadius,
+              child: Image.network(
+                'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=1200',
+                fit: BoxFit.cover,
+              ),
+            ),
+            Measurement.generalSize24.height,
+            // Task Details
+            const Text(AppString.taskDetails).mediumBold(AppColor.grey),
+            Measurement.generalSize16.height,
+            _DetailRow(label: AppString.taskId, value: '#12345'),
+            _Divider(),
+            _DetailRow(label: AppString.engineer, value: item.author),
+            _Divider(),
+            _DetailRow(label: AppString.date, value: 'July 26, 2024'),
+            _Divider(),
+            _DetailRow(label: AppString.status, value: 'Completed'),
+
+            Measurement.generalSize24.height,
+            Row(
+              children: [
+                Expanded(
+                  child: OutlinedButton(
+                    style: OutlinedButton.styleFrom(
+                      side: const BorderSide(color: AppColor.greyPercentCircle),
+                      foregroundColor: AppColor.white,
+                      padding: Measurement.generalSize16.horizontalIsToVertical,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: Measurement.generalSize12.allRadius,
+                      ),
+                      backgroundColor: AppColor.blueField,
+                    ),
+                    onPressed: () {},
+                    child:
+                        const Text(AppString.reject).mediumBold(AppColor.white),
+                  ),
+                ),
+                Measurement.generalSize16.width,
+                Expanded(
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: AppColor.blueStatusInner,
+                      foregroundColor: AppColor.white,
+                      padding: Measurement.generalSize16.horizontalIsToVertical,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: Measurement.generalSize12.allRadius,
+                      ),
+                    ),
+                    onPressed: () {},
+                    child: const Text(AppString.approve)
+                        .mediumBold(AppColor.white),
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _DetailRow extends StatelessWidget {
+  final String label;
+  final String value;
+
+  const _DetailRow({required this.label, required this.value});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(
+        vertical: Measurement.generalSize14,
+      ),
+      child: Row(
+        children: [
+          Expanded(child: Text(label).smallNormal(AppColor.grey)),
+          Text(value).mediumBold(AppColor.white),
+        ],
+      ),
+    );
+  }
+}
+
+class _Divider extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Divider(
+      height: 1,
+      color: AppColor.greyPercentCircle.withOpacity(0.2),
+    );
+  }
+}

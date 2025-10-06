@@ -17,4 +17,12 @@ class AppString {
   static const String approve = "Approve";
   static const String reject = "Reject";
   static const String customer = "Customer";
+  // Report detail
+  static const String reviewReport = "Review Report";
+  static const String reportContent = "Report Content";
+  static const String attachments = "Attachments";
+  static const String taskDetails = "Task Details";
+  static const String taskId = "Task ID";
+  static const String engineer = "Engineer";
+  static const String date = "Date";
 }
