@@ -6,6 +6,7 @@ import 'package:sync_pro/config/measurement.dart';
 import 'package:sync_pro/presentation/admin/screen/approval_queue_screen.dart';
 import 'package:sync_pro/presentation/admin/screen/reports_review_screen.dart';
 import 'package:sync_pro/presentation/admin/screen/tasks_screen.dart';
+import 'package:sync_pro/presentation/admin/screen/dashboard_screen.dart';
 
 class AppDrawer extends StatelessWidget {
   const AppDrawer({super.key});
@@ -27,6 +28,12 @@ class AppDrawer extends StatelessWidget {
             vertical: Measurement.generalSize8,
           ),
           children: [
+            ListTile(
+              leading: const Icon(Icons.dashboard, color: AppColor.white),
+              title: const Text(AppString.adminDashboard)
+                  .mediumBold(AppColor.white),
+              onTap: () => _navigate(context, const DashboardScreen()),
+            ),
             ListTile(
               leading: const Icon(Icons.checklist, color: AppColor.white),
               title: const Text(AppString.approvalQueue)

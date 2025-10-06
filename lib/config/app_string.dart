@@ -67,4 +67,23 @@ class AppString {
   static const String serviceReport = "Service Report";
   static const String viewReport = "View Report";
   static const String submittedOn = "Submitted on";
+
+  // Dashboard
+  static const String adminDashboard = "Admin Dashboard";
+  static const String dashboard = "Dashboard";
+  static const String activeTasks = "Active Tasks";
+  static const String pendingTasks = "Pending Tasks";
+  static const String reportsToReview = "Reports to Review";
+  static const String pendingApprovals = "Pending Approvals";
+  static const String overdueInvoices = "Overdue Invoices";
+  static const String taskStatus = "Task Status";
+  static const String completedStatus = "Completed";
+  static const String openStatus = "Open";
+  static const String inProgressStatus = "In Progress";
+  static const String doneStatus = "Done";
+  static const String recentActivity = "Recent Activity";
+  static const String newTaskCreated = "New Task Created";
+  static const String taskAssignedTo = "Task assigned to";
+  static const String invoiceOverdue = "Invoice Overdue";
+  static const String invoiceOverdueDesc = "Invoice #12345 is overdue";
 }
