@@ -7,6 +7,8 @@ enum TaskStatus { notStarted, inProgress, completed, overdue }
 
 enum InvoiceStatus { paid, due, overdue, sent, voided, draft }
 
+enum UserRole { admin, engineer, manager }
+
 Color getInvoiceStatusOuterColor(InvoiceStatus status) {
   switch (status) {
     case InvoiceStatus.paid:

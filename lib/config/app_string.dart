@@ -86,4 +86,11 @@ class AppString {
   static const String taskAssignedTo = "Task assigned to";
   static const String invoiceOverdue = "Invoice Overdue";
   static const String invoiceOverdueDesc = "Invoice #12345 is overdue";
+
+  // Users
+  static const String users = "Users";
+  static const String searchUsers = "Search users";
+  static const String adminRole = "Admin";
+  static const String engineerRole = "Engineer";
+  static const String managerRole = "Manager";
 }
