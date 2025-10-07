@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sync_pro/config/app_color.dart';
+import 'package:sync_pro/config/enum.dart';
 import 'package:sync_pro/config/extension.dart';
 import 'package:sync_pro/config/measurement.dart';
 import 'package:sync_pro/config/routing.dart';
@@ -28,15 +29,14 @@ class _EngineerTasksScreenState extends State<EngineerTasksScreen>
     final now = DateTime.now();
     return mockTasks.where((t) {
       if (tab == 0) {
-        return (t.isCompleted == false) &&
-            (t.scheduledAt?.year == now.year) &&
-            (t.scheduledAt?.month == now.month) &&
-            (t.scheduledAt?.day == now.day);
+        return (t.scheduledAt.year == now.year) &&
+            (t.scheduledAt.month == now.month) &&
+            (t.scheduledAt.day == now.day);
       } else if (tab == 1) {
-        return (t.isCompleted == false) &&
-            (t.scheduledAt != null && t.scheduledAt!.isAfter(now));
+        return (t.status != TaskStatus.completed) &&
+            (t.scheduledAt.isAfter(now));
       } else {
-        return t.isCompleted;
+        return t.status == TaskStatus.completed;
       }
     }).toList();
   }

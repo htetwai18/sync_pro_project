@@ -78,7 +78,7 @@ class TaskDetailScreen extends StatelessWidget {
             _TimelineTile(
               icon: Icons.radio_button_unchecked,
               title: AppString.taskCreated,
-              subtitle: _format(item.createdAt),
+              subtitle: _format(item.assignedAt),
             ),
             _TimelineDivider(),
             _TimelineTile(
