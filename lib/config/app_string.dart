@@ -163,4 +163,9 @@ class AppString {
   static const String addLineItem = "Add Line Item";
   static const String totalAmount = "Total Amount";
   static const String generateInvoice = "Generate Invoice";
+
+  // Parts / Inventory
+  static const String parts = "Parts";
+  static const String searchByNameOrNumber = "Search by name or number";
+  static const String onHand = "On Hand";
 }
