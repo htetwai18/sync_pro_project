@@ -3,7 +3,6 @@ import 'package:sync_pro/config/app_color.dart';
 import 'package:sync_pro/config/extension.dart';
 import 'package:sync_pro/config/measurement.dart';
 import 'package:sync_pro/config/routing.dart';
-import 'package:sync_pro/config/enum.dart';
 import 'package:sync_pro/presentation/admin/display_models/task_item_display_model.dart';
 import 'package:sync_pro/presentation/engineer/screen/engineer_task_detail_screen.dart';
 import 'package:sync_pro/presentation/engineer/widgets/engineer_task_card.dart';
@@ -93,34 +92,5 @@ class _EngineerTasksScreenState extends State<EngineerTasksScreen>
         ],
       ),
     );
-  }
-
-  String _statusLabel(TaskStatus s) {
-    switch (s) {
-      case TaskStatus.notStarted:
-        return 'Scheduled';
-      case TaskStatus.inProgress:
-        return 'On Site';
-      case TaskStatus.completed:
-        return 'Completed';
-      case TaskStatus.overdue:
-        return 'Overdue';
-    }
-  }
-
-  // Map engineer list labels to enum TaskStatus used by detail screen
-  TaskStatus _mapStatus(String label) {
-    switch (label) {
-      case 'En Route':
-        return TaskStatus.inProgress;
-      case 'On Site':
-        return TaskStatus.inProgress;
-      case 'Parts Needed':
-        return TaskStatus.notStarted;
-      case 'Completed':
-        return TaskStatus.completed;
-      default:
-        return TaskStatus.notStarted;
-    }
   }
 }

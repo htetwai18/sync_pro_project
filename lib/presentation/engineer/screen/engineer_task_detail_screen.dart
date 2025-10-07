@@ -26,7 +26,7 @@ class EngineerTaskDetailScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColor.background,
-      appBar: getAppBar(title: 'Task Details', context: context),
+      appBar: getAppBar(title: AppString.taskDetailsTitle, context: context),
       body: SingleChildScrollView(
         padding: Measurement.generalSize16.horizontalIsToVertical,
         child: Column(
@@ -68,7 +68,8 @@ class EngineerTaskDetailScreen extends StatelessWidget {
                       ),
                     ),
                     onPressed: () {},
-                    child: const Text('Add Parts').mediumBold(AppColor.white),
+                    child: const Text(AppString.addParts)
+                        .mediumBold(AppColor.white),
                   ),
                 ),
                 Measurement.generalSize16.width,
@@ -84,7 +85,8 @@ class EngineerTaskDetailScreen extends StatelessWidget {
                       ),
                     ),
                     onPressed: () {},
-                    child: const Text('Report').mediumBold(AppColor.white),
+                    child: const Text(AppString.reportAction)
+                        .mediumBold(AppColor.white),
                   ),
                 ),
               ],
@@ -93,7 +95,7 @@ class EngineerTaskDetailScreen extends StatelessWidget {
             Measurement.generalSize24.height,
 
             // Location & address
-            const Text('Location & Address').mediumBold(AppColor.white),
+            const Text(AppString.locationAndAddress).mediumBold(AppColor.white),
             Measurement.generalSize12.height,
             Container(
               width: double.infinity,
@@ -115,7 +117,7 @@ class EngineerTaskDetailScreen extends StatelessWidget {
             Measurement.generalSize24.height,
 
             // Description
-            const Text('Task Description').mediumBold(AppColor.white),
+            const Text(AppString.taskDescription).mediumBold(AppColor.white),
             Measurement.generalSize12.height,
             Text(description).mediumNormal(AppColor.grey),
           ],

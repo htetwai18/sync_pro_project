@@ -224,4 +224,16 @@ class AppString {
   static const String profile = "My Profile";
   static const String logout = "Logout";
   static const String editProfile = "Edit Profile";
+
+  // Engineer Tasks
+  static const String tasksTabToday = "Today";
+  static const String tasksTabUpcoming = "Upcoming";
+  static const String tasksTabCompleted = "Completed";
+  static const String enRoute = "En Route";
+  static const String onSite = "On Site";
+  static const String partsNeeded = "Parts Needed";
+  static const String locationAndAddress = "Location & Address";
+  static const String addParts = "Add Parts";
+  static const String reportAction = "Report";
+  static const String scheduled = "Scheduled";
 }
