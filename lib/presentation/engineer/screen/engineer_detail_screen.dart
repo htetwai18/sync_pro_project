@@ -95,6 +95,7 @@ class EngineerDetailScreen extends StatelessWidget {
           ],
         ),
       ),
+
     );
   }
 }
