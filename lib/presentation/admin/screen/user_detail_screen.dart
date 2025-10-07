@@ -86,7 +86,7 @@ class UserDetailScreen extends StatelessWidget {
             _Divider(),
             _DetailRow(label: AppString.statusUpper, value: user.status),
             _Divider(),
-            _DetailRow(label: AppString.location, value: user.location),
+            _DetailRow(label: AppString.locationLabel, value: user.location),
             _Divider(),
             _DetailRow(label: AppString.hireDate, value: user.hireDate),
             _Divider(),

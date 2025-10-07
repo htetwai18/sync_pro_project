@@ -118,7 +118,7 @@ class AppString {
   static const String phone = "Phone";
   static const String department = "Department";
   static const String statusUpper = "Status";
-  static const String location = "Location";
+  static const String locationLabel = "Location";
   static const String hireDate = "Hire Date";
   static const String lastLogin = "Last Login";
 
@@ -195,4 +195,13 @@ class AppString {
   static const String hintWarehouse = "Select warehouse";
   static const String hintFullName = "Enter full name";
   static const String hintEmail = "Enter email address";
+  // Adjust Stock
+  static const String adjustStock = "Adjust Stock";
+  static const String currentQuantity = "Current Total Quantity";
+  static const String location = "Location";
+  static const String newQuantity = "New Quantity";
+  static const String reasonForAdjustment = "Reason for Adjustment";
+  static const String hintNewQuantity = "Enter new quantity";
+  static const String hintReason = "e.g., Cycle count, damaged goods, etc.";
+  static const String saveAdjustment = "Save Adjustment";
 }

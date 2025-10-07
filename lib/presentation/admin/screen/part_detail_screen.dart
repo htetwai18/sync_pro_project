@@ -7,6 +7,7 @@ import 'package:sync_pro/config/measurement.dart';
 import 'package:sync_pro/presentation/admin/display_models/part_item_display_model.dart';
 import 'package:sync_pro/config/routing.dart';
 import 'package:sync_pro/presentation/admin/screen/edit_part_screen.dart';
+import 'package:sync_pro/presentation/admin/screen/adjust_stock_screen.dart';
 
 class PartDetailScreen extends StatelessWidget {
   final PartItemDisplayModel part;
@@ -62,8 +63,36 @@ class PartDetailScreen extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text(AppString.inventoryStock)
-                      .mediumBold(AppColor.white),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Text(AppString.inventoryStock)
+                          .largeBold(AppColor.white),
+                      TextButton(
+                        onPressed: () {
+                          Routing.transition(
+                            context,
+                            AdjustStockScreen(
+                              partName: part.name,
+                              partNumber: part.number,
+                              currentQty: part.onHand,
+                            ),
+                          );
+                        },
+                        style: TextButton.styleFrom(
+                          backgroundColor: AppColor.blueStatusOuter,
+                          foregroundColor: AppColor.blueStatusInner,
+                          padding:
+                              Measurement.generalSize12.horizontalIsToVertical,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: Measurement.generalSize12.allRadius,
+                          ),
+                        ),
+                        child: const Text(AppString.adjust)
+                            .smallBold(AppColor.blueStatusInner),
+                      )
+                    ],
+                  ),
                   Measurement.generalSize12.height,
                   ...part.stock.map((s) => Column(
                         children: [
@@ -86,21 +115,6 @@ class PartDetailScreen extends StatelessWidget {
                                   ],
                                 ),
                               ),
-                              TextButton(
-                                onPressed: () {},
-                                style: TextButton.styleFrom(
-                                  backgroundColor: AppColor.blueStatusInner,
-                                  foregroundColor: AppColor.white,
-                                  padding: Measurement
-                                      .generalSize12.horizontalIsToVertical,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius:
-                                        Measurement.generalSize12.allRadius,
-                                  ),
-                                ),
-                                child: const Text(AppString.adjust)
-                                    .smallBold(AppColor.white),
-                              )
                             ],
                           ),
                           if (s != part.stock.last)
