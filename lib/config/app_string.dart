@@ -50,7 +50,7 @@ class AppString {
   static const String selectAsset = "Select Asset";
   static const String assignedEngineer = "Assigned Engineer";
   static const String selectEngineer = "Select Engineer";
-  static const String dueDate = "Due Date";
+  static const String dueDateLabel = "Due Date";
   static const String priority = "Priority";
   static const String selectPriority = "Select Priority";
   static const String createTask = "Create Task";
@@ -140,4 +140,17 @@ class AppString {
   static const String sent = "Sent";
   static const String draft = "Draft";
   static const String voided = "Void";
+
+  // Invoice Detail
+  static const String invoiceDetails = "Invoice Details";
+  static const String unpaid = "Unpaid";
+  static const String amountDue = "Amount Due";
+  static const String invoiceDate = "Invoice Date";
+  static const String dueDate = "Due Date";
+  static const String lineItems = "Line Items";
+  static const String subtotal = "Subtotal";
+  static const String tax = "Tax";
+  static const String total = "Total";
+  static const String markAsPaid = "Mark as Paid";
+  static const String voidInvoice = "Void Invoice";
 }

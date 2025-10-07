@@ -7,6 +7,8 @@ import 'package:sync_pro/config/measurement.dart';
 import 'package:sync_pro/config/app_drawer.dart';
 import 'package:sync_pro/presentation/admin/display_models/invoice_item_display_model.dart';
 import 'package:sync_pro/presentation/admin/widgets/invoice_list_item.dart';
+import 'package:sync_pro/config/routing.dart';
+import 'package:sync_pro/presentation/admin/screen/invoice_detail_screen.dart';
 
 class InvoicesScreen extends StatefulWidget {
   const InvoicesScreen({super.key});
@@ -69,7 +71,15 @@ class _InvoicesScreenState extends State<InvoicesScreen> {
               ),
               itemBuilder: (context, index) {
                 final item = filtered[index];
-                return InvoiceListItem(item: item, onTap: () {});
+                return InvoiceListItem(
+                  item: item,
+                  onTap: () {
+                    Routing.transition(
+                      context,
+                      InvoiceDetailScreen(invoice: item),
+                    );
+                  },
+                );
               },
             ),
           ),
