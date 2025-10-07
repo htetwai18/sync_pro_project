@@ -238,4 +238,12 @@ class AppString {
   static const String scheduled = "Scheduled";
   static const String scheduledAtLabel = "Scheduled At";
   static const String assignedAtLabel = "Assigned At";
+
+  // Add Part to Task
+  static const String addPartToTask = "Add Part to Task";
+  static const String inventory = "Inventory";
+  static const String yourVan = "Your Van";
+  static const String searchPartPlaceholder = "Search by part name or number";
+  static const String onHandLabel = "On Hand";
+  static const String addToTask = "Add to Task";
 }

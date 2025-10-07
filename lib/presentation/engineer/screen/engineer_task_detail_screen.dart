@@ -5,6 +5,8 @@ import 'package:sync_pro/config/app_string.dart';
 import 'package:sync_pro/config/extension.dart';
 import 'package:sync_pro/config/measurement.dart';
 import 'package:sync_pro/config/enum.dart';
+import 'package:sync_pro/config/routing.dart';
+import 'package:sync_pro/presentation/engineer/screen/add_part_to_task_screen.dart';
 
 class EngineerTaskDetailScreen extends StatelessWidget {
   final String title, asset, assetName;
@@ -75,7 +77,9 @@ class EngineerTaskDetailScreen extends StatelessWidget {
                         borderRadius: Measurement.generalSize12.allRadius,
                       ),
                     ),
-                    onPressed: () {},
+                    onPressed: () {
+                      Routing.transition(context, const AddPartToTaskScreen());
+                    },
                     child: const Text(AppString.addParts)
                         .mediumBold(AppColor.white),
                   ),
