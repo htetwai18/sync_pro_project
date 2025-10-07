@@ -121,4 +121,12 @@ class AppString {
   static const String location = "Location";
   static const String hireDate = "Hire Date";
   static const String lastLogin = "Last Login";
+
+  // Edit User
+  static const String editUser = "Edit User";
+  static const String saveChanges = "Save Changes";
+  static const String cancel = "Cancel";
+  static const String active = "Active";
+  static const String inactive = "Inactive";
+  static const String lastUpdatedText = "Last updated";
 }

@@ -5,6 +5,8 @@ import 'package:sync_pro/config/app_string.dart';
 import 'package:sync_pro/config/extension.dart';
 import 'package:sync_pro/config/measurement.dart';
 import 'package:sync_pro/presentation/admin/display_models/user_item_display_model.dart';
+import 'package:sync_pro/config/routing.dart';
+import 'package:sync_pro/presentation/admin/screen/edit_user_screen.dart';
 
 class UserDetailScreen extends StatelessWidget {
   final UserItemDisplayModel user;
@@ -31,7 +33,6 @@ class UserDetailScreen extends StatelessWidget {
             Text(user.roleLabel).mediumNormal(AppColor.grey),
             Measurement.generalSize8.height,
             Text('${AppString.id}: ${user.id}').smallNormal(AppColor.grey),
-
             Measurement.generalSize24.height,
             Row(
               children: [
@@ -46,7 +47,12 @@ class UserDetailScreen extends StatelessWidget {
                         borderRadius: Measurement.generalSize12.allRadius,
                       ),
                     ),
-                    onPressed: () {},
+                    onPressed: () {
+                      Routing.transition(
+                        context,
+                        EditUserScreen(user: user),
+                      );
+                    },
                     child:
                         const Text(AppString.edit).mediumBold(AppColor.white),
                   ),
@@ -69,9 +75,7 @@ class UserDetailScreen extends StatelessWidget {
                 ),
               ],
             ),
-
             Measurement.generalSize24.height,
-
             _DetailRow(label: AppString.emailAddress, value: user.email),
             _Divider(),
             _DetailRow(label: AppString.phone, value: user.phone),
