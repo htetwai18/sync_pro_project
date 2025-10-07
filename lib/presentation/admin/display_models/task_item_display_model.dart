@@ -12,6 +12,11 @@ class TaskItemDisplayModel {
   final DateTime? createdAt;
   final DateTime? assignedAt;
   final DateTime? completedAt;
+  // Shared/engineer-only
+  final String address;
+  final DateTime? scheduledAt;
+  final bool isCompleted;
+  final int notifications;
 
   const TaskItemDisplayModel({
     required this.title,
@@ -24,51 +29,77 @@ class TaskItemDisplayModel {
     this.createdAt,
     this.assignedAt,
     this.completedAt,
+    this.address = '',
+    this.scheduledAt,
+    this.isCompleted = false,
+    this.notifications = 0,
   });
 }
 
 final List<TaskItemDisplayModel> mockTasks = [
+  // Today (not completed)
   TaskItemDisplayModel(
-    title: 'Install New Server Rack',
-    customer: 'Tech Solutions Inc.',
+    title: 'Install New Server',
+    customer: 'CyberCorp Inc.',
     assignedTo: 'Alex Johnson',
-    status: TaskStatus.completed,
+    status: TaskStatus.notStarted,
     description:
-        'Install new HVAC system at 123 Main St. Includes wiring, ductwork, and thermostat setup. Ensure all connections are secure and system is functioning correctly before leaving.',
-    assetId: '12345',
-    assetName: 'HVAC System',
-    createdAt: DateTime(2024, 1, 15, 10, 0),
-    assignedAt: DateTime(2024, 1, 15, 11, 30),
-    completedAt: DateTime(2024, 1, 16, 15, 45),
+        'Install new server hardware at the client site. Verify rack space, power, and network connectivity.',
+    address: '123 Main St, Anytown',
+    scheduledAt: DateTime.now(),
+    notifications: 2,
   ),
   TaskItemDisplayModel(
-    title: 'Network Configuration',
-    customer: 'DataStream Corp.',
+    title: 'Network Troubleshooting',
+    customer: 'Innovate Solutions',
     assignedTo: 'Maria Garcia',
     status: TaskStatus.inProgress,
+    description:
+        'Investigate intermittent connectivity issues on the 2nd floor office and restore stable service.',
+    address: '456 Oak Ave, Anytown',
+    scheduledAt: DateTime.now(),
   ),
+  // Upcoming
   TaskItemDisplayModel(
     title: 'Software Upgrade',
-    customer: 'CloudNine Services',
+    customer: 'DataFlow Systems',
     assignedTo: 'David Chen',
-    status: TaskStatus.overdue,
-  ),
-  TaskItemDisplayModel(
-    title: 'Security Audit',
-    customer: 'SecureNet Systems',
-    assignedTo: 'Emily White',
     status: TaskStatus.notStarted,
+    description:
+        'Upgrade ERP application to v5.2. Ensure backups and validate post-upgrade checks.',
+    address: '789 Pine Ln, Anytown',
+    scheduledAt: DateTime.now().add(const Duration(days: 2)),
+    notifications: 1,
   ),
+  // Completed (yesterday)
+  TaskItemDisplayModel(
+    title: 'Firewall Review',
+    customer: 'SecureTech',
+    assignedTo: 'Emily White',
+    status: TaskStatus.completed,
+    description:
+        'Audit firewall rules and remove deprecated policies. Provide report to IT manager.',
+    address: '22 Center Rd, Anytown',
+    scheduledAt: DateTime.now().subtract(const Duration(days: 1)),
+    isCompleted: true,
+    completedAt: DateTime.now().subtract(const Duration(hours: 6)),
+  ),
+  // More data for list feel
   TaskItemDisplayModel(
     title: 'System Maintenance',
     customer: 'Innovate Solutions',
     assignedTo: 'Michael Brown',
     status: TaskStatus.completed,
+    address: '88 Hill St, Anytown',
+    scheduledAt: DateTime.now().subtract(const Duration(days: 3)),
+    isCompleted: true,
   ),
   TaskItemDisplayModel(
     title: 'Data Migration',
     customer: 'Global Tech Group',
     assignedTo: 'Sarah Lee',
     status: TaskStatus.inProgress,
+    address: '101 River Rd, Anytown',
+    scheduledAt: DateTime.now().add(const Duration(days: 1)),
   ),
 ];

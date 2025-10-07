@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:sync_pro/config/app_color.dart';
 import 'package:sync_pro/config/extension.dart';
 import 'package:sync_pro/config/measurement.dart';
-import 'package:sync_pro/presentation/engineer/display_models/engineer_task_display_model.dart';
+import 'package:sync_pro/presentation/admin/display_models/task_item_display_model.dart';
 
 class EngineerTaskCard extends StatelessWidget {
-  final EngineerTaskDisplayModel task;
+  final TaskItemDisplayModel task;
   final VoidCallback? onTap;
   const EngineerTaskCard({super.key, required this.task, this.onTap});
 
