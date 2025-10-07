@@ -107,4 +107,18 @@ class AppString {
   static const String confirmPassword = "Confirm Password";
   static const String confirmNewPassword = "Confirm new password";
   static const String createUser = "Create User";
+
+  // User Detail
+  static const String userDetails = "User Details";
+  static const String id = "ID";
+  static const String edit = "Edit";
+  static const String deactivate = "Deactivate";
+  static const String details = "Details";
+  static const String assignedTasks = "Assigned Tasks";
+  static const String phone = "Phone";
+  static const String department = "Department";
+  static const String statusUpper = "Status";
+  static const String location = "Location";
+  static const String hireDate = "Hire Date";
+  static const String lastLogin = "Last Login";
 }

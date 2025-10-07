@@ -6,12 +6,27 @@ class UserItemDisplayModel {
   final String email;
   final UserRole role;
   final String avatarUrl;
+  // detail fields
+  final String id;
+  final String phone;
+  final String department;
+  final String status;
+  final String location;
+  final String hireDate;
+  final String lastLogin;
 
   const UserItemDisplayModel({
     required this.name,
     required this.email,
     required this.role,
     required this.avatarUrl,
+    this.id = '12345',
+    this.phone = '(555) 123-4567',
+    this.department = 'Operations',
+    this.status = 'Active',
+    this.location = 'New York',
+    this.hireDate = '2022-08-15',
+    this.lastLogin = '2024-07-20 10:30 AM',
   });
 
   String get roleLabel {
