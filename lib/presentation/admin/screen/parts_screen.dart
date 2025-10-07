@@ -7,6 +7,8 @@ import 'package:sync_pro/config/measurement.dart';
 import 'package:sync_pro/config/app_drawer.dart';
 import 'package:sync_pro/presentation/admin/display_models/part_item_display_model.dart';
 import 'package:sync_pro/presentation/admin/widgets/part_list_item.dart';
+import 'package:sync_pro/config/routing.dart';
+import 'package:sync_pro/presentation/admin/screen/part_detail_screen.dart';
 
 class PartsScreen extends StatefulWidget {
   const PartsScreen({super.key});
@@ -71,7 +73,15 @@ class _PartsScreenState extends State<PartsScreen> {
               separatorBuilder: (_, __) => Measurement.generalSize16.height,
               itemBuilder: (context, index) {
                 final item = filtered[index];
-                return PartListItem(item: item, onTap: () {});
+                return PartListItem(
+                  item: item,
+                  onTap: () {
+                    Routing.transition(
+                      context,
+                      PartDetailScreen(part: item),
+                    );
+                  },
+                );
               },
             ),
           ),

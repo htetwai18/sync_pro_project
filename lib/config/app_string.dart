@@ -168,4 +168,14 @@ class AppString {
   static const String parts = "Parts";
   static const String searchByNameOrNumber = "Search by name or number";
   static const String onHand = "On Hand";
+
+  // Part Detail
+  static const String partDetails = "Part Details";
+  static const String partName = "Part Name";
+  static const String partNumber = "Part Number";
+  static const String manufacturer = "Manufacturer";
+  static const String unitPrice = "Unit Price";
+  static const String inventoryStock = "Inventory Stock";
+  static const String adjust = "Adjust";
+  static const String editAction = "Edit";
 }
