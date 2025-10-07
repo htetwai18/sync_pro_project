@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:sync_pro/presentation/admin/screen/approval_queue_screen.dart';
+import 'package:sync_pro/presentation/admin/screen/splash_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -16,7 +16,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         useMaterial3: false,
       ),
-      home: const ApprovalQueueScreen(),
+      home: const SplashScreen(),
     );
   }
 }

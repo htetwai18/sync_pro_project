@@ -102,7 +102,7 @@ class AppString {
   static const String enterEmailAddress = "Enter email address";
   static const String role = "Role";
   static const String selectRole = "Select a role";
-  static const String password = "Password";
+  static const String passwordLabel = "Password";
   static const String enterPassword = "Enter password";
   static const String confirmPassword = "Confirm Password";
   static const String confirmNewPassword = "Confirm new password";
@@ -204,4 +204,15 @@ class AppString {
   static const String hintNewQuantity = "Enter new quantity";
   static const String hintReason = "e.g., Cycle count, damaged goods, etc.";
   static const String saveAdjustment = "Save Adjustment";
+
+  // Auth
+  static const String appName = "SyncPro";
+  static const String welcomeTo = "Welcome to SyncPro";
+  static const String welcomeSubtitle =
+      "Manage your professional services\nconsistently and effectively.";
+  static const String getStarted = "Get Started";
+  static const String usernameOrEmail = "Username or Email";
+  static const String password = "Password";
+  static const String forgotPassword = "Forgot Password?";
+  static const String logIn = "Log In";
 }
