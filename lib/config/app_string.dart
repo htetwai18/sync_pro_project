@@ -178,4 +178,12 @@ class AppString {
   static const String inventoryStock = "Inventory Stock";
   static const String adjust = "Adjust";
   static const String editAction = "Edit";
+
+  // Edit/Add Part
+  static const String editPartDetails = "Edit Part Details";
+  static const String saveChangesAction = "Save Changes";
+  static const String cancelAction = "Cancel";
+  static const String addNewPart = "Add New Part";
+  static const String quantity = "Quantity";
+  static const String selectWarehouse = "Select Warehouse";
 }

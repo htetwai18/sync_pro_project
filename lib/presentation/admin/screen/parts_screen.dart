@@ -9,6 +9,7 @@ import 'package:sync_pro/presentation/admin/display_models/part_item_display_mod
 import 'package:sync_pro/presentation/admin/widgets/part_list_item.dart';
 import 'package:sync_pro/config/routing.dart';
 import 'package:sync_pro/presentation/admin/screen/part_detail_screen.dart';
+import 'package:sync_pro/presentation/admin/screen/add_part_screen.dart';
 
 class PartsScreen extends StatefulWidget {
   const PartsScreen({super.key});
@@ -88,7 +89,9 @@ class _PartsScreenState extends State<PartsScreen> {
         ],
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          Routing.transition(context, const AddPartScreen());
+        },
         backgroundColor: AppColor.blueStatusInner,
         foregroundColor: AppColor.white,
         child: const Icon(Icons.add),

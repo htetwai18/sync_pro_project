@@ -5,6 +5,8 @@ import 'package:sync_pro/config/app_string.dart';
 import 'package:sync_pro/config/extension.dart';
 import 'package:sync_pro/config/measurement.dart';
 import 'package:sync_pro/presentation/admin/display_models/part_item_display_model.dart';
+import 'package:sync_pro/config/routing.dart';
+import 'package:sync_pro/presentation/admin/screen/edit_part_screen.dart';
 
 class PartDetailScreen extends StatelessWidget {
   final PartItemDisplayModel part;
@@ -30,7 +32,12 @@ class PartDetailScreen extends StatelessWidget {
                       const Text(AppString.partDetails)
                           .mediumBold(AppColor.white),
                       TextButton.icon(
-                        onPressed: () {},
+                        onPressed: () {
+                          Routing.transition(
+                            context,
+                            EditPartScreen(part: part),
+                          );
+                        },
                         icon: const Icon(Icons.edit, color: AppColor.white),
                         label: const Text(AppString.editAction)
                             .smallBold(AppColor.white),
