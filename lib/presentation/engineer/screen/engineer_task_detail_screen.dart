@@ -115,8 +115,7 @@ class EngineerTaskDetailScreen extends StatelessWidget {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('${AppString.assetID}: $asset')
-                    .smallNormal(AppColor.grey),
+                Text('${AppString.assetID}: $asset').smallNormal(AppColor.grey),
                 Measurement.generalSize4.height,
                 Text(assetName).mediumBold(AppColor.white),
               ],
