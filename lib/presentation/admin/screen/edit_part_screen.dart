@@ -52,21 +52,25 @@ class _EditPartScreenState extends State<EditPartScreen> {
           children: [
             const Text(AppString.partName).mediumBold(AppColor.white),
             Measurement.generalSize8.height,
-            _Field(controller: _nameController),
+            _Field(controller: _nameController, hint: AppString.hintPartName),
             Measurement.generalSize16.height,
             const Text(AppString.partNumber).mediumBold(AppColor.white),
             Measurement.generalSize8.height,
-            _Field(controller: _numberController),
+            _Field(
+                controller: _numberController, hint: AppString.hintPartNumber),
             Measurement.generalSize16.height,
             const Text(AppString.manufacturer).mediumBold(AppColor.white),
             Measurement.generalSize8.height,
-            _Field(controller: _manufacturerController),
+            _Field(
+                controller: _manufacturerController,
+                hint: AppString.hintManufacturer),
             Measurement.generalSize16.height,
             const Text(AppString.unitPrice).mediumBold(AppColor.white),
             Measurement.generalSize8.height,
             _Field(
                 controller: _priceController,
-                keyboardType: TextInputType.number),
+                keyboardType: TextInputType.number,
+                hint: AppString.hintUnitPrice),
             Measurement.generalSize24.height,
             SizedBox(
               width: double.infinity,
@@ -112,7 +116,8 @@ class _EditPartScreenState extends State<EditPartScreen> {
 class _Field extends StatelessWidget {
   final TextEditingController controller;
   final TextInputType? keyboardType;
-  const _Field({required this.controller, this.keyboardType});
+  final String? hint;
+  const _Field({required this.controller, this.keyboardType, this.hint});
 
   @override
   Widget build(BuildContext context) {
@@ -126,12 +131,13 @@ class _Field extends StatelessWidget {
         keyboardType: keyboardType,
         style: Measurement.mediumFont
             .textStyle(AppColor.white, Measurement.font400),
-        decoration: const InputDecoration(
+        decoration: InputDecoration(
           border: InputBorder.none,
           contentPadding: EdgeInsets.symmetric(
             horizontal: Measurement.generalSize16,
             vertical: Measurement.generalSize14,
           ),
+          hintText: controller.text.isEmpty ? hint : null,
         ),
       ),
     );

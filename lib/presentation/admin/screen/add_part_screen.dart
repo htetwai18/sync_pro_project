@@ -42,27 +42,32 @@ class _AddPartScreenState extends State<AddPartScreen> {
           children: [
             const Text(AppString.partName).mediumBold(AppColor.white),
             Measurement.generalSize8.height,
-            _Field(controller: _nameController),
+            _Field(controller: _nameController, hint: AppString.hintPartName),
             Measurement.generalSize16.height,
             const Text(AppString.partNumber).mediumBold(AppColor.white),
             Measurement.generalSize8.height,
-            _Field(controller: _numberController),
+            _Field(
+                controller: _numberController, hint: AppString.hintPartNumber),
             Measurement.generalSize16.height,
             const Text(AppString.manufacturer).mediumBold(AppColor.white),
             Measurement.generalSize8.height,
-            _Field(controller: _manufacturerController),
+            _Field(
+                controller: _manufacturerController,
+                hint: AppString.hintManufacturer),
             Measurement.generalSize16.height,
             const Text(AppString.unitPrice).mediumBold(AppColor.white),
             Measurement.generalSize8.height,
             _Field(
                 controller: _priceController,
-                keyboardType: TextInputType.number),
+                keyboardType: TextInputType.number,
+                hint: AppString.hintUnitPrice),
             Measurement.generalSize16.height,
             const Text(AppString.quantity).mediumBold(AppColor.white),
             Measurement.generalSize8.height,
             _Field(
                 controller: _quantityController,
-                keyboardType: TextInputType.number),
+                keyboardType: TextInputType.number,
+                hint: AppString.hintQuantity),
             Measurement.generalSize16.height,
             const Text(AppString.selectWarehouse).mediumBold(AppColor.white),
             Measurement.generalSize8.height,
@@ -82,7 +87,7 @@ class _AddPartScreenState extends State<AddPartScreen> {
                 ),
                 dropdownColor: AppColor.blueField,
                 iconEnabledColor: AppColor.grey,
-                hint: const Text(AppString.selectWarehouse)
+                hint: const Text(AppString.hintWarehouse)
                     .mediumNormal(AppColor.grey),
                 items: const [
                   DropdownMenuItem(
@@ -138,7 +143,8 @@ class _AddPartScreenState extends State<AddPartScreen> {
 class _Field extends StatelessWidget {
   final TextEditingController controller;
   final TextInputType? keyboardType;
-  const _Field({required this.controller, this.keyboardType});
+  final String? hint;
+  const _Field({required this.controller, this.keyboardType, this.hint});
 
   @override
   Widget build(BuildContext context) {
@@ -152,13 +158,15 @@ class _Field extends StatelessWidget {
         keyboardType: keyboardType,
         style: Measurement.mediumFont
             .textStyle(AppColor.white, Measurement.font400),
-        decoration: const InputDecoration(
-          border: InputBorder.none,
-          contentPadding: EdgeInsets.symmetric(
-            horizontal: Measurement.generalSize16,
-            vertical: Measurement.generalSize14,
-          ),
-        ),
+        decoration: InputDecoration(
+            border: InputBorder.none,
+            contentPadding: const EdgeInsets.symmetric(
+              horizontal: Measurement.generalSize16,
+              vertical: Measurement.generalSize14,
+            ),
+            hintText: controller.text.isEmpty ? hint : null,
+            hintStyle: Measurement.generalSize14
+                .textStyle(AppColor.grey, Measurement.font400)),
       ),
     );
   }

@@ -186,4 +186,13 @@ class AppString {
   static const String addNewPart = "Add New Part";
   static const String quantity = "Quantity";
   static const String selectWarehouse = "Select Warehouse";
+  // Hints
+  static const String hintPartName = "Enter part name";
+  static const String hintPartNumber = "Enter part number";
+  static const String hintManufacturer = "Enter manufacturer";
+  static const String hintUnitPrice = "Enter unit price";
+  static const String hintQuantity = "Enter quantity";
+  static const String hintWarehouse = "Select warehouse";
+  static const String hintFullName = "Enter full name";
+  static const String hintEmail = "Enter email address";
 }

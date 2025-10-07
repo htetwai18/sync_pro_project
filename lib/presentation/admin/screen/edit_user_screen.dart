@@ -57,11 +57,14 @@ class _EditUserScreenState extends State<EditUserScreen> {
                 controller: _nameController,
                 style: Measurement.mediumFont
                     .textStyle(AppColor.white, Measurement.font400),
-                decoration: const InputDecoration(
+                decoration: InputDecoration(
                   border: InputBorder.none,
                   contentPadding: EdgeInsets.symmetric(
                       horizontal: Measurement.generalSize16,
                       vertical: Measurement.generalSize8),
+                  hintText: _nameController.text.isEmpty
+                      ? AppString.hintFullName
+                      : null,
                 ),
               ),
             ),
@@ -74,11 +77,14 @@ class _EditUserScreenState extends State<EditUserScreen> {
                 keyboardType: TextInputType.emailAddress,
                 style: Measurement.mediumFont
                     .textStyle(AppColor.white, Measurement.font400),
-                decoration: const InputDecoration(
+                decoration: InputDecoration(
                   border: InputBorder.none,
                   contentPadding: EdgeInsets.symmetric(
                       horizontal: Measurement.generalSize16,
                       vertical: Measurement.generalSize8),
+                  hintText: _emailController.text.isEmpty
+                      ? AppString.hintEmail
+                      : null,
                 ),
               ),
             ),
@@ -127,11 +133,13 @@ class _EditUserScreenState extends State<EditUserScreen> {
                 keyboardType: TextInputType.phone,
                 style: Measurement.mediumFont
                     .textStyle(AppColor.white, Measurement.font400),
-                decoration: const InputDecoration(
+                decoration: InputDecoration(
                   border: InputBorder.none,
                   contentPadding: EdgeInsets.symmetric(
                       horizontal: Measurement.generalSize16,
                       vertical: Measurement.generalSize8),
+                  hintText:
+                      _phoneController.text.isEmpty ? 'Enter phone' : null,
                 ),
               ),
             ),
