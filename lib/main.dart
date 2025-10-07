@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:sync_pro/presentation/admin/screen/splash_screen.dart';
+import 'package:sync_pro/presentation/shared/splash_screen.dart';
 
 void main() {
   runApp(const MyApp());

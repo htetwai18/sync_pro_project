@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:sync_pro/config/app_color.dart';
 import 'package:sync_pro/config/app_string.dart';
+import 'package:sync_pro/config/enum.dart';
 import 'package:sync_pro/config/extension.dart';
 import 'package:sync_pro/config/measurement.dart';
 import 'package:sync_pro/config/routing.dart';
+import 'package:sync_pro/presentation/admin/display_models/user_item_display_model.dart';
 import 'package:sync_pro/presentation/admin/screen/dashboard_screen.dart';
+import 'package:sync_pro/presentation/engineer/screen/engineer_detail_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -16,6 +19,15 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+
+  //TODO : will replace with login engineer later
+  UserItemDisplayModel engineer = const UserItemDisplayModel(
+    name: 'Alice Johnson',
+    email: 'alice.johnson@example.com',
+    role: UserRole.engineer,
+    avatarUrl:
+        'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150',
+  );
 
   @override
   void dispose() {
@@ -113,7 +125,9 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                   ),
                   onPressed: () {
-                    Routing.transition(context, const DashboardScreen());
+                    /// Routing.transition(context, const DashboardScreen());
+                    Routing.transition(
+                        context, EngineerDetailScreen(user: engineer));
                   },
                   child: const Text(AppString.logIn).mediumBold(AppColor.white),
                 ),

@@ -215,4 +215,13 @@ class AppString {
   static const String password = "Password";
   static const String forgotPassword = "Forgot Password?";
   static const String logIn = "Log In";
+
+  // Customers
+  static const String customers = "Customers";
+  static const String searchCustomers = "Search customers";
+
+  // Profile
+  static const String profile = "My Profile";
+  static const String logout = "Logout";
+  static const String editProfile = "Edit Profile";
 }

@@ -4,7 +4,7 @@ import 'package:sync_pro/config/app_string.dart';
 import 'package:sync_pro/config/extension.dart';
 import 'package:sync_pro/config/measurement.dart';
 import 'package:sync_pro/config/routing.dart';
-import 'package:sync_pro/presentation/admin/screen/login_screen.dart';
+import 'package:sync_pro/presentation/shared/login_screen.dart';
 
 class SplashScreen extends StatelessWidget {
   const SplashScreen({super.key});

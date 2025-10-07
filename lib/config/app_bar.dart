@@ -3,16 +3,22 @@ import 'package:sync_pro/config/app_color.dart';
 import 'package:sync_pro/config/extension.dart';
 import 'package:sync_pro/config/measurement.dart';
 
-AppBar getAppBar({required String title, required BuildContext context}) {
+AppBar getAppBar(
+    {required String title,
+    required BuildContext context,
+    bool canBack = true}) {
   return AppBar(
     backgroundColor: AppColor.background,
     elevation: Measurement.generalSize0,
-    leading: Builder(
-      builder: (ctx) => IconButton(
-        icon: const Icon(Icons.arrow_back, color: AppColor.white),
-        onPressed: () => Navigator.pop(ctx),
-      ),
-    ),
+    automaticallyImplyLeading: false,
+    leading: canBack
+        ? Builder(
+            builder: (ctx) => IconButton(
+              icon: const Icon(Icons.arrow_back, color: AppColor.white),
+              onPressed: () => Navigator.pop(ctx),
+            ),
+          )
+        : null,
     title: Text(title).largeBold(AppColor.white),
     centerTitle: true,
   );

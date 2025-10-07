@@ -9,6 +9,7 @@ import 'package:sync_pro/presentation/admin/screen/tasks_screen.dart';
 import 'package:sync_pro/presentation/admin/screen/dashboard_screen.dart';
 import 'package:sync_pro/presentation/admin/screen/users_screen.dart';
 import 'package:sync_pro/presentation/admin/screen/invoices_screen.dart';
+import 'package:sync_pro/presentation/admin/screen/customers_screen.dart';
 import 'package:sync_pro/presentation/admin/screen/parts_screen.dart';
 
 class AppDrawer extends StatelessWidget {
@@ -63,6 +64,11 @@ class AppDrawer extends StatelessWidget {
               leading: const Icon(Icons.receipt_long, color: AppColor.white),
               title: const Text(AppString.invoices).mediumBold(AppColor.white),
               onTap: () => _navigate(context, const InvoicesScreen()),
+            ),
+            ListTile(
+              leading: const Icon(Icons.people_outline, color: AppColor.white),
+              title: const Text(AppString.customers).mediumBold(AppColor.white),
+              onTap: () => _navigate(context, const CustomersScreen()),
             ),
             ListTile(
               leading: const Icon(Icons.inventory_2, color: AppColor.white),
