@@ -74,6 +74,8 @@ class _EngineerTasksScreenState extends State<EngineerTasksScreen>
                       Routing.transition(
                         context,
                         EngineerTaskDetailScreen(
+                          asset: task.assetId,
+                          assetName: task.assetName,
                           title: task.title,
                           status: task.status,
                           description: task.description.isNotEmpty
@@ -81,6 +83,9 @@ class _EngineerTasksScreenState extends State<EngineerTasksScreen>
                               : 'Task detail description for ${task.title}.',
                           locationName: task.customer,
                           address: task.address,
+                          priority: task.priority,
+                          scheduledAt: task.scheduledAt,
+                          assignedAt: task.assignedAt,
                         ),
                       );
                     },

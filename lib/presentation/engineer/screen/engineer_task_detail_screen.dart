@@ -7,19 +7,27 @@ import 'package:sync_pro/config/measurement.dart';
 import 'package:sync_pro/config/enum.dart';
 
 class EngineerTaskDetailScreen extends StatelessWidget {
-  final String title;
+  final String title, asset, assetName;
   final TaskStatus status;
   final String description;
   final String locationName;
   final String address;
+  final String? priority;
+  final DateTime? scheduledAt;
+  final DateTime? assignedAt;
 
   const EngineerTaskDetailScreen({
     super.key,
     required this.title,
+    required this.asset,
+    required this.assetName,
     required this.status,
     required this.description,
     required this.locationName,
     required this.address,
+    this.priority,
+    this.scheduledAt,
+    this.assignedAt,
   });
 
   @override
@@ -34,7 +42,7 @@ class EngineerTaskDetailScreen extends StatelessWidget {
           children: [
             // Title and status
             Text(title).xLargeBold(AppColor.white),
-            Measurement.generalSize8.height,
+            Measurement.generalSize24.height,
             Row(
               children: [
                 const Text(AppString.statusUpper).smallNormal(AppColor.grey),
@@ -52,7 +60,7 @@ class EngineerTaskDetailScreen extends StatelessWidget {
               ],
             ),
 
-            Measurement.generalSize16.height,
+            Measurement.generalSize24.height,
 
             // Action buttons row
             Row(
@@ -94,32 +102,77 @@ class EngineerTaskDetailScreen extends StatelessWidget {
 
             Measurement.generalSize24.height,
 
-            // Location & address
-            const Text(AppString.locationAndAddress).mediumBold(AppColor.white),
-            Measurement.generalSize12.height,
-            Container(
-              width: double.infinity,
-              padding: Measurement.generalSize16.horizontalIsToVertical,
-              decoration: BoxDecoration(
-                color: AppColor.blueField,
-                borderRadius: Measurement.generalSize12.allRadius,
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(locationName).mediumBold(AppColor.white),
-                  Measurement.generalSize8.height,
-                  Text(address).smallNormal(AppColor.grey),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(locationName).smallNormal(AppColor.grey),
+                Measurement.generalSize8.height,
+                Text(address).mediumBold(AppColor.white),
+              ],
+            ),
+            Measurement.generalSize24.height,
+
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text('${AppString.assetID}: $asset')
+                    .smallNormal(AppColor.grey),
+                Measurement.generalSize4.height,
+                Text(assetName).mediumBold(AppColor.white),
+              ],
+            ),
+
+            Measurement.generalSize24.height,
+
+            // Meta (priority/scheduled/assigned)
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                if (priority != null) ...[
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text('Priority').smallNormal(AppColor.grey),
+                      Measurement.generalSize4.height,
+                      Text(priority!).mediumBold(AppColor.white),
+                    ],
+                  ),
                 ],
-              ),
+                Measurement.generalSize24.height,
+                if (scheduledAt != null) ...[
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text(AppString.scheduledAtLabel)
+                          .smallNormal(AppColor.grey),
+                      Measurement.generalSize4.height,
+                      Text(_fmtDateTime(scheduledAt!))
+                          .mediumBold(AppColor.white),
+                    ],
+                  ),
+                ],
+                Measurement.generalSize24.height,
+                if (assignedAt != null) ...[
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text(AppString.assignedAtLabel)
+                          .smallNormal(AppColor.grey),
+                      Measurement.generalSize4.height,
+                      Text(_fmtDateTime(assignedAt!))
+                          .mediumBold(AppColor.white),
+                    ],
+                  ),
+                ],
+              ],
             ),
 
             Measurement.generalSize24.height,
 
             // Description
-            const Text(AppString.taskDescription).mediumBold(AppColor.white),
+            const Text(AppString.taskDescription).smallNormal(AppColor.grey),
             Measurement.generalSize12.height,
-            Text(description).mediumNormal(AppColor.grey),
+            Text(description).mediumBold(AppColor.white),
           ],
         ),
       ),
@@ -137,5 +190,13 @@ class EngineerTaskDetailScreen extends StatelessWidget {
       case TaskStatus.overdue:
         return AppString.overdue;
     }
+  }
+
+  String _fmtDateTime(DateTime dt) {
+    final d =
+        '${dt.year}-${dt.month.toString().padLeft(2, '0')}-${dt.day.toString().padLeft(2, '0')}';
+    final t =
+        '${dt.hour.toString().padLeft(2, '0')}:${dt.minute.toString().padLeft(2, '0')}';
+    return '$d $t';
   }
 }

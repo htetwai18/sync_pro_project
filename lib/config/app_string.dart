@@ -236,4 +236,6 @@ class AppString {
   static const String addParts = "Add Parts";
   static const String reportAction = "Report";
   static const String scheduled = "Scheduled";
+  static const String scheduledAtLabel = "Scheduled At";
+  static const String assignedAtLabel = "Assigned At";
 }
