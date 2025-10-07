@@ -22,7 +22,7 @@ Color getInvoiceStatusOuterColor(InvoiceStatus status) {
     case InvoiceStatus.sent:
       return AppColor.blueStatusOuter;
     case InvoiceStatus.draft:
-      return AppColor.greenStatusOuter;
+      return AppColor.greyStatusOuter;
     default:
       return AppColor.greyStatusOuter;
   }
@@ -41,7 +41,7 @@ Color getInvoiceStatusInnerColor(InvoiceStatus status) {
     case InvoiceStatus.sent:
       return AppColor.blueStatusInner;
     case InvoiceStatus.draft:
-      return AppColor.greenStatusInner;
+      return AppColor.greyStatusInner;
     default:
       return AppColor.greyStatusInner;
   }

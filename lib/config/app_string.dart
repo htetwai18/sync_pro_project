@@ -129,4 +129,15 @@ class AppString {
   static const String active = "Active";
   static const String inactive = "Inactive";
   static const String lastUpdatedText = "Last updated";
+
+  // Invoices
+  static const String invoices = "Invoices";
+  static const String statusFilter = "Status";
+  static const String dateRange = "Date Range";
+  static const String invoice = "Invoice";
+  static const String due = "Due";
+  static const String paid = "Paid";
+  static const String sent = "Sent";
+  static const String draft = "Draft";
+  static const String voided = "Void";
 }
