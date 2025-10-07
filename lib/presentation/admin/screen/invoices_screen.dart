@@ -9,6 +9,7 @@ import 'package:sync_pro/presentation/admin/display_models/invoice_item_display_
 import 'package:sync_pro/presentation/admin/widgets/invoice_list_item.dart';
 import 'package:sync_pro/config/routing.dart';
 import 'package:sync_pro/presentation/admin/screen/invoice_detail_screen.dart';
+import 'package:sync_pro/presentation/admin/screen/create_invoice_screen.dart';
 
 class InvoicesScreen extends StatefulWidget {
   const InvoicesScreen({super.key});
@@ -86,7 +87,9 @@ class _InvoicesScreenState extends State<InvoicesScreen> {
         ],
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          Routing.transition(context, const CreateInvoiceScreen());
+        },
         backgroundColor: AppColor.blueStatusInner,
         foregroundColor: AppColor.white,
         child: const Icon(Icons.add),

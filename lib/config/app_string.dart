@@ -146,11 +146,21 @@ class AppString {
   static const String unpaid = "Unpaid";
   static const String amountDue = "Amount Due";
   static const String invoiceDate = "Invoice Date";
-  static const String dueDate = "Due Date";
+  static const String dueDateCreate = "Due Date";
   static const String lineItems = "Line Items";
   static const String subtotal = "Subtotal";
   static const String tax = "Tax";
   static const String total = "Total";
   static const String markAsPaid = "Mark as Paid";
   static const String voidInvoice = "Void Invoice";
+
+  // Create Invoice
+  static const String createInvoice = "Create Invoice";
+  static const String selectCustomerLabel = "Customer";
+  static const String selectCustomerHint = "Select Customer";
+  static const String dueDate = "Due Date";
+  static const String invoiceLineItems = "Invoice Line Items";
+  static const String addLineItem = "Add Line Item";
+  static const String totalAmount = "Total Amount";
+  static const String generateInvoice = "Generate Invoice";
 }
