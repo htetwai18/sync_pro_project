@@ -93,4 +93,18 @@ class AppString {
   static const String adminRole = "Admin";
   static const String engineerRole = "Engineer";
   static const String managerRole = "Manager";
+
+  // Add User
+  static const String addNewUser = "Add New User";
+  static const String fullName = "Full Name";
+  static const String enterFullName = "Enter full name";
+  static const String emailAddress = "Email";
+  static const String enterEmailAddress = "Enter email address";
+  static const String role = "Role";
+  static const String selectRole = "Select a role";
+  static const String password = "Password";
+  static const String enterPassword = "Enter password";
+  static const String confirmPassword = "Confirm Password";
+  static const String confirmNewPassword = "Confirm new password";
+  static const String createUser = "Create User";
 }

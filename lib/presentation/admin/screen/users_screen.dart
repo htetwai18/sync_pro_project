@@ -7,6 +7,7 @@ import 'package:sync_pro/config/measurement.dart';
 import 'package:sync_pro/config/app_drawer.dart';
 import 'package:sync_pro/presentation/admin/display_models/user_item_display_model.dart';
 import 'package:sync_pro/presentation/admin/widgets/user_list_item.dart';
+import 'package:sync_pro/presentation/admin/screen/add_user_screen.dart';
 
 class UsersScreen extends StatefulWidget {
   const UsersScreen({super.key});
@@ -91,7 +92,11 @@ class _UsersScreenState extends State<UsersScreen> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          // Handle add user
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (_) => const AddUserScreen(),
+            ),
+          );
         },
         backgroundColor: AppColor.blueStatusInner,
         foregroundColor: AppColor.white,
