@@ -7,17 +7,17 @@ import 'package:sync_pro/presentation/admin/display_models/user_item_display_mod
 import 'package:sync_pro/presentation/engineer/screen/engineer_detail_screen.dart';
 import 'package:sync_pro/presentation/engineer/screen/engineer_tasks_screen.dart';
 
-class BottomNavigationBarWidget extends StatefulWidget {
-  const BottomNavigationBarWidget({
+class BottomNavigationEngineer extends StatefulWidget {
+  const BottomNavigationEngineer({
     super.key,
   });
 
   @override
-  State<BottomNavigationBarWidget> createState() =>
-      _BottomNavigationBarWidgetState();
+  State<BottomNavigationEngineer> createState() =>
+      _BottomNavigationEngineerState();
 }
 
-class _BottomNavigationBarWidgetState extends State<BottomNavigationBarWidget> {
+class _BottomNavigationEngineerState extends State<BottomNavigationEngineer> {
   int currentIndex = 0;
   List<Widget> mobileScreens = [];
 

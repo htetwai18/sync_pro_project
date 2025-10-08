@@ -1,14 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:sync_pro/config/app_color.dart';
 import 'package:sync_pro/config/app_string.dart';
-import 'package:sync_pro/config/enum.dart';
 import 'package:sync_pro/config/extension.dart';
 import 'package:sync_pro/config/measurement.dart';
 import 'package:sync_pro/config/routing.dart';
-import 'package:sync_pro/presentation/admin/display_models/user_item_display_model.dart';
-import 'package:sync_pro/presentation/admin/screen/dashboard_screen.dart';
-import 'package:sync_pro/presentation/engineer/screen/bottom_navigation_screen.dart';
-import 'package:sync_pro/presentation/engineer/screen/engineer_detail_screen.dart';
+import 'package:sync_pro/presentation/customer/screen/bottom_navigation_customer.dart';
+import 'package:sync_pro/presentation/engineer/screen/bottom_navigation_engineer.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -119,7 +116,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   onPressed: () {
                     /// Routing.transition(context, const DashboardScreen());
                     Routing.transition(
-                        context, const BottomNavigationBarWidget());
+                        context, const BottomNavigationCustomer());
                   },
                   child: const Text(AppString.logIn).mediumBold(AppColor.white),
                 ),

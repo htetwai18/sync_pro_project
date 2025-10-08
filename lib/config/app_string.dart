@@ -257,4 +257,19 @@ class AppString {
   static const String customerSignature = "Customer Signature";
   static const String optionalLabel = "(Optional)";
   static const String submitReport = "Submit Report";
+
+  // Customer Dashboard
+  static const String customerDashboard = "Customer Dashboard";
+  static const String welcomeBack = "Welcome back, Alex";
+  static const String activeServiceRequests = "Active Service Requests";
+  static const String assetsUnderManagement = "Assets Under Management";
+  static const String unpaidInvoices = "Unpaid Invoices";
+  static const String requestNewService = "Request New Service";
+  static const String serviceRequestUpdated = "Service Request #12345 updated";
+  static const String invoiceSent = "Invoice #67890 sent";
+  static const String newAssetAdded = "New asset added";
+  static const String twoHoursAgo = "2 hours ago";
+  static const String yesterday = "Yesterday";
+  static const String threeDaysAgo = "3 days ago";
+  static const String serviceRequest = "Service Requests";
 }
