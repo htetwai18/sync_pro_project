@@ -314,4 +314,27 @@ class AppString {
   static const String powerEdgeR740 = "PowerEdge R740";
   static const String installationDateValue = "2022-05-15";
   static const String requestNewAsset = "Request New Asset";
+
+  // Request Change Form
+  static const String requestChange = "Request Change";
+  static const String companyNameLabel = "Company Name";
+  static const String addressLabel = "Address";
+  static const String phoneNumberLabel = "Phone Number";
+  static const String reasonForChange = "Reason for Change";
+  static const String reasonForChangePlaceholder =
+      "Please provide a brief explanation...";
+  static const String submitRequest = "Submit Request";
+  static const String syncProInc = "SyncPro Inc.";
+  static const String innovationDrive = "123 Innovation Drive, Tech City";
+  static const String contactEmail = "contact@syncpro.com";
+
+  // Add Contact Form
+  static const String addNewContact = "Add New Contact";
+  static const String nameLabel = "Name";
+  static const String enterName = "Enter name";
+  static const String enterEmail = "Enter email";
+  static const String enterPhone = "Enter phone";
+  static const String roleLabel = "Role";
+  static const String selectRoleLabel = "Select role";
+  static const String addContact = "Add Contact";
 }

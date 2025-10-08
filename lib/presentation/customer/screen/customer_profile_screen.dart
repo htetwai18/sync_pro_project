@@ -4,6 +4,9 @@ import 'package:sync_pro/config/app_color.dart';
 import 'package:sync_pro/config/app_string.dart';
 import 'package:sync_pro/config/extension.dart';
 import 'package:sync_pro/config/measurement.dart';
+import 'package:sync_pro/config/routing.dart';
+import 'package:sync_pro/presentation/customer/screen/customer_request_change_screen.dart';
+import 'package:sync_pro/presentation/customer/screen/customer_add_contact_screen.dart';
 
 class CustomerProfileScreen extends StatelessWidget {
   const CustomerProfileScreen({super.key});
@@ -33,7 +36,10 @@ class CustomerProfileScreen extends StatelessWidget {
                 // Request Changes Button
                 ElevatedButton(
                   onPressed: () {
-                    // TODO: Navigate to request changes screen
+                    Routing.transition(
+                      context,
+                      const CustomerRequestChangeScreen(),
+                    );
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppColor.blueStatusInner,
@@ -97,7 +103,10 @@ class CustomerProfileScreen extends StatelessWidget {
                 // Add Contact Button
                 FloatingActionButton(
                   onPressed: () {
-                    // TODO: Navigate to add contact screen
+                    Routing.transition(
+                      context,
+                      const CustomerAddContactScreen(),
+                    );
                   },
                   backgroundColor: AppColor.blueStatusInner,
                   mini: true,
