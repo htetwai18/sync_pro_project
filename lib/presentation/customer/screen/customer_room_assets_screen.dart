@@ -4,7 +4,9 @@ import 'package:sync_pro/config/app_color.dart';
 import 'package:sync_pro/config/app_string.dart';
 import 'package:sync_pro/config/extension.dart';
 import 'package:sync_pro/config/measurement.dart';
+import 'package:sync_pro/config/routing.dart';
 import 'package:sync_pro/presentation/customer/display_models/asset_item_display_model.dart';
+import 'package:sync_pro/presentation/customer/screen/customer_asset_detail_screen.dart';
 
 class CustomerRoomAssetsScreen extends StatelessWidget {
   const CustomerRoomAssetsScreen({super.key});
@@ -63,12 +65,36 @@ class CustomerRoomAssetsScreen extends StatelessWidget {
                 return _AssetItem(
                   asset: asset,
                   onTap: () {
-                    // TODO: Navigate to asset detail screen
+                    Routing.transition(
+                        context, CustomerAssetDetailScreen(asset: asset));
                   },
                 );
               },
             ),
           ),
+          Container(
+            padding: Measurement.generalSize16.allPadding,
+            child: SizedBox(
+              width: double.infinity,
+              child: ElevatedButton(
+                onPressed: () {
+                  // TODO: Navigate to request new building screen
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: AppColor.blueStatusInner,
+                  foregroundColor: AppColor.white,
+                  padding: Measurement.generalSize16.verticalPadding,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: Measurement.generalSize12.allRadius,
+                  ),
+                  elevation: 0,
+                ),
+                child: const Text(AppString.requestNewAsset)
+                    .mediumBold(AppColor.white),
+              ),
+            ),
+          ),
+          Measurement.generalSize16.height,
         ],
       ),
     );
@@ -125,8 +151,9 @@ class _AssetItem extends StatelessWidget {
                   children: [
                     Text(asset.name).mediumBold(AppColor.white),
                     Measurement.generalSize4.height,
-                    Text('${AppString.manufacturer}: ${asset.manufacturer},\n${AppString.assetID}: ${asset.model}')
+                    Text('${AppString.assetID}: ${asset.id}\n${AppString.manufacturer}: ${asset.manufacturer}')
                         .smallNormal(AppColor.grey),
+                    Measurement.generalSize4.height,
                   ],
                 ),
               ),

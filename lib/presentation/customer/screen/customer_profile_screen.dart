@@ -15,7 +15,7 @@ class CustomerProfileScreen extends StatelessWidget {
       appBar: getAppBar(
         title: AppString.myAccount,
         context: context,
-        canBack: true,
+        canBack: false,
       ),
       body: SingleChildScrollView(
         padding: Measurement.generalSize16.horizontalIsToVertical,
@@ -25,10 +25,35 @@ class CustomerProfileScreen extends StatelessWidget {
             Measurement.generalSize24.height,
 
             // Company Information Section
-            const Text(AppString.companyInformation).largeBold(AppColor.white),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Text(AppString.companyInformation)
+                    .largeBold(AppColor.white),
+                // Request Changes Button
+                ElevatedButton(
+                  onPressed: () {
+                    // TODO: Navigate to request changes screen
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: AppColor.blueStatusInner,
+                    foregroundColor: AppColor.white,
+                    padding: Measurement.generalSize12.verticalPadding +
+                        Measurement.generalSize16.horizontalPadding,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: Measurement.generalSize8.allRadius,
+                    ),
+                    elevation: 0,
+                  ),
+                  child: const Text(AppString.requestChanges)
+                      .smallBold(AppColor.white),
+                ),
+              ],
+            ),
             Measurement.generalSize16.height,
 
             Container(
+              width: double.infinity,
               padding: Measurement.generalSize20.allPadding,
               decoration: BoxDecoration(
                 color: AppColor.blueCard,
@@ -52,36 +77,11 @@ class CustomerProfileScreen extends StatelessWidget {
                   Measurement.generalSize16.height,
 
                   // Email
-                  Row(
-                    children: [
-                      const Expanded(
-                        child: _InfoField(
-                          label: AppString.emailLabel,
-                          value: AppString.supportEmail,
-                        ),
-                      ),
-                      Measurement.generalSize16.width,
-
-                      // Request Changes Button
-                      ElevatedButton(
-                        onPressed: () {
-                          // TODO: Navigate to request changes screen
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: AppColor.blueStatusInner,
-                          foregroundColor: AppColor.white,
-                          padding: Measurement.generalSize12.verticalPadding +
-                              Measurement.generalSize16.horizontalPadding,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: Measurement.generalSize8.allRadius,
-                          ),
-                          elevation: 0,
-                        ),
-                        child: const Text(AppString.requestChanges)
-                            .smallBold(AppColor.white),
-                      ),
-                    ],
+                  const _InfoField(
+                    label: AppString.emailLabel,
+                    value: AppString.supportEmail,
                   ),
+                  Measurement.generalSize16.width,
                 ],
               ),
             ),

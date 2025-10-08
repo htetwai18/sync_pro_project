@@ -297,9 +297,21 @@ class AppString {
   static const String buildingsAndRooms = "Buildings And Rooms";
   static const String requestNewBuilding = "Request New Building";
 
-
   // Room Assets
   static const String assetsInRoom = "Assets in Room";
   static const String roomView = "Room View";
   static const String searchAssets = "Search assets";
+
+  // Asset Detail
+  static const String customerAssetDetails = "Customer Asset Details";
+  static const String assetDetails = "Asset Details";
+  static const String assetInformation = "Asset Information";
+  static const String assetName = "Asset Name";
+  static const String model = "Model";
+  static const String installationDate = "Installation Date";
+  static const String serverRack1 = "Server Rack 1";
+  static const String dell = "Dell";
+  static const String powerEdgeR740 = "PowerEdge R740";
+  static const String installationDateValue = "2022-05-15";
+  static const String requestNewAsset = "Request New Asset";
 }
