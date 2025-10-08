@@ -246,4 +246,15 @@ class AppString {
   static const String searchPartPlaceholder = "Search by part name or number";
   static const String onHandLabel = "On Hand";
   static const String addToTask = "Add to Task";
+
+  // Service Report
+  static const String serviceReportTitle = "Service Report";
+  static const String summaryOfWork = "Summary of Work";
+  static const String summaryPlaceholder =
+      "Describe the work performed, issues found, and resolutions...";
+  static const String attachmentsLabel = "Attachments";
+  static const String addPhotosAttachments = "Add Photos / Attachments";
+  static const String customerSignature = "Customer Signature";
+  static const String optionalLabel = "(Optional)";
+  static const String submitReport = "Submit Report";
 }
