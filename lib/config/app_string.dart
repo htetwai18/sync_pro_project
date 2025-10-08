@@ -290,4 +290,16 @@ class AppString {
   static const String manager = "Manager";
   static const String engineerContact = "Engineer";
   static const String technician = "Technician";
+
+  // Customer Assets
+  static const String customerAssets = "Customer Assets";
+  static const String assets = "Assets";
+  static const String buildingsAndRooms = "Buildings And Rooms";
+  static const String requestNewBuilding = "Request New Building";
+
+
+  // Room Assets
+  static const String assetsInRoom = "Assets in Room";
+  static const String roomView = "Room View";
+  static const String searchAssets = "Search assets";
 }
