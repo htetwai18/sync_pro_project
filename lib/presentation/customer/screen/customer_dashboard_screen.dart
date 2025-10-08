@@ -17,15 +17,11 @@ class CustomerDashboardScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Header Section
-              const Text(AppString.customerDashboard).largeBold(AppColor.grey),
-              Measurement.generalSize16.height,
-
               // Dashboard Header Card
               Container(
                 padding: Measurement.generalSize20.allPadding,
                 decoration: BoxDecoration(
-                  color: AppColor.blueCard,
+                  color: AppColor.blueField,
                   borderRadius: Measurement.generalSize12.allRadius,
                 ),
                 child: Row(

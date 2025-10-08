@@ -17,5 +17,6 @@ class AppColor {
   static const Color greyPercentCircle = Color.fromRGBO(57, 65, 80, 1);
   static const Color bluePercentCircle = Color.fromRGBO(35, 81, 191, 1);
   static const Color blueField = Color.fromRGBO(28, 34, 45, 1);
-  static const Color blueCard = Color.fromRGBO(16, 23, 41, 1);
+  // static const Color blueCard = Color.fromRGBO(16, 23, 41, 1);
+  static const Color blueCard = Color.fromRGBO(28, 34, 45, 1);
 }

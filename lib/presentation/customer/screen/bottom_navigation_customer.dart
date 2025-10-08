@@ -3,6 +3,7 @@ import 'package:sync_pro/config/app_color.dart';
 import 'package:sync_pro/config/app_string.dart';
 import 'package:sync_pro/config/measurement.dart';
 import 'package:sync_pro/presentation/customer/screen/customer_dashboard_screen.dart';
+import 'package:sync_pro/presentation/customer/screen/customer_profile_screen.dart';
 
 class BottomNavigationCustomer extends StatefulWidget {
   const BottomNavigationCustomer({
@@ -23,6 +24,7 @@ class _BottomNavigationCustomerState extends State<BottomNavigationCustomer> {
     super.initState();
     mobileScreens = [
       const CustomerDashboardScreen(),
+      const CustomerProfileScreen(),
     ];
   }
 
@@ -53,22 +55,10 @@ class _BottomNavigationCustomerState extends State<BottomNavigationCustomer> {
                 icon: Icon(Icons.dashboard),
                 label: AppString.dashboard,
               ),
-              // BottomNavigationBarItem(
-              //   icon: Icon(Icons.assignment),
-              //   label: AppString.serviceRequest,
-              // ),
-              // BottomNavigationBarItem(
-              //   icon: Icon(Icons.inventory),
-              //   label: AppString.asset,
-              // ),
-              // BottomNavigationBarItem(
-              //   icon: Icon(Icons.receipt_long_outlined),
-              //   label: AppString.invoice,
-              // ),
-              // BottomNavigationBarItem(
-              //   icon: Icon(Icons.person),
-              //   label: AppString.profile,
-              // ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.person),
+                label: AppString.profile,
+              ),
             ],
           ),
         ),

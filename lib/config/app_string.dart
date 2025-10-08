@@ -272,4 +272,22 @@ class AppString {
   static const String yesterday = "Yesterday";
   static const String threeDaysAgo = "3 days ago";
   static const String serviceRequest = "Service Requests";
+
+  // Customer Profile
+  static const String myAccount = "My Account";
+  static const String companyInformation = "Company Information";
+  static const String companyName = "Company Name";
+  static const String phoneLabel = "Phone";
+  static const String emailLabel = "Email";
+  static const String requestChanges = "Request Changes";
+  static const String contactsList = "Contacts List";
+  static const String acmeCorp = "Acme Corp";
+  static const String phoneNumber = "+1 (555) 123-4567";
+  static const String supportEmail = "support@acmecorp.com";
+  static const String aliceJohnson = "Alice Johnson";
+  static const String bobWilliams = "Bob Williams";
+  static const String charlieDavis = "Charlie Davis";
+  static const String manager = "Manager";
+  static const String engineerContact = "Engineer";
+  static const String technician = "Technician";
 }
