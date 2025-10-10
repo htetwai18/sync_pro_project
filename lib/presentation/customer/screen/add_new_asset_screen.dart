@@ -110,33 +110,19 @@ class _AddNewAssetScreenState extends State<AddNewAssetScreen> {
               Measurement.generalSize20.height,
 
               // Building Selection Dropdown
-              _FieldBlock(
-                label: AppString.building,
-                child: DropdownButtonFormField<String>(
-                  value: _selectedBuilding,
-                  decoration: _decoration(hint: AppString.selectBuilding),
-                  style: Measurement.mediumFont
-                      .textStyle(AppColor.white, Measurement.font400),
-                  dropdownColor: AppColor.blueField,
-                  icon: const Icon(
-                    Icons.keyboard_arrow_down,
-                    color: AppColor.grey,
-                  ),
-                  items: _buildings.map((BuildingItemDisplayModel building) {
-                    return DropdownMenuItem<String>(
-                      value: building.id,
-                      child: Text(building.name).mediumNormal(AppColor.white),
-                    );
-                  }).toList(),
-                  onChanged: (String? newValue) {
-                    setState(() {
-                      _selectedBuilding = newValue;
-                    });
-                  },
-                  validator: (v) => (v == null || v.isEmpty)
-                      ? AppString.pleaseSelectBuilding
-                      : null,
-                ),
+              Text(AppString.building).mediumBold(AppColor.white),
+              Measurement.generalSize8.height,
+              _DropdownField<String>(
+                value: _selectedBuilding,
+                hint: AppString.selectBuilding,
+                items: _buildings.map((building) => building.id).toList(),
+                displayText: (item) =>
+                    _buildings.firstWhere((b) => b.id == item).name,
+                onChanged: (String? newValue) {
+                  setState(() {
+                    _selectedBuilding = newValue;
+                  });
+                },
               ),
               Measurement.generalSize20.height,
 
@@ -289,6 +275,65 @@ class _FieldBlock extends StatelessWidget {
           child: child,
         ),
       ],
+    );
+  }
+}
+
+class _FieldContainer extends StatelessWidget {
+  final Widget child;
+
+  const _FieldContainer({required this.child});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        color: AppColor.blueField,
+        borderRadius: Measurement.generalSize12.allRadius,
+      ),
+      child: child,
+    );
+  }
+}
+
+class _DropdownField<T> extends StatelessWidget {
+  final T? value;
+  final String hint;
+  final List<T> items;
+  final ValueChanged<T?> onChanged;
+  final String Function(T)? displayText;
+
+  const _DropdownField({
+    required this.value,
+    required this.hint,
+    required this.items,
+    required this.onChanged,
+    this.displayText,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return _FieldContainer(
+      child: DropdownButtonFormField<T>(
+        value: value,
+        decoration: InputDecoration(
+          border: InputBorder.none,
+          contentPadding: Measurement.generalSize16.horizontalIsToVertical,
+        ),
+        dropdownColor: AppColor.blueField,
+        iconEnabledColor: AppColor.grey,
+        style: Measurement.mediumFont
+            .textStyle(AppColor.white, Measurement.font400),
+        hint: Text(hint).mediumNormal(AppColor.grey),
+        items: items
+            .map((e) => DropdownMenuItem<T>(
+                  value: e,
+                  child: Text(displayText?.call(e) ?? e.toString())
+                      .mediumNormal(AppColor.white),
+                ))
+            .toList(),
+        onChanged: onChanged,
+      ),
     );
   }
 }

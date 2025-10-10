@@ -5,6 +5,7 @@ import 'package:sync_pro/config/app_string.dart';
 import 'package:sync_pro/config/extension.dart';
 import 'package:sync_pro/config/measurement.dart';
 import 'package:sync_pro/presentation/customer/display_models/building_item_display_model.dart';
+import 'package:sync_pro/presentation/customer/display_models/asset_item_display_model.dart';
 import 'package:sync_pro/presentation/customer/display_models/service_request_display_model.dart';
 
 class RequestServiceScreen extends StatefulWidget {
@@ -18,8 +19,6 @@ class _RequestServiceScreenState extends State<RequestServiceScreen> {
   final _formKey = GlobalKey<FormState>();
   final _titleController = TextEditingController();
   final _descriptionController = TextEditingController();
-  final _contactPersonController = TextEditingController();
-  final _contactPhoneController = TextEditingController();
   final _specialInstructionsController = TextEditingController();
 
   ServiceRequestType? _selectedServiceType;
@@ -31,6 +30,7 @@ class _RequestServiceScreenState extends State<RequestServiceScreen> {
   String? _selectedPreferredTime;
 
   final List<BuildingItemDisplayModel> _buildings = mockBuildings;
+  final List<AssetItemDisplayModel> _assets = mockAssets;
   final List<String> _timeSlots = [
     '8:00 AM',
     '9:00 AM',
@@ -44,12 +44,47 @@ class _RequestServiceScreenState extends State<RequestServiceScreen> {
     '5:00 PM',
   ];
 
+  // Get assets for selected building
+  List<AssetItemDisplayModel> get _selectedBuildingAssets {
+    if (_selectedBuilding == null) return [];
+    return _assets
+        .where((asset) => asset.buildingId == _selectedBuilding)
+        .toList();
+  }
+
+  String _getDisplayText<T>(T item) {
+    if (item is ServiceRequestType) {
+      return getServiceRequestTypeText(item);
+    } else if (item is ServiceRequestPriority) {
+      return getServiceRequestPriorityText(item);
+    } else if (item is String) {
+      // For building IDs, get the building name
+      if (item.startsWith('B')) {
+        try {
+          final building = _buildings.firstWhere((b) => b.id == item);
+          return building.name;
+        } catch (e) {
+          return item;
+        }
+      }
+      // For asset IDs, get the asset name
+      if (item.startsWith('A')) {
+        try {
+          final asset = _assets.firstWhere((a) => a.id == item);
+          return asset.name;
+        } catch (e) {
+          return item;
+        }
+      }
+      return item;
+    }
+    return item.toString();
+  }
+
   @override
   void dispose() {
     _titleController.dispose();
     _descriptionController.dispose();
-    _contactPersonController.dispose();
-    _contactPhoneController.dispose();
     _specialInstructionsController.dispose();
     super.dispose();
   }
@@ -71,66 +106,34 @@ class _RequestServiceScreenState extends State<RequestServiceScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // Service Type Field
-              _FieldBlock(
-                label: AppString.serviceType,
-                child: DropdownButtonFormField<ServiceRequestType>(
-                  value: _selectedServiceType,
-                  decoration: _decoration(hint: AppString.selectServiceType),
-                  style: Measurement.mediumFont
-                      .textStyle(AppColor.white, Measurement.font400),
-                  dropdownColor: AppColor.blueField,
-                  icon: const Icon(
-                    Icons.keyboard_arrow_down,
-                    color: AppColor.grey,
-                  ),
-                  items:
-                      ServiceRequestType.values.map((ServiceRequestType type) {
-                    return DropdownMenuItem<ServiceRequestType>(
-                      value: type,
-                      child: Text(getServiceRequestTypeText(type))
-                          .mediumNormal(AppColor.white),
-                    );
-                  }).toList(),
-                  onChanged: (ServiceRequestType? newValue) {
-                    setState(() {
-                      _selectedServiceType = newValue;
-                    });
-                  },
-                  validator: (v) =>
-                      (v == null) ? AppString.pleaseSelectServiceType : null,
-                ),
+              Text(AppString.serviceType).mediumBold(AppColor.white),
+              Measurement.generalSize8.height,
+              _DropdownField<ServiceRequestType>(
+                value: _selectedServiceType,
+                hint: AppString.selectServiceType,
+                items: ServiceRequestType.values,
+                displayText: (item) => getServiceRequestTypeText(item),
+                onChanged: (ServiceRequestType? newValue) {
+                  setState(() {
+                    _selectedServiceType = newValue;
+                  });
+                },
               ),
               Measurement.generalSize20.height,
 
               // Priority Field
-              _FieldBlock(
-                label: AppString.priority,
-                child: DropdownButtonFormField<ServiceRequestPriority>(
-                  value: _selectedPriority,
-                  decoration: _decoration(hint: AppString.selectPriority),
-                  style: Measurement.mediumFont
-                      .textStyle(AppColor.white, Measurement.font400),
-                  dropdownColor: AppColor.blueField,
-                  icon: const Icon(
-                    Icons.keyboard_arrow_down,
-                    color: AppColor.grey,
-                  ),
-                  items: ServiceRequestPriority.values
-                      .map((ServiceRequestPriority priority) {
-                    return DropdownMenuItem<ServiceRequestPriority>(
-                      value: priority,
-                      child: Text(getServiceRequestPriorityText(priority))
-                          .mediumNormal(AppColor.white),
-                    );
-                  }).toList(),
-                  onChanged: (ServiceRequestPriority? newValue) {
-                    setState(() {
-                      _selectedPriority = newValue;
-                    });
-                  },
-                  validator: (v) =>
-                      (v == null) ? AppString.pleaseSelectPriority : null,
-                ),
+              Text(AppString.priority).mediumBold(AppColor.white),
+              Measurement.generalSize8.height,
+              _DropdownField<ServiceRequestPriority>(
+                value: _selectedPriority,
+                hint: AppString.selectPriority,
+                items: ServiceRequestPriority.values,
+                displayText: (item) => getServiceRequestPriorityText(item),
+                onChanged: (ServiceRequestPriority? newValue) {
+                  setState(() {
+                    _selectedPriority = newValue;
+                  });
+                },
               ),
               Measurement.generalSize20.height,
 
@@ -167,35 +170,20 @@ class _RequestServiceScreenState extends State<RequestServiceScreen> {
               Measurement.generalSize20.height,
 
               // Building Selection
-              _FieldBlock(
-                label: AppString.building,
-                child: DropdownButtonFormField<String>(
-                  value: _selectedBuilding,
-                  decoration: _decoration(hint: AppString.selectBuilding),
-                  style: Measurement.mediumFont
-                      .textStyle(AppColor.white, Measurement.font400),
-                  dropdownColor: AppColor.blueField,
-                  icon: const Icon(
-                    Icons.keyboard_arrow_down,
-                    color: AppColor.grey,
-                  ),
-                  items: _buildings.map((BuildingItemDisplayModel building) {
-                    return DropdownMenuItem<String>(
-                      value: building.id,
-                      child: Text(building.name).mediumNormal(AppColor.white),
-                    );
-                  }).toList(),
-                  onChanged: (String? newValue) {
-                    setState(() {
-                      _selectedBuilding = newValue;
-                      _selectedRoom = null;
-                      _selectedAsset = null;
-                    });
-                  },
-                  validator: (v) => (v == null || v.isEmpty)
-                      ? AppString.pleaseSelectBuilding
-                      : null,
-                ),
+              Text(AppString.building).mediumBold(AppColor.white),
+              Measurement.generalSize8.height,
+              _DropdownField<String>(
+                value: _selectedBuilding,
+                hint: AppString.selectBuilding,
+                items: _buildings.map((building) => building.id).toList(),
+                displayText: (item) => _getDisplayText(item),
+                onChanged: (String? newValue) {
+                  setState(() {
+                    _selectedBuilding = newValue;
+                    _selectedRoom = null;
+                    _selectedAsset = null;
+                  });
+                },
               ),
               Measurement.generalSize20.height,
 
@@ -214,50 +202,24 @@ class _RequestServiceScreenState extends State<RequestServiceScreen> {
               ),
               Measurement.generalSize20.height,
 
-              // Asset Field (Optional)
-              _FieldBlock(
-                label: AppString.asset,
-                child: TextFormField(
-                  controller: TextEditingController(text: _selectedAsset ?? ''),
-                  decoration: _decoration(hint: AppString.enterAssetName),
-                  style: Measurement.mediumFont
-                      .textStyle(AppColor.white, Measurement.font400),
-                  onChanged: (value) {
-                    _selectedAsset = value;
+              // Asset Field (Optional) - Only show when building is selected
+              if (_selectedBuilding != null) ...[
+                Text(AppString.asset).mediumBold(AppColor.white),
+                Measurement.generalSize8.height,
+                _DropdownField<String>(
+                  value: _selectedAsset,
+                  hint: AppString.selectAsset,
+                  items:
+                      _selectedBuildingAssets.map((asset) => asset.id).toList(),
+                  displayText: (item) => _getDisplayText(item),
+                  onChanged: (String? newValue) {
+                    setState(() {
+                      _selectedAsset = newValue;
+                    });
                   },
                 ),
-              ),
-              Measurement.generalSize20.height,
-
-              // Contact Person Field
-              _FieldBlock(
-                label: AppString.contactPerson,
-                child: TextFormField(
-                  controller: _contactPersonController,
-                  decoration: _decoration(hint: AppString.enterContactPerson),
-                  style: Measurement.mediumFont
-                      .textStyle(AppColor.white, Measurement.font400),
-                  validator: (v) => (v == null || v.isEmpty)
-                      ? AppString.pleaseEnterContactPerson
-                      : null,
-                ),
-              ),
-              Measurement.generalSize20.height,
-
-              // Contact Phone Field
-              _FieldBlock(
-                label: AppString.contactPhone,
-                child: TextFormField(
-                  controller: _contactPhoneController,
-                  keyboardType: TextInputType.phone,
-                  decoration: _decoration(hint: AppString.enterContactPhone),
-                  style: Measurement.mediumFont
-                      .textStyle(AppColor.white, Measurement.font400),
-                  validator: (v) => (v == null || v.isEmpty)
-                      ? AppString.pleaseEnterContactPhone
-                      : null,
-                ),
-              ),
+                Measurement.generalSize20.height,
+              ],
               Measurement.generalSize20.height,
 
               // Preferred Date Field
@@ -295,30 +257,17 @@ class _RequestServiceScreenState extends State<RequestServiceScreen> {
               Measurement.generalSize20.height,
 
               // Preferred Time Field
-              _FieldBlock(
-                label: AppString.preferredTime,
-                child: DropdownButtonFormField<String>(
-                  value: _selectedPreferredTime,
-                  decoration: _decoration(hint: AppString.selectPreferredTime),
-                  style: Measurement.mediumFont
-                      .textStyle(AppColor.white, Measurement.font400),
-                  dropdownColor: AppColor.blueField,
-                  icon: const Icon(
-                    Icons.keyboard_arrow_down,
-                    color: AppColor.grey,
-                  ),
-                  items: _timeSlots.map((String time) {
-                    return DropdownMenuItem<String>(
-                      value: time,
-                      child: Text(time).mediumNormal(AppColor.white),
-                    );
-                  }).toList(),
-                  onChanged: (String? newValue) {
-                    setState(() {
-                      _selectedPreferredTime = newValue;
-                    });
-                  },
-                ),
+              Text(AppString.preferredTime).mediumBold(AppColor.white),
+              Measurement.generalSize8.height,
+              _DropdownField<String>(
+                value: _selectedPreferredTime,
+                hint: AppString.selectPreferredTime,
+                items: _timeSlots,
+                onChanged: (String? newValue) {
+                  setState(() {
+                    _selectedPreferredTime = newValue;
+                  });
+                },
               ),
               Measurement.generalSize20.height,
 
@@ -392,6 +341,37 @@ class _RequestServiceScreenState extends State<RequestServiceScreen> {
 
   void _submitServiceRequest() {
     if (_formKey.currentState!.validate()) {
+      // Validate required fields
+      if (_selectedServiceType == null) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(AppString.pleaseSelectServiceType)
+                .mediumNormal(AppColor.white),
+            backgroundColor: AppColor.redStatusInner,
+            behavior: SnackBarBehavior.floating,
+            shape: RoundedRectangleBorder(
+              borderRadius: Measurement.generalSize8.allRadius,
+            ),
+          ),
+        );
+        return;
+      }
+
+      if (_selectedPriority == null) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(AppString.pleaseSelectPriority)
+                .mediumNormal(AppColor.white),
+            backgroundColor: AppColor.redStatusInner,
+            behavior: SnackBarBehavior.floating,
+            shape: RoundedRectangleBorder(
+              borderRadius: Measurement.generalSize8.allRadius,
+            ),
+          ),
+        );
+        return;
+      }
+
       // TODO: Implement actual service request submission logic
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -440,6 +420,65 @@ class _FieldBlock extends StatelessWidget {
           child: child,
         ),
       ],
+    );
+  }
+}
+
+class _FieldContainer extends StatelessWidget {
+  final Widget child;
+
+  const _FieldContainer({required this.child});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        color: AppColor.blueField,
+        borderRadius: Measurement.generalSize12.allRadius,
+      ),
+      child: child,
+    );
+  }
+}
+
+class _DropdownField<T> extends StatelessWidget {
+  final T? value;
+  final String hint;
+  final List<T> items;
+  final ValueChanged<T?> onChanged;
+  final String Function(T)? displayText;
+
+  const _DropdownField({
+    required this.value,
+    required this.hint,
+    required this.items,
+    required this.onChanged,
+    this.displayText,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return _FieldContainer(
+      child: DropdownButtonFormField<T>(
+        value: value,
+        decoration: InputDecoration(
+          border: InputBorder.none,
+          contentPadding: Measurement.generalSize16.horizontalIsToVertical,
+        ),
+        dropdownColor: AppColor.blueField,
+        iconEnabledColor: AppColor.grey,
+        style: Measurement.mediumFont
+            .textStyle(AppColor.white, Measurement.font400),
+        hint: Text(hint).mediumNormal(AppColor.grey),
+        items: items
+            .map((e) => DropdownMenuItem<T>(
+                  value: e,
+                  child: Text(displayText?.call(e) ?? e.toString())
+                      .mediumNormal(AppColor.white),
+                ))
+            .toList(),
+        onChanged: onChanged,
+      ),
     );
   }
 }

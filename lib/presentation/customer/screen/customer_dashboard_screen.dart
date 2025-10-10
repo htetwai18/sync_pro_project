@@ -130,36 +130,6 @@ class CustomerDashboardScreen extends StatelessWidget {
               ),
 
               Measurement.generalSize24.height,
-
-              // Call to Action Button
-              SizedBox(
-                width: double.infinity,
-                child: ElevatedButton(
-                  onPressed: () {
-                    // TODO: Navigate to request new service screen
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: AppColor.blueStatusInner,
-                    foregroundColor: AppColor.white,
-                    padding: Measurement.generalSize16.verticalPadding,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: Measurement.generalSize12.allRadius,
-                    ),
-                    elevation: 0,
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const Icon(Icons.add, size: Measurement.generalSize20),
-                      Measurement.generalSize8.width,
-                      const Text(AppString.requestNewService)
-                          .mediumBold(AppColor.white),
-                    ],
-                  ),
-                ),
-              ),
-
-              Measurement.generalSize24.height,
             ],
           ),
         ),

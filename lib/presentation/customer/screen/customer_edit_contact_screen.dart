@@ -202,35 +202,15 @@ class _CustomerEditContactScreenState extends State<CustomerEditContactScreen> {
       children: [
         const Text(AppString.roleLabel).mediumBold(AppColor.white),
         Measurement.generalSize8.height,
-        _Field(
-          child: DropdownButtonFormField<String>(
-            value: _selectedRole,
-            decoration: InputDecoration(
-              border: InputBorder.none,
-              contentPadding: Measurement.generalSize16.horizontalIsToVertical,
-            ),
-            dropdownColor: AppColor.blueField,
-            iconEnabledColor: AppColor.grey,
-            style: Measurement.mediumFont
-                .textStyle(AppColor.white, Measurement.font400),
-            items: _roles.map((String role) {
-              return DropdownMenuItem<String>(
-                value: role,
-                child: Text(role).mediumNormal(AppColor.white),
-              );
-            }).toList(),
-            onChanged: (String? newValue) {
-              setState(() {
-                _selectedRole = newValue;
-              });
-            },
-            validator: (value) {
-              if (value == null || value.isEmpty) {
-                return AppString.pleaseSelectRole;
-              }
-              return null;
-            },
-          ),
+        _DropdownField<String>(
+          value: _selectedRole,
+          hint: AppString.selectRoleLabel,
+          items: _roles,
+          onChanged: (String? newValue) {
+            setState(() {
+              _selectedRole = newValue;
+            });
+          },
         ),
       ],
     );
@@ -249,6 +229,62 @@ class _Field extends StatelessWidget {
         borderRadius: Measurement.generalSize12.allRadius,
       ),
       child: child,
+    );
+  }
+}
+
+class _FieldContainer extends StatelessWidget {
+  final Widget child;
+
+  const _FieldContainer({required this.child});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        color: AppColor.blueField,
+        borderRadius: Measurement.generalSize12.allRadius,
+      ),
+      child: child,
+    );
+  }
+}
+
+class _DropdownField<T> extends StatelessWidget {
+  final T? value;
+  final String hint;
+  final List<T> items;
+  final ValueChanged<T?> onChanged;
+
+  const _DropdownField({
+    required this.value,
+    required this.hint,
+    required this.items,
+    required this.onChanged,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return _FieldContainer(
+      child: DropdownButtonFormField<T>(
+        value: value,
+        decoration: InputDecoration(
+          border: InputBorder.none,
+          contentPadding: Measurement.generalSize16.horizontalIsToVertical,
+        ),
+        dropdownColor: AppColor.blueField,
+        iconEnabledColor: AppColor.grey,
+        style: Measurement.mediumFont
+            .textStyle(AppColor.white, Measurement.font400),
+        hint: Text(hint).mediumNormal(AppColor.grey),
+        items: items
+            .map((e) => DropdownMenuItem<T>(
+                  value: e,
+                  child: Text('$e').mediumNormal(AppColor.white),
+                ))
+            .toList(),
+        onChanged: onChanged,
+      ),
     );
   }
 }

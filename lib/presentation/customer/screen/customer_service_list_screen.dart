@@ -182,8 +182,9 @@ class _CustomerServiceListScreenState extends State<CustomerServiceListScreen>
 
   void _showServiceRequestDetails(ServiceRequestDisplayModel request) {
     showModalBottomSheet(
+      elevation: 0.0,
       context: context,
-      backgroundColor: AppColor.background,
+      backgroundColor: Colors.transparent,
       isScrollControlled: true,
       shape: RoundedRectangleBorder(
         borderRadius: Measurement.generalSize20.allRadius,
@@ -393,11 +394,13 @@ class _ServiceRequestDetailsSheet extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DraggableScrollableSheet(
+      expand: false,
       initialChildSize: 0.7,
       minChildSize: 0.5,
       maxChildSize: 0.9,
       builder: (context, scrollController) {
         return Container(
+          color: AppColor.background,
           padding: Measurement.generalSize20.allPadding,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -416,7 +419,7 @@ class _ServiceRequestDetailsSheet extends StatelessWidget {
               Measurement.generalSize20.height,
 
               // Title
-              Text(AppString.serviceRequestDetails).largeBold(AppColor.white),
+              const Text(AppString.serviceRequestDetails).largeBold(AppColor.white),
               Measurement.generalSize16.height,
 
               // Content
@@ -456,14 +459,6 @@ class _ServiceRequestDetailsSheet extends StatelessWidget {
                           label: AppString.asset,
                           value: request.assetName!,
                         ),
-                      _DetailRow(
-                        label: AppString.contactPerson,
-                        value: request.contactPerson,
-                      ),
-                      _DetailRow(
-                        label: AppString.contactPhone,
-                        value: request.contactPhone,
-                      ),
                       _DetailRow(
                         label: AppString.requestDate,
                         value:

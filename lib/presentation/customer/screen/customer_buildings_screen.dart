@@ -16,7 +16,7 @@ class CustomerBuildingsScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: AppColor.background,
       appBar: getAppBar(
-        title: "${AppString.buildingsAddresses}",
+        title: AppString.buildingsAddresses,
         context: context,
         canBack: false,
       ),
@@ -29,10 +29,6 @@ class CustomerBuildingsScreen extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // // Buildings Header
-                  // const Text(AppString.addressLabel)
-                  //     .largeBold(AppColor.white),
-                  // Measurement.generalSize16.height,
 
                   // Buildings List
                   ListView.separated(
@@ -146,19 +142,6 @@ class _BuildingItem extends StatelessWidget {
                       Expanded(
                         child: Text(building.name).mediumBold(AppColor.white),
                       ),
-                      if (building.status != null) ...[
-                        Measurement.generalSize8.width,
-                        Container(
-                          padding: Measurement.generalSize4.horizontalPadding +
-                              Measurement.generalSize2.verticalPadding,
-                          decoration: BoxDecoration(
-                            color: AppColor.orangeStatusInner,
-                            borderRadius: Measurement.generalSize12.allRadius,
-                          ),
-                          child: Text(building.status!)
-                              .smallBold(AppColor.orangeStatusOuter),
-                        ),
-                      ],
                     ],
                   ),
                   Measurement.generalSize4.height,

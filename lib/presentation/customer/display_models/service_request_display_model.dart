@@ -38,8 +38,6 @@ class ServiceRequestDisplayModel {
   final String? roomNumber;
   final String? assetId;
   final String? assetName;
-  final String contactPerson;
-  final String contactPhone;
   final DateTime requestDate;
   final DateTime? preferredDate;
   final String? preferredTime;
@@ -61,8 +59,6 @@ class ServiceRequestDisplayModel {
     this.roomNumber,
     this.assetId,
     this.assetName,
-    required this.contactPerson,
-    required this.contactPhone,
     required this.requestDate,
     this.preferredDate,
     this.preferredTime,
@@ -89,8 +85,6 @@ final List<ServiceRequestDisplayModel> mockServiceRequests = [
     roomNumber: 'R001',
     assetId: 'A001',
     assetName: 'Daikin AC Unit',
-    contactPerson: 'John Smith',
-    contactPhone: '+1 (555) 123-4567',
     requestDate: DateTime(2024, 1, 15),
     preferredDate: DateTime(2024, 1, 20),
     preferredTime: '10:00 AM',
@@ -110,8 +104,6 @@ final List<ServiceRequestDisplayModel> mockServiceRequests = [
     roomNumber: 'R002',
     assetId: 'A002',
     assetName: 'Honda GX390 Generator',
-    contactPerson: 'Sarah Wilson',
-    contactPhone: '+1 (555) 234-5678',
     requestDate: DateTime(2024, 1, 16),
     preferredDate: DateTime(2024, 1, 17),
     preferredTime: '9:00 AM',
@@ -131,8 +123,6 @@ final List<ServiceRequestDisplayModel> mockServiceRequests = [
     roomNumber: null,
     assetId: 'A003',
     assetName: 'SunPower 400W Panel',
-    contactPerson: 'Mike Davis',
-    contactPhone: '+1 (555) 345-6789',
     requestDate: DateTime(2024, 1, 10),
     preferredDate: DateTime(2024, 1, 15),
     preferredTime: '8:00 AM',
@@ -155,8 +145,6 @@ final List<ServiceRequestDisplayModel> mockServiceRequests = [
     roomNumber: 'R003',
     assetId: 'A004',
     assetName: 'Grundfos Pump',
-    contactPerson: 'Lisa Brown',
-    contactPhone: '+1 (555) 456-7890',
     requestDate: DateTime(2024, 1, 5),
     preferredDate: DateTime(2024, 1, 12),
     preferredTime: '2:00 PM',
@@ -177,8 +165,6 @@ final List<ServiceRequestDisplayModel> mockServiceRequests = [
     roomNumber: null,
     assetId: 'A005',
     assetName: 'Otis Elevator',
-    contactPerson: 'Tom Wilson',
-    contactPhone: '+1 (555) 567-8901',
     requestDate: DateTime(2024, 1, 18),
     preferredDate: DateTime(2024, 1, 18),
     preferredTime: 'Immediate',
@@ -198,8 +184,6 @@ final List<ServiceRequestDisplayModel> mockServiceRequests = [
     roomNumber: 'R004',
     assetId: 'A006',
     assetName: 'Philips LED System',
-    contactPerson: 'Jane Smith',
-    contactPhone: '+1 (555) 678-9012',
     requestDate: DateTime(2024, 1, 17),
     preferredDate: DateTime(2024, 1, 25),
     preferredTime: '9:00 AM',
@@ -217,8 +201,6 @@ final List<ServiceRequestDisplayModel> mockServiceRequests = [
     roomNumber: 'R005',
     assetId: 'A007',
     assetName: 'Thermax Boiler',
-    contactPerson: 'Robert Johnson',
-    contactPhone: '+1 (555) 789-0123',
     requestDate: DateTime(2024, 1, 8),
     preferredDate: DateTime(2024, 1, 14),
     preferredTime: '10:00 AM',
@@ -240,8 +222,6 @@ final List<ServiceRequestDisplayModel> mockServiceRequests = [
     roomNumber: 'R006',
     assetId: 'A008',
     assetName: 'LG HVAC System',
-    contactPerson: 'Mary Davis',
-    contactPhone: '+1 (555) 890-1234',
     requestDate: DateTime(2024, 1, 19),
     preferredDate: DateTime(2024, 1, 22),
     preferredTime: '11:00 AM',
