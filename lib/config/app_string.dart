@@ -337,4 +337,14 @@ class AppString {
   static const String roleLabel = "Role";
   static const String selectRoleLabel = "Select role";
   static const String addContact = "Add Contact";
+
+  // Edit Contact Form
+  static const String editContactDetails = "Edit Contact Details";
+  static const String cancelButton = "Cancel";
+  static const String saveChangesButton = "Save Changes";
+  static const String johnDoe = "John Doe";
+  static const String johnDoeEmail = "john.doe@example.com";
+  static const String johnDoePhone = "+1 (555) 123-4567";
+  static const String administrator = "Administrator";
+  static const String payNow = "Pay Now";
 }

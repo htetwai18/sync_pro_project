@@ -7,6 +7,7 @@ import 'package:sync_pro/config/measurement.dart';
 import 'package:sync_pro/config/routing.dart';
 import 'package:sync_pro/presentation/customer/screen/customer_request_change_screen.dart';
 import 'package:sync_pro/presentation/customer/screen/customer_add_contact_screen.dart';
+import 'package:sync_pro/presentation/customer/screen/customer_edit_contact_screen.dart';
 
 class CustomerProfileScreen extends StatelessWidget {
   const CustomerProfileScreen({super.key});
@@ -201,7 +202,10 @@ class _ContactCard extends StatelessWidget {
           // Edit Icon
           GestureDetector(
             onTap: () {
-              // TODO: Navigate to edit contact screen
+              Routing.transition(
+                context,
+                const CustomerEditContactScreen(),
+              );
             },
             child: Container(
               width: Measurement.generalSize28,

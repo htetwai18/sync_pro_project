@@ -8,9 +8,10 @@ import 'package:sync_pro/config/measurement.dart';
 import 'package:sync_pro/presentation/admin/display_models/invoice_item_display_model.dart';
 
 class InvoiceDetailScreen extends StatelessWidget {
+  final bool isCustomer;
   final InvoiceItemDisplayModel invoice;
 
-  const InvoiceDetailScreen({super.key, required this.invoice});
+  const InvoiceDetailScreen({super.key, required this.invoice,this.isCustomer = false});
 
   @override
   Widget build(BuildContext context) {
@@ -118,6 +119,7 @@ class InvoiceDetailScreen extends StatelessWidget {
             ),
 
             Measurement.generalSize16.height,
+            if(!isCustomer)
             Row(
               children: [
                 Expanded(
@@ -154,6 +156,20 @@ class InvoiceDetailScreen extends StatelessWidget {
                 ),
               ],
             ),
+            if(isCustomer)
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: AppColor.blueStatusInner,
+                  foregroundColor: AppColor.white,
+                  padding: Measurement.generalSize16.horizontalIsToVertical,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: Measurement.generalSize12.allRadius,
+                  ),
+                ),
+                onPressed: () {},
+                child: const Text(AppString.payNow)
+                    .mediumBold(AppColor.white),
+              ),
           ],
         ),
       ),

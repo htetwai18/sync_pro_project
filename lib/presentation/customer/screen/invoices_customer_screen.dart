@@ -9,17 +9,15 @@ import 'package:sync_pro/presentation/admin/display_models/invoice_item_display_
 import 'package:sync_pro/presentation/admin/widgets/invoice_list_item.dart';
 import 'package:sync_pro/config/routing.dart';
 import 'package:sync_pro/presentation/admin/screen/invoice_detail_screen.dart';
-import 'package:sync_pro/presentation/admin/screen/create_invoice_screen.dart';
 
-class InvoicesScreen extends StatefulWidget {
-
-  const InvoicesScreen({super.key});
+class InvoicesCustomerScreen extends StatefulWidget {
+  const InvoicesCustomerScreen({super.key});
 
   @override
-  State<InvoicesScreen> createState() => _InvoicesScreenState();
+  State<InvoicesCustomerScreen> createState() => _InvoicesCustomerScreenState();
 }
 
-class _InvoicesScreenState extends State<InvoicesScreen> {
+class _InvoicesCustomerScreenState extends State<InvoicesCustomerScreen> {
   String _statusFilter = 'All';
   String _dateRange = 'All';
 
@@ -33,8 +31,9 @@ class _InvoicesScreenState extends State<InvoicesScreen> {
 
     return Scaffold(
       backgroundColor: AppColor.background,
-      appBar: getAppBarWithDrawer(context: context, title: AppString.invoices),
-      drawer: const AppDrawer(),
+      appBar: getAppBar(
+          context: context, title: AppString.invoices, canBack: false),
+      // drawer: const AppDrawer(),
       body: Column(
         children: [
           Padding(
@@ -78,7 +77,10 @@ class _InvoicesScreenState extends State<InvoicesScreen> {
                   onTap: () {
                     Routing.transition(
                       context,
-                      InvoiceDetailScreen(invoice: item),
+                      InvoiceDetailScreen(
+                        invoice: item,
+                        isCustomer: true,
+                      ),
                     );
                   },
                 );
@@ -86,14 +88,6 @@ class _InvoicesScreenState extends State<InvoicesScreen> {
             ),
           ),
         ],
-      ),
-      floatingActionButton:FloatingActionButton(
-        onPressed: () {
-          Routing.transition(context, const CreateInvoiceScreen());
-        },
-        backgroundColor: AppColor.blueStatusInner,
-        foregroundColor: AppColor.white,
-        child: const Icon(Icons.add),
       ),
     );
   }
