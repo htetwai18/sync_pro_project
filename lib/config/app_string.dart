@@ -420,4 +420,62 @@ class AppString {
   static const String last30Days = "Last 30 days";
   static const String thisYear = "This year";
   static const String pending = "Pending";
+
+  // Service Requests
+  static const String serviceRequests = "Service Requests";
+  // static const String active = "Active";
+  // static const String completed = "Completed";
+  // static const String requestNewService = "Request New Service";
+  static const String serviceRequestDetails = "Service Request Details";
+  static const String serviceRequestId = "Service Request ID";
+  static const String requestDate = "Request Date";
+  // static const String priority = "Priority";
+  static const String high = "High";
+  static const String medium = "Medium";
+  static const String low = "Low";
+  static const String urgent = "Urgent";
+  static const String serviceType = "Service Type";
+  static const String selectServiceType = "Select service type";
+  static const String maintenance = "Maintenance";
+  static const String repair = "Repair";
+  static const String installation = "Installation";
+  static const String inspection = "Inspection";
+  static const String emergency = "Emergency";
+  static const String other = "Other";
+  static const String serviceDescription = "Service Description";
+  static const String enterServiceDescription = "Describe the service needed";
+  static const String preferredDate = "Preferred Date";
+  static const String selectPreferredDate = "Select preferred date";
+  static const String preferredTime = "Preferred Time";
+  static const String selectPreferredTime = "Select preferred time";
+  static const String contactPerson = "Contact Person";
+  // static const String enterContactPerson = "Enter contact person name";
+  static const String contactPhone = "Contact Phone";
+  static const String enterContactPhone = "Enter contact phone number";
+  static const String specialInstructions = "Special Instructions";
+  static const String enterSpecialInstructions =
+      "Any special instructions or requirements";
+  static const String submitServiceRequest = "Submit Service Request";
+  static const String serviceRequestSubmitted =
+      "Service request submitted successfully!";
+  static const String pleaseEnterServiceDescription =
+      "Please enter service description";
+  static const String pleaseSelectServiceType = "Please select service type";
+  static const String pleaseSelectPriority = "Please select priority";
+  static const String pleaseEnterContactPerson = "Please enter contact person";
+  static const String pleaseEnterContactPhone = "Please enter contact phone";
+  static const String pleaseSelectPreferredDate =
+      "Please select preferred date";
+  static const String pleaseSelectPreferredTime =
+      "Please select preferred time";
+  // static const String scheduled = "Scheduled";
+  // static const String inProgress = "In Progress";
+  static const String cancelled = "Cancelled";
+  static const String onHold = "On Hold";
+  static const String awaitingApproval = "Awaiting Approval";
+  static const String noActiveRequests = "No active service requests";
+  static const String noCompletedRequests = "No completed service requests";
+  static const String viewDetails = "View Details";
+  static const String cancelRequest = "Cancel Request";
+  static const String rescheduleRequest = "Reschedule Request";
 }

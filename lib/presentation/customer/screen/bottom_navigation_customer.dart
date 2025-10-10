@@ -5,6 +5,7 @@ import 'package:sync_pro/config/measurement.dart';
 import 'package:sync_pro/presentation/customer/screen/customer_dashboard_screen.dart';
 import 'package:sync_pro/presentation/customer/screen/customer_profile_screen.dart';
 import 'package:sync_pro/presentation/customer/screen/customer_buildings_screen.dart';
+import 'package:sync_pro/presentation/customer/screen/customer_service_list_screen.dart';
 import 'package:sync_pro/presentation/customer/screen/invoices_customer_screen.dart';
 
 class BottomNavigationCustomer extends StatefulWidget {
@@ -27,6 +28,7 @@ class _BottomNavigationCustomerState extends State<BottomNavigationCustomer> {
     mobileScreens = [
       const CustomerDashboardScreen(),
       const CustomerBuildingsScreen(),
+      const CustomerServiceListScreen(),
       const CustomerProfileScreen(),
       const InvoicesCustomerScreen(),
     ];
@@ -62,6 +64,10 @@ class _BottomNavigationCustomerState extends State<BottomNavigationCustomer> {
               BottomNavigationBarItem(
                 icon: Icon(Icons.business),
                 label: "${AppString.addressLabel}es",
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.assignment),
+                label: AppString.serviceRequests,
               ),
               BottomNavigationBarItem(
                 icon: Icon(Icons.person),
