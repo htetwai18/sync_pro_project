@@ -4,6 +4,7 @@ class BuildingItemDisplayModel {
   final String id;
   final String name;
   final String address;
+  final String? roomNumber;
   final String? status;
   final DateTime createdAt;
   final DateTime? updatedAt;
@@ -12,6 +13,7 @@ class BuildingItemDisplayModel {
     required this.id,
     required this.name,
     required this.address,
+    this.roomNumber,
     this.status,
     required this.createdAt,
     this.updatedAt,

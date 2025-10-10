@@ -24,7 +24,6 @@ class _RequestServiceScreenState extends State<RequestServiceScreen> {
   ServiceRequestType? _selectedServiceType;
   ServiceRequestPriority? _selectedPriority;
   String? _selectedBuilding;
-  String? _selectedRoom;
   String? _selectedAsset;
   DateTime? _selectedPreferredDate;
   String? _selectedPreferredTime;
@@ -180,26 +179,12 @@ class _RequestServiceScreenState extends State<RequestServiceScreen> {
                 onChanged: (String? newValue) {
                   setState(() {
                     _selectedBuilding = newValue;
-                    _selectedRoom = null;
                     _selectedAsset = null;
                   });
                 },
               ),
               Measurement.generalSize20.height,
 
-              // Room Number Field (Optional)
-              _FieldBlock(
-                label: AppString.roomNumber,
-                child: TextFormField(
-                  controller: TextEditingController(text: _selectedRoom ?? ''),
-                  decoration: _decoration(hint: AppString.addRoomNo),
-                  style: Measurement.mediumFont
-                      .textStyle(AppColor.white, Measurement.font400),
-                  onChanged: (value) {
-                    _selectedRoom = value;
-                  },
-                ),
-              ),
               Measurement.generalSize20.height,
 
               // Asset Field (Optional) - Only show when building is selected

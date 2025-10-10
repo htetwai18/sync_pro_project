@@ -26,23 +26,14 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
     'Tech Solutions Inc.': ['HQ', 'West Campus'],
     'DataStream Corp.': ['Main Office'],
   };
-  final Map<String, List<String>> _buildingToRooms = const {
-    'HQ': ['1402', '1403'],
-    'West Campus': ['B12', 'B13'],
-    'Main Office': ['201', '202'],
-  };
-  final Map<String, List<String>> _roomToAssets = const {
-    '1402': ['HVAC Unit', 'Router'],
-    '1403': ['Switch'],
-    'B12': ['Projector'],
-    'B13': ['Printer'],
-    '201': ['Server Rack'],
-    '202': ['UPS'],
+  final Map<String, List<String>> _buildingToAssets = const {
+    'HQ': ['HVAC Unit', 'Router', 'Switch'],
+    'West Campus': ['Projector', 'Printer'],
+    'Main Office': ['Server Rack', 'UPS'],
   };
 
   String? _selectedCustomer;
   String? _selectedBuilding;
-  String? _selectedRoom;
   String? _selectedAsset;
   String? _selectedEngineer;
   String? _selectedPriority;
@@ -115,7 +106,6 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
                 setState(() {
                   _selectedCustomer = val;
                   _selectedBuilding = null;
-                  _selectedRoom = null;
                   _selectedAsset = null;
                 });
               },
@@ -132,7 +122,6 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
                 onChanged: (val) {
                   setState(() {
                     _selectedBuilding = val;
-                    _selectedRoom = null;
                     _selectedAsset = null;
                   });
                 },
@@ -141,29 +130,12 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
 
             if (_selectedBuilding != null) ...[
               Measurement.generalSize16.height,
-              const Text(AppString.room).mediumBold(AppColor.grey),
-              Measurement.generalSize8.height,
-              _DropdownField<String>(
-                value: _selectedRoom,
-                hint: AppString.selectRoom,
-                items: _buildingToRooms[_selectedBuilding] ?? const [],
-                onChanged: (val) {
-                  setState(() {
-                    _selectedRoom = val;
-                    _selectedAsset = null;
-                  });
-                },
-              ),
-            ],
-
-            if (_selectedRoom != null) ...[
-              Measurement.generalSize16.height,
               const Text(AppString.asset).mediumBold(AppColor.grey),
               Measurement.generalSize8.height,
               _DropdownField<String>(
                 value: _selectedAsset,
                 hint: AppString.selectAsset,
-                items: _roomToAssets[_selectedRoom] ?? const [],
+                items: _buildingToAssets[_selectedBuilding] ?? const [],
                 onChanged: (val) => setState(() => _selectedAsset = val),
               ),
             ],

@@ -35,7 +35,7 @@ class ServiceRequestDisplayModel {
   final ServiceRequestStatus status;
   final String buildingId;
   final String buildingName;
-  final String? roomNumber;
+  final String? buildingRoomNumber;
   final String? assetId;
   final String? assetName;
   final DateTime requestDate;
@@ -56,7 +56,7 @@ class ServiceRequestDisplayModel {
     required this.status,
     required this.buildingId,
     required this.buildingName,
-    this.roomNumber,
+    this.buildingRoomNumber,
     this.assetId,
     this.assetName,
     required this.requestDate,
@@ -82,7 +82,7 @@ final List<ServiceRequestDisplayModel> mockServiceRequests = [
     status: ServiceRequestStatus.scheduled,
     buildingId: 'B001',
     buildingName: 'Headquarters',
-    roomNumber: 'R001',
+    buildingRoomNumber: 'R001',
     assetId: 'A001',
     assetName: 'Daikin AC Unit',
     requestDate: DateTime(2024, 1, 15),
@@ -101,7 +101,7 @@ final List<ServiceRequestDisplayModel> mockServiceRequests = [
     status: ServiceRequestStatus.inProgress,
     buildingId: 'B001',
     buildingName: 'Headquarters',
-    roomNumber: 'R002',
+    buildingRoomNumber: 'R002',
     assetId: 'A002',
     assetName: 'Honda GX390 Generator',
     requestDate: DateTime(2024, 1, 16),
@@ -120,7 +120,7 @@ final List<ServiceRequestDisplayModel> mockServiceRequests = [
     status: ServiceRequestStatus.completed,
     buildingId: 'B002',
     buildingName: 'East Wing',
-    roomNumber: null,
+    buildingRoomNumber: null,
     assetId: 'A003',
     assetName: 'SunPower 400W Panel',
     requestDate: DateTime(2024, 1, 10),
@@ -142,7 +142,7 @@ final List<ServiceRequestDisplayModel> mockServiceRequests = [
     status: ServiceRequestStatus.completed,
     buildingId: 'B001',
     buildingName: 'Headquarters',
-    roomNumber: 'R003',
+    buildingRoomNumber: 'R003',
     assetId: 'A004',
     assetName: 'Grundfos Pump',
     requestDate: DateTime(2024, 1, 5),
@@ -162,7 +162,7 @@ final List<ServiceRequestDisplayModel> mockServiceRequests = [
     status: ServiceRequestStatus.inProgress,
     buildingId: 'B003',
     buildingName: 'West Campus',
-    roomNumber: null,
+    buildingRoomNumber: null,
     assetId: 'A005',
     assetName: 'Otis Elevator',
     requestDate: DateTime(2024, 1, 18),
@@ -181,7 +181,7 @@ final List<ServiceRequestDisplayModel> mockServiceRequests = [
     status: ServiceRequestStatus.awaitingApproval,
     buildingId: 'B001',
     buildingName: 'Headquarters',
-    roomNumber: 'R004',
+    buildingRoomNumber: 'R004',
     assetId: 'A006',
     assetName: 'Philips LED System',
     requestDate: DateTime(2024, 1, 17),
@@ -198,7 +198,7 @@ final List<ServiceRequestDisplayModel> mockServiceRequests = [
     status: ServiceRequestStatus.completed,
     buildingId: 'B004',
     buildingName: 'Data Center',
-    roomNumber: 'R005',
+    buildingRoomNumber: 'R005',
     assetId: 'A007',
     assetName: 'Thermax Boiler',
     requestDate: DateTime(2024, 1, 8),
@@ -219,7 +219,7 @@ final List<ServiceRequestDisplayModel> mockServiceRequests = [
     status: ServiceRequestStatus.scheduled,
     buildingId: 'B002',
     buildingName: 'East Wing',
-    roomNumber: 'R006',
+    buildingRoomNumber: 'R006',
     assetId: 'A008',
     assetName: 'LG HVAC System',
     requestDate: DateTime(2024, 1, 19),

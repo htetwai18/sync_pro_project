@@ -7,7 +7,7 @@ class ApprovalItemDisplayModel {
   final IconData icon;
   // detail fields
   final String buildingName;
-  final String roomNumber;
+  final String? buildingRoomNumber;
   final String assetType;
   final String assetDescription;
   final String statusText;
@@ -19,7 +19,7 @@ class ApprovalItemDisplayModel {
     required this.submittedBy,
     required this.icon,
     required this.buildingName,
-    required this.roomNumber,
+    this.buildingRoomNumber,
     required this.assetType,
     required this.assetDescription,
     required this.statusText,
@@ -36,7 +36,7 @@ List<ApprovalItemDisplayModel> approvalItems = const [
     submittedBy: 'Sarah Miller',
     icon: Icons.corporate_fare,
     buildingName: 'Corporate Headquarters',
-    roomNumber: '1402',
+    buildingRoomNumber: '1402',
     assetType: 'HVAC Unit',
     assetDescription: 'Model #ABC-123, Serial #XYZ-987',
     statusText: 'Pending Approval',
@@ -44,12 +44,12 @@ List<ApprovalItemDisplayModel> approvalItems = const [
     lastUpdated: '2024-07-22',
   ),
   ApprovalItemDisplayModel(
-    title: 'New Room',
+    title: 'New Building',
     submittedBy: 'David Chen',
     icon: Icons.meeting_room,
     buildingName: 'West Campus',
-    roomNumber: 'B12',
-    assetType: 'Room',
+    buildingRoomNumber: 'B12',
+    assetType: 'Building',
     assetDescription: 'Conference room renovation',
     statusText: 'Pending Approval',
     dateAdded: '2024-07-21',
@@ -60,7 +60,7 @@ List<ApprovalItemDisplayModel> approvalItems = const [
     submittedBy: 'Emily Carter',
     icon: Icons.inventory_2,
     buildingName: 'R&D Center',
-    roomNumber: '220',
+    buildingRoomNumber: '220',
     assetType: '3D Printer',
     assetDescription: 'Model Mark X7',
     statusText: 'Pending Approval',

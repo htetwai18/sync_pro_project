@@ -18,7 +18,6 @@ class _NewBuildingRequestScreenState extends State<NewBuildingRequestScreen> {
   final _buildingNameController = TextEditingController();
   final _addressController = TextEditingController();
   final _notesController = TextEditingController();
-  final _roomNoController = TextEditingController();
 
   String? _selectedBuildingType;
 
@@ -73,16 +72,6 @@ class _NewBuildingRequestScreenState extends State<NewBuildingRequestScreen> {
               ),
               Measurement.generalSize20.height,
 
-              // Room no
-              _FieldBlock(
-                label: AppString.roomNumber,
-                child: TextFormField(
-                  controller: _roomNoController,
-                  decoration: _decoration(hint: AppString.addRoomNo),
-                  style: Measurement.mediumFont
-                      .textStyle(AppColor.white, Measurement.font400),
-                ),
-              ),
               Measurement.generalSize20.height,
               // Address Field
               _FieldBlock(

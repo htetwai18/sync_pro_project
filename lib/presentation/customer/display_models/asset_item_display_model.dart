@@ -3,9 +3,9 @@ class AssetItemDisplayModel {
   final String name;
   final String manufacturer;
   final String model;
-  final String? roomNumber;
   final String buildingId;
   final String buildingName;
+  final String? buildingRoomNumber;
   final String address;
   final String? status;
   final DateTime createdAt;
@@ -17,9 +17,9 @@ class AssetItemDisplayModel {
     required this.name,
     required this.manufacturer,
     required this.model,
-    this.roomNumber,
     required this.buildingId,
     required this.buildingName,
+    this.buildingRoomNumber,
     this.status,
     required this.address,
     required this.createdAt,
@@ -34,9 +34,9 @@ final List<AssetItemDisplayModel> mockAssets = [
     name: 'Server Rack',
     manufacturer: 'Dell',
     model: 'PowerEdge R740',
-    roomNumber: 'R001',
     buildingId: 'B001',
     buildingName: 'Headquarters',
+    buildingRoomNumber: 'R001',
     address: '59th Street, Myo Thit, Lakraban, Bangkok, Thailand',
     createdAt: DateTime(2024, 1, 15),
     installationDate: DateTime(2022, 5, 15),
@@ -46,9 +46,9 @@ final List<AssetItemDisplayModel> mockAssets = [
     name: 'Network Switch',
     manufacturer: 'Cisco',
     model: 'Catalyst 9200',
-    roomNumber: 'R001',
     buildingId: 'B001',
     buildingName: 'Headquarters',
+    buildingRoomNumber: 'R001',
     address: '59th Street, Myo Thit, Lakraban, Bangkok, Thailand',
     createdAt: DateTime(2024, 1, 16),
     installationDate: DateTime(2022, 6, 10),
@@ -58,9 +58,9 @@ final List<AssetItemDisplayModel> mockAssets = [
     name: 'UPS System',
     manufacturer: 'APC',
     model: 'Smart-UPS 3000VA',
-    roomNumber: 'R001',
     buildingId: 'B001',
     buildingName: 'Headquarters',
+    buildingRoomNumber: 'R001',
     address: '59th Street, Myo Thit, Lakraban, Bangkok, Thailand',
     createdAt: DateTime(2024, 1, 17),
     installationDate: DateTime(2022, 7, 5),
@@ -70,9 +70,9 @@ final List<AssetItemDisplayModel> mockAssets = [
     name: 'Cooling Unit',
     manufacturer: 'Liebert',
     model: 'GXT4-100',
-    roomNumber: 'R001',
     buildingId: 'B001',
     buildingName: 'Headquarters',
+    buildingRoomNumber: 'R001',
     address: '59th Street, Myo Thit, Lakraban, Bangkok, Thailand',
     createdAt: DateTime(2024, 1, 18),
     installationDate: DateTime(2022, 8, 12),
@@ -82,9 +82,9 @@ final List<AssetItemDisplayModel> mockAssets = [
     name: 'Firewall',
     manufacturer: 'Fortinet',
     model: 'FortiGate 200E',
-    roomNumber: 'R001',
     buildingId: 'B001',
     buildingName: 'Headquarters',
+    buildingRoomNumber: 'R001',
     address: '59th Street, Myo Thit, Lakraban, Bangkok, Thailand',
     createdAt: DateTime(2024, 1, 19),
     installationDate: DateTime(2022, 9, 20),
@@ -94,9 +94,9 @@ final List<AssetItemDisplayModel> mockAssets = [
     name: 'Cabling',
     manufacturer: 'Belden',
     model: 'Cat6A',
-    roomNumber: 'R001',
     buildingId: 'B001',
     buildingName: 'Headquarters',
+    buildingRoomNumber: 'R001',
     address: '59th Street, Myo Thit, Lakraban, Bangkok, Thailand',
     createdAt: DateTime(2024, 1, 20),
     installationDate: DateTime(2022, 10, 3),

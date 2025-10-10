@@ -19,7 +19,6 @@ class ApprovalDetailScreen extends StatelessWidget {
       appBar: getAppBar(
         context: context,
         title: AppString.approvalDetails,
-
       ),
       body: SingleChildScrollView(
         padding: Measurement.generalSize16.horizontalIsToVertical,
@@ -33,10 +32,11 @@ class ApprovalDetailScreen extends StatelessWidget {
               value: item.buildingName,
             ),
             Measurement.generalSize16.height,
-            ReadOnlyField(
-              label: AppString.roomNumber,
-              value: item.roomNumber,
-            ),
+            if (item.buildingRoomNumber != null)
+              ReadOnlyField(
+                label: AppString.roomNumber,
+                value: item.buildingRoomNumber!,
+              ),
             Measurement.generalSize16.height,
             ReadOnlyField(
               label: AppString.assetType,

@@ -419,7 +419,8 @@ class _ServiceRequestDetailsSheet extends StatelessWidget {
               Measurement.generalSize20.height,
 
               // Title
-              const Text(AppString.serviceRequestDetails).largeBold(AppColor.white),
+              const Text(AppString.serviceRequestDetails)
+                  .largeBold(AppColor.white),
               Measurement.generalSize16.height,
 
               // Content
@@ -449,10 +450,10 @@ class _ServiceRequestDetailsSheet extends StatelessWidget {
                         label: AppString.building,
                         value: request.buildingName,
                       ),
-                      if (request.roomNumber != null)
+                      if (request.buildingRoomNumber != null)
                         _DetailRow(
                           label: AppString.room,
-                          value: request.roomNumber!,
+                          value: request.buildingRoomNumber!,
                         ),
                       if (request.assetName != null)
                         _DetailRow(

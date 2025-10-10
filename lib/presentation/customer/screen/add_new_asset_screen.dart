@@ -18,7 +18,6 @@ class _AddNewAssetScreenState extends State<AddNewAssetScreen> {
   final _assetNameController = TextEditingController();
   final _manufacturerController = TextEditingController();
   final _modelController = TextEditingController();
-  final _roomNumberController = TextEditingController();
   final _notesController = TextEditingController();
 
   String? _selectedBuilding;
@@ -31,7 +30,6 @@ class _AddNewAssetScreenState extends State<AddNewAssetScreen> {
     _assetNameController.dispose();
     _manufacturerController.dispose();
     _modelController.dispose();
-    _roomNumberController.dispose();
     _notesController.dispose();
     super.dispose();
   }
@@ -97,16 +95,6 @@ class _AddNewAssetScreenState extends State<AddNewAssetScreen> {
               ),
               Measurement.generalSize20.height,
 
-              // Room Number Field (Optional)
-              _FieldBlock(
-                label: AppString.roomNumber,
-                child: TextFormField(
-                  controller: _roomNumberController,
-                  decoration: _decoration(hint: AppString.addRoomNo),
-                  style: Measurement.mediumFont
-                      .textStyle(AppColor.white, Measurement.font400),
-                ),
-              ),
               Measurement.generalSize20.height,
 
               // Building Selection Dropdown
