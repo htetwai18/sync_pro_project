@@ -61,7 +61,7 @@ class _BottomNavigationCustomerState extends State<BottomNavigationCustomer> {
               ),
               BottomNavigationBarItem(
                 icon: Icon(Icons.business),
-                label: AppString.assets,
+                label: "${AppString.addressLabel}es",
               ),
               BottomNavigationBarItem(
                 icon: Icon(Icons.person),

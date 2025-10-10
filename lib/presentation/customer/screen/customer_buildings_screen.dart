@@ -6,6 +6,7 @@ import 'package:sync_pro/config/extension.dart';
 import 'package:sync_pro/config/measurement.dart';
 import 'package:sync_pro/presentation/customer/display_models/building_item_display_model.dart';
 import 'package:sync_pro/presentation/customer/screen/customer_room_assets_screen.dart';
+import 'package:sync_pro/presentation/customer/screen/new_building_request_screen.dart';
 
 class CustomerBuildingsScreen extends StatelessWidget {
   const CustomerBuildingsScreen({super.key});
@@ -15,7 +16,7 @@ class CustomerBuildingsScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: AppColor.background,
       appBar: getAppBar(
-        title: AppString.assets,
+        title: "${AppString.addressLabel}es",
         context: context,
         canBack: false,
       ),
@@ -28,10 +29,10 @@ class CustomerBuildingsScreen extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Buildings Header
-                  const Text(AppString.buildingsAndRooms)
-                      .largeBold(AppColor.white),
-                  Measurement.generalSize16.height,
+                  // // Buildings Header
+                  // const Text(AppString.addressLabel)
+                  //     .largeBold(AppColor.white),
+                  // Measurement.generalSize16.height,
 
                   // Buildings List
                   ListView.separated(
@@ -70,7 +71,12 @@ class CustomerBuildingsScreen extends StatelessWidget {
               width: double.infinity,
               child: ElevatedButton(
                 onPressed: () {
-                  // TODO: Navigate to request new building screen
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const NewBuildingRequestScreen(),
+                    ),
+                  );
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: AppColor.blueStatusInner,

@@ -6,7 +6,7 @@ class AppString {
 
   static const String customerSubmission = "Customer Submission";
   static const String buildingName = "Building Name";
-  static const String roomNumber = "Room Number";
+  static const String roomNumber = "Room Number (Optional)";
   static const String assetType = "Asset Type";
   static const String assetDescription = "Asset Description";
   static const String status = "Status";
@@ -220,8 +220,28 @@ class AppString {
   static const String customers = "Customers";
   static const String searchCustomers = "Search customers";
 
+  // Admin Customer Forms
+  static const String addNewCustomer = "Add New Customer";
+  static const String editCustomer = "Edit Customer";
+  static const String createCustomer = "Create Customer";
+  static const String customerNameLabel = "Customer Name";
+  static const String contactPersonLabel = "Contact Person";
+  static const String phoneNumberLabelAdmin = "Phone Number";
+  static const String addressLabelAdmin = "Address";
+  static const String enterCustomerName = "Enter customer name";
+  static const String enterContactPerson = "Enter contact person's name";
+  static const String enterPhoneNumber = "Enter phone number";
+  static const String enterEmailAddressAdmin = "Enter email address";
+  static const String enterFullAddress = "Enter full address";
+  static const String innovaTechSolutions = "Innovatech Solutions";
+  static const String johnDoeContact = "John Doe";
+  static const String johnDoePhoneAdmin = "(555) 123-4567";
+  static const String johnDoeEmailAdmin = "john.doe@innovatech.com";
+  static const String techAvenueAddress =
+      "123 Tech Avenue, Silicon Valley, CA 94043";
+
   // Profile
-  static const String profile = "My Profile";
+  static const String profile = "Profile";
   static const String logout = "Logout";
   static const String editProfile = "Edit Profile";
 
@@ -297,6 +317,17 @@ class AppString {
   static const String buildingsAndRooms = "Buildings And Rooms";
   static const String requestNewBuilding = "Request New Building";
 
+  // New Building Request
+  static const String newBuildingRequest = "New Building Request";
+  static const String buildingType = "Building Type";
+  static const String selectBuildingType = "Select building type";
+  static const String notes = "Notes (Optional)";
+  static const String addSpecificNotes =
+      "Add any specific notes or requirements";
+  static const String submitRequest = "Submit Request";
+  static const String enterBuildingName = "Enter building name";
+  static const String enterBuildingAddress = "Enter building address";
+
   // Room Assets
   static const String assetsInRoom = "Assets in Room";
   static const String roomView = "Room View";
@@ -323,7 +354,6 @@ class AppString {
   static const String reasonForChange = "Reason for Change";
   static const String reasonForChangePlaceholder =
       "Please provide a brief explanation...";
-  static const String submitRequest = "Submit Request";
   static const String syncProInc = "SyncPro Inc.";
   static const String innovationDrive = "123 Innovation Drive, Tech City";
   static const String contactEmail = "contact@syncpro.com";
@@ -347,4 +377,5 @@ class AppString {
   static const String johnDoePhone = "+1 (555) 123-4567";
   static const String administrator = "Administrator";
   static const String payNow = "Pay Now";
+  static const String addRoomNo = "Add Room Number";
 }

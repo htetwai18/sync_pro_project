@@ -5,7 +5,9 @@ import 'package:sync_pro/config/app_string.dart';
 import 'package:sync_pro/config/extension.dart';
 import 'package:sync_pro/config/measurement.dart';
 import 'package:sync_pro/config/app_drawer.dart';
+import 'package:sync_pro/config/routing.dart';
 import 'package:sync_pro/presentation/admin/display_models/customer_item_display_model.dart';
+import 'package:sync_pro/presentation/admin/screen/add_customer_screen.dart';
 import 'package:sync_pro/presentation/admin/widgets/customer_list_item.dart';
 
 class CustomersScreen extends StatefulWidget {
@@ -72,7 +74,11 @@ class _CustomersScreenState extends State<CustomersScreen> {
               separatorBuilder: (_, __) => Measurement.generalSize12.height,
               itemBuilder: (context, index) {
                 final item = filtered[index];
-                return CustomerListItem(item: item, onTap: () {});
+                return CustomerListItem(
+                    item: item,
+                    onTap: () {
+                      Routing.transition(context, const AddCustomerScreen());
+                    });
               },
             ),
           ),

@@ -16,7 +16,7 @@ class CustomerRoomAssetsScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: AppColor.background,
       appBar: getAppBar(
-        title: AppString.roomView,
+        title: AppString.assets,
         context: context,
         canBack: true,
       ),

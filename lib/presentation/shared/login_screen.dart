@@ -4,6 +4,7 @@ import 'package:sync_pro/config/app_string.dart';
 import 'package:sync_pro/config/extension.dart';
 import 'package:sync_pro/config/measurement.dart';
 import 'package:sync_pro/config/routing.dart';
+import 'package:sync_pro/presentation/admin/screen/dashboard_screen.dart';
 import 'package:sync_pro/presentation/customer/screen/bottom_navigation_customer.dart';
 import 'package:sync_pro/presentation/engineer/screen/bottom_navigation_engineer.dart';
 
@@ -114,7 +115,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                   ),
                   onPressed: () {
-                    /// Routing.transition(context, const DashboardScreen());
+                    //Routing.transition(context, const DashboardScreen());
                     Routing.transition(
                         context, const BottomNavigationCustomer());
                   },
