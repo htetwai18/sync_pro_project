@@ -1,3 +1,5 @@
+import 'package:sync_pro/config/app_string.dart';
+
 class BuildingItemDisplayModel {
   final String id;
   final String name;
@@ -27,7 +29,7 @@ final List<BuildingItemDisplayModel> mockBuildings = [
     id: 'B002',
     name: 'East Wing',
     address: '456 Oak Ave, San Francisco',
-    status: 'Pending',
+    status: AppString.pending,
     createdAt: DateTime(2024, 2, 10),
   ),
   BuildingItemDisplayModel(

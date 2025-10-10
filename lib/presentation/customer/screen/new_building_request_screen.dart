@@ -67,7 +67,7 @@ class _NewBuildingRequestScreenState extends State<NewBuildingRequestScreen> {
                   style: Measurement.mediumFont
                       .textStyle(AppColor.white, Measurement.font400),
                   validator: (v) => (v == null || v.isEmpty)
-                      ? 'Please enter building name'
+                      ? AppString.pleaseEnterBuildingName
                       : null,
                 ),
               ),
@@ -93,7 +93,7 @@ class _NewBuildingRequestScreenState extends State<NewBuildingRequestScreen> {
                   style: Measurement.mediumFont
                       .textStyle(AppColor.white, Measurement.font400),
                   validator: (v) => (v == null || v.isEmpty)
-                      ? 'Please enter building address'
+                      ? AppString.pleaseEnterBuildingAddress
                       : null,
                 ),
               ),
@@ -124,7 +124,7 @@ class _NewBuildingRequestScreenState extends State<NewBuildingRequestScreen> {
                     });
                   },
                   validator: (v) => (v == null || v.isEmpty)
-                      ? 'Please select building type'
+                      ? AppString.pleaseSelectBuildingType
                       : null,
                 ),
               ),
@@ -174,7 +174,7 @@ class _NewBuildingRequestScreenState extends State<NewBuildingRequestScreen> {
       // TODO: Implement actual submission logic
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: const Text('Building request submitted successfully!')
+          content: Text(AppString.buildingRequestSubmittedSuccessfully)
               .mediumNormal(AppColor.white),
           backgroundColor: AppColor.greenStatusInner,
           behavior: SnackBarBehavior.floating,

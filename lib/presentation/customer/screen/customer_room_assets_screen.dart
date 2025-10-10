@@ -7,6 +7,7 @@ import 'package:sync_pro/config/measurement.dart';
 import 'package:sync_pro/config/routing.dart';
 import 'package:sync_pro/presentation/customer/display_models/asset_item_display_model.dart';
 import 'package:sync_pro/presentation/customer/screen/customer_asset_detail_screen.dart';
+import 'package:sync_pro/presentation/customer/screen/add_new_asset_screen.dart';
 
 class CustomerRoomAssetsScreen extends StatelessWidget {
   const CustomerRoomAssetsScreen({super.key});
@@ -78,7 +79,12 @@ class CustomerRoomAssetsScreen extends StatelessWidget {
               width: double.infinity,
               child: ElevatedButton(
                 onPressed: () {
-                  // TODO: Navigate to request new building screen
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const AddNewAssetScreen(),
+                    ),
+                  );
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: AppColor.blueStatusInner,

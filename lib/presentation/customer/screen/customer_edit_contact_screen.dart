@@ -59,7 +59,7 @@ class _CustomerEditContactScreenState extends State<CustomerEditContactScreen> {
                       controller: _nameController,
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'Please enter name';
+                          return AppString.pleaseEnterName;
                         }
                         return null;
                       },
@@ -73,10 +73,10 @@ class _CustomerEditContactScreenState extends State<CustomerEditContactScreen> {
                       keyboardType: TextInputType.emailAddress,
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'Please enter email';
+                          return AppString.pleaseEnterEmail;
                         }
                         if (!value.contains('@')) {
-                          return 'Please enter a valid email';
+                          return AppString.pleaseEnterValidEmail;
                         }
                         return null;
                       },
@@ -90,7 +90,7 @@ class _CustomerEditContactScreenState extends State<CustomerEditContactScreen> {
                       keyboardType: TextInputType.phone,
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'Please enter phone number';
+                          return AppString.pleaseEnterPhoneNumber;
                         }
                         return null;
                       },
@@ -138,7 +138,8 @@ class _CustomerEditContactScreenState extends State<CustomerEditContactScreen> {
                           // TODO: Save the contact changes
                           ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(
-                              content: Text('Contact updated successfully'),
+                              content:
+                                  Text(AppString.contactUpdatedSuccessfully),
                               backgroundColor: AppColor.greenStatusInner,
                             ),
                           );
@@ -225,7 +226,7 @@ class _CustomerEditContactScreenState extends State<CustomerEditContactScreen> {
             },
             validator: (value) {
               if (value == null || value.isEmpty) {
-                return 'Please select a role';
+                return AppString.pleaseSelectRole;
               }
               return null;
             },

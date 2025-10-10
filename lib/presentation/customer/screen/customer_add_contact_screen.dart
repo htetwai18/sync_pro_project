@@ -59,7 +59,7 @@ class _CustomerAddContactScreenState extends State<CustomerAddContactScreen> {
                       hintText: AppString.enterName,
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'Please enter name';
+                          return AppString.pleaseEnterName;
                         }
                         return null;
                       },
@@ -74,10 +74,10 @@ class _CustomerAddContactScreenState extends State<CustomerAddContactScreen> {
                       hintText: AppString.enterEmail,
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'Please enter email';
+                          return AppString.pleaseEnterEmail;
                         }
                         if (!value.contains('@')) {
-                          return 'Please enter a valid email';
+                          return AppString.pleaseEnterValidEmail;
                         }
                         return null;
                       },
@@ -92,7 +92,7 @@ class _CustomerAddContactScreenState extends State<CustomerAddContactScreen> {
                       hintText: AppString.enterPhone,
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'Please enter phone number';
+                          return AppString.pleaseEnterPhoneNumber;
                         }
                         return null;
                       },
@@ -119,7 +119,7 @@ class _CustomerAddContactScreenState extends State<CustomerAddContactScreen> {
                       // TODO: Add the contact
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(
-                          content: Text('Contact added successfully'),
+                          content: Text(AppString.contactAddedSuccessfully),
                           backgroundColor: AppColor.greenStatusInner,
                         ),
                       );
@@ -210,7 +210,7 @@ class _CustomerAddContactScreenState extends State<CustomerAddContactScreen> {
             },
             validator: (value) {
               if (value == null || value.isEmpty) {
-                return 'Please select a role';
+                return AppString.pleaseSelectRole;
               }
               return null;
             },

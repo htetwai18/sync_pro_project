@@ -61,7 +61,7 @@ class _CustomerRequestChangeScreenState
                       controller: _companyNameController,
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'Please enter company name';
+                          return AppString.pleaseEnterCompanyName;
                         }
                         return null;
                       },
@@ -74,7 +74,7 @@ class _CustomerRequestChangeScreenState
                       controller: _addressController,
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'Please enter address';
+                          return AppString.pleaseEnterAddress;
                         }
                         return null;
                       },
@@ -88,7 +88,7 @@ class _CustomerRequestChangeScreenState
                       keyboardType: TextInputType.phone,
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'Please enter phone number';
+                          return AppString.pleaseEnterPhoneNumber;
                         }
                         return null;
                       },
@@ -102,10 +102,10 @@ class _CustomerRequestChangeScreenState
                       keyboardType: TextInputType.emailAddress,
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'Please enter email';
+                          return AppString.pleaseEnterEmail;
                         }
                         if (!value.contains('@')) {
-                          return 'Please enter a valid email';
+                          return AppString.pleaseEnterValidEmail;
                         }
                         return null;
                       },
@@ -120,7 +120,7 @@ class _CustomerRequestChangeScreenState
                       hintText: AppString.reasonForChangePlaceholder,
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'Please provide a reason for change';
+                          return AppString.pleaseProvideReason;
                         }
                         return null;
                       },
@@ -143,7 +143,7 @@ class _CustomerRequestChangeScreenState
                       // TODO: Submit the request
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(
-                          content: Text('Request submitted successfully'),
+                          content: Text(AppString.requestSubmittedSuccessfully),
                           backgroundColor: AppColor.greenStatusInner,
                         ),
                       );

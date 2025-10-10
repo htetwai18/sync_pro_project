@@ -18,14 +18,14 @@ class InvoicesCustomerScreen extends StatefulWidget {
 }
 
 class _InvoicesCustomerScreenState extends State<InvoicesCustomerScreen> {
-  String _statusFilter = 'All';
-  String _dateRange = 'All';
+  String _statusFilter = AppString.all;
+  String _dateRange = AppString.all;
 
   @override
   Widget build(BuildContext context) {
     final List<InvoiceItemDisplayModel> filtered = mockInvoices.where((e) {
       // simple status filter demo
-      if (_statusFilter == 'All') return true;
+      if (_statusFilter == AppString.all) return true;
       return e.status.name.toLowerCase() == _statusFilter.toLowerCase();
     }).toList();
 
@@ -94,7 +94,7 @@ class _InvoicesCustomerScreenState extends State<InvoicesCustomerScreen> {
 
   Future<String?> _showStatusSheet(BuildContext context, String current) async {
     final options = [
-      'All',
+      AppString.all,
       'paid',
       'sent',
       'draft',
@@ -125,7 +125,12 @@ class _InvoicesCustomerScreenState extends State<InvoicesCustomerScreen> {
 
   Future<String?> _showDateRangeSheet(
       BuildContext context, String current) async {
-    final options = ['All', 'Last 7 days', 'Last 30 days', 'This year'];
+    final options = [
+      AppString.all,
+      AppString.last7Days,
+      AppString.last30Days,
+      AppString.thisYear
+    ];
     return showModalBottomSheet<String>(
       context: context,
       backgroundColor: AppColor.blueField,

@@ -314,7 +314,7 @@ class AppString {
   // Customer Assets
   static const String customerAssets = "Customer Assets";
   static const String assets = "Assets";
-  static const String buildingsAndRooms = "Buildings And Rooms";
+  static const String buildingsAddresses = "Building Addresses";
   static const String requestNewBuilding = "Request New Building";
 
   // New Building Request
@@ -325,6 +325,10 @@ class AppString {
   static const String addSpecificNotes =
       "Add any specific notes or requirements";
   static const String submitRequest = "Submit Request";
+  static const String pleaseEnterBuildingName = "Please enter building name";
+  static const String pleaseEnterBuildingAddress =
+      "Please enter building address";
+  static const String pleaseSelectBuildingType = "Please select building type";
   static const String enterBuildingName = "Enter building name";
   static const String enterBuildingAddress = "Enter building address";
 
@@ -378,4 +382,42 @@ class AppString {
   static const String administrator = "Administrator";
   static const String payNow = "Pay Now";
   static const String addRoomNo = "Add Room Number";
+
+  // Add New Asset
+  static const String addNewAsset = "Add New Asset";
+  static const String assetNameLabel = "Asset Name";
+  static const String enterAssetName = "Enter asset name";
+  static const String manufacturerLabel = "Manufacturer";
+  static const String enterManufacturer = "Enter manufacturer";
+  static const String modelLabel = "Model";
+  static const String enterModel = "Enter model";
+  static const String installationDateLabel = "Installation Date";
+  static const String selectInstallationDate = "Select installation date";
+  static const String addAsset = "Add Asset";
+  static const String assetAddedSuccessfully = "Asset added successfully!";
+  static const String pleaseEnterAssetName = "Please enter asset name";
+  static const String pleaseEnterManufacturer = "Please enter manufacturer";
+  static const String pleaseEnterModel = "Please enter model";
+  static const String pleaseSelectBuilding = "Please select building";
+  static const String pleaseEnterValidEmail = "Please enter a valid email";
+  static const String pleaseEnterName = "Please enter name";
+  static const String pleaseEnterEmail = "Please enter email";
+  static const String pleaseEnterPhoneNumber = "Please enter phone number";
+  static const String pleaseEnterCompanyName = "Please enter company name";
+  static const String pleaseEnterAddress = "Please enter address";
+  static const String pleaseProvideReason =
+      "Please provide a reason for change";
+  static const String pleaseSelectRole = "Please select a role";
+  static const String contactUpdatedSuccessfully =
+      "Contact updated successfully";
+  static const String requestSubmittedSuccessfully =
+      "Request submitted successfully";
+  static const String contactAddedSuccessfully = "Contact added successfully";
+  static const String buildingRequestSubmittedSuccessfully =
+      "Building request submitted successfully!";
+  static const String all = "All";
+  static const String last7Days = "Last 7 days";
+  static const String last30Days = "Last 30 days";
+  static const String thisYear = "This year";
+  static const String pending = "Pending";
 }

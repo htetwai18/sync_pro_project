@@ -16,7 +16,7 @@ class CustomerBuildingsScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: AppColor.background,
       appBar: getAppBar(
-        title: "${AppString.addressLabel}es",
+        title: "${AppString.buildingsAddresses}",
         context: context,
         canBack: false,
       ),
