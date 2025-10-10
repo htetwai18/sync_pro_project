@@ -57,10 +57,10 @@ class TaskListItem extends StatelessWidget {
               ],
             ),
             Measurement.generalSize8.height,
-            Text('${AppString.customer}: ${item.customer}')
+            Text('${AppString.customer}: ${item.customerName}')
                 .smallNormal(AppColor.grey),
             Measurement.generalSize4.height,
-            Text('${AppString.assigned}: ${item.assignedTo}')
+            Text('${AppString.assigned}: ${item.assignedEngineer}')
                 .smallNormal(AppColor.grey),
           ],
         ),

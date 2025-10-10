@@ -29,12 +29,12 @@ class _EngineerTasksScreenState extends State<EngineerTasksScreen>
     final now = DateTime.now();
     return mockTasks.where((t) {
       if (tab == 0) {
-        return (t.scheduledAt.year == now.year) &&
-            (t.scheduledAt.month == now.month) &&
-            (t.scheduledAt.day == now.day);
+        return (t.scheduledDate?.year == now.year) &&
+            (t.scheduledDate?.month == now.month) &&
+            (t.scheduledDate?.day == now.day);
       } else if (tab == 1) {
         return (t.status != TaskStatus.completed) &&
-            (t.scheduledAt.isAfter(now));
+            (t.scheduledDate?.isAfter(now)??false);
       } else {
         return t.status == TaskStatus.completed;
       }
@@ -74,17 +74,17 @@ class _EngineerTasksScreenState extends State<EngineerTasksScreen>
                       Routing.transition(
                         context,
                         EngineerTaskDetailScreen(
-                          asset: task.assetId,
-                          assetName: task.assetName,
+                          asset: task.id,
+                          assetName: task.title,
                           title: task.title,
                           status: task.status,
                           description: task.description.isNotEmpty
                               ? task.description
                               : 'Task detail description for ${task.title}.',
-                          locationName: task.customer,
-                          address: task.address,
-                          priority: task.priority,
-                          scheduledAt: task.scheduledAt,
+                          locationName: task.customerName??"",
+                          address: task.buildingName,
+                          priority: task.priority.name,
+                          scheduledAt: task.scheduledDate,
                           assignedAt: task.assignedAt,
                         ),
                       );

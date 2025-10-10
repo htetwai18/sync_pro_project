@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:sync_pro/config/app_bar.dart';
 import 'package:sync_pro/config/app_color.dart';
 import 'package:sync_pro/config/app_string.dart';
+import 'package:sync_pro/config/enum.dart';
 import 'package:sync_pro/config/extension.dart';
 import 'package:sync_pro/config/measurement.dart';
-import 'package:sync_pro/presentation/customer/display_models/service_request_display_model.dart';
+import 'package:sync_pro/presentation/customer/display_models/task_display_model.dart';
 import 'package:sync_pro/presentation/customer/screen/request_service_screen.dart';
 
 class CustomerServiceListScreen extends StatefulWidget {
@@ -118,8 +119,8 @@ class _CustomerServiceListScreenState extends State<CustomerServiceListScreen>
   }
 
   Widget _buildActiveRequestsTab() {
-    final activeRequests = mockServiceRequests
-        .where((request) => request.status != ServiceRequestStatus.completed)
+    final activeRequests = mockTasks
+        .where((request) => request.status != TaskStatus.completed)
         .toList();
 
     if (activeRequests.isEmpty) {
@@ -141,8 +142,8 @@ class _CustomerServiceListScreenState extends State<CustomerServiceListScreen>
   }
 
   Widget _buildCompletedRequestsTab() {
-    final completedRequests = mockServiceRequests
-        .where((request) => request.status == ServiceRequestStatus.completed)
+    final completedRequests = mockTasks
+        .where((request) => request.status == TaskStatus.completed)
         .toList();
 
     if (completedRequests.isEmpty) {
@@ -180,7 +181,7 @@ class _CustomerServiceListScreenState extends State<CustomerServiceListScreen>
     );
   }
 
-  void _showServiceRequestDetails(ServiceRequestDisplayModel request) {
+  void _showServiceRequestDetails(TaskDisplayModel request) {
     showModalBottomSheet(
       elevation: 0.0,
       context: context,
@@ -195,7 +196,7 @@ class _CustomerServiceListScreenState extends State<CustomerServiceListScreen>
 }
 
 class _ServiceRequestCard extends StatelessWidget {
-  final ServiceRequestDisplayModel request;
+  final TaskDisplayModel request;
   final VoidCallback? onTap;
 
   const _ServiceRequestCard({
@@ -258,7 +259,7 @@ class _ServiceRequestCard extends StatelessWidget {
                     borderRadius: Measurement.generalSize12.allRadius,
                   ),
                   child: Text(
-                    getServiceRequestStatusText(request.status),
+                    getTaskStatusText(request.status),
                   ).smallBold(AppColor.white),
                 ),
               ],
@@ -283,7 +284,7 @@ class _ServiceRequestCard extends StatelessWidget {
                     borderRadius: Measurement.generalSize8.allRadius,
                   ),
                   child: Text(
-                    getServiceRequestPriorityText(request.priority),
+                    getTaskPriorityText(request.priority),
                   ).smallBold(AppColor.white),
                 ),
                 Measurement.generalSize8.width,
@@ -297,7 +298,7 @@ class _ServiceRequestCard extends StatelessWidget {
                     borderRadius: Measurement.generalSize8.allRadius,
                   ),
                   child: Text(
-                    getServiceRequestTypeText(request.type),
+                    getTaskTypeText(request.type),
                   ).smallBold(AppColor.white),
                 ),
               ],
@@ -336,58 +337,52 @@ class _ServiceRequestCard extends StatelessWidget {
     );
   }
 
-  Color _getStatusColor(ServiceRequestStatus status) {
+  Color _getStatusColor(TaskStatus status) {
     switch (status) {
-      case ServiceRequestStatus.pending:
+      case TaskStatus.notStarted:
         return AppColor.greyStatusInner;
-      case ServiceRequestStatus.scheduled:
-        return AppColor.blueStatusInner;
-      case ServiceRequestStatus.inProgress:
+      case TaskStatus.inProgress:
         return AppColor.orangeStatusInner;
-      case ServiceRequestStatus.completed:
+      case TaskStatus.completed:
         return AppColor.greenStatusInner;
-      case ServiceRequestStatus.cancelled:
+      case TaskStatus.overdue:
         return AppColor.redStatusInner;
-      case ServiceRequestStatus.onHold:
-        return AppColor.greyStatusInner;
-      case ServiceRequestStatus.awaitingApproval:
-        return AppColor.orangeStatusInner;
     }
   }
 
-  Color _getPriorityColor(ServiceRequestPriority priority) {
+  Color _getPriorityColor(TaskPriority priority) {
     switch (priority) {
-      case ServiceRequestPriority.low:
+      case TaskPriority.low:
         return AppColor.greenStatusInner;
-      case ServiceRequestPriority.medium:
+      case TaskPriority.medium:
         return AppColor.blueStatusInner;
-      case ServiceRequestPriority.high:
+      case TaskPriority.high:
         return AppColor.orangeStatusInner;
-      case ServiceRequestPriority.urgent:
+      case TaskPriority.urgent:
         return AppColor.redStatusInner;
     }
   }
 
-  IconData _getServiceTypeIcon(ServiceRequestType type) {
+  IconData _getServiceTypeIcon(TaskType type) {
     switch (type) {
-      case ServiceRequestType.maintenance:
+      case TaskType.maintenance:
         return Icons.build;
-      case ServiceRequestType.repair:
+      case TaskType.repair:
         return Icons.handyman;
-      case ServiceRequestType.installation:
+      case TaskType.installation:
         return Icons.install_desktop;
-      case ServiceRequestType.inspection:
+      case TaskType.inspection:
         return Icons.search;
-      case ServiceRequestType.emergency:
+      case TaskType.emergency:
         return Icons.warning;
-      case ServiceRequestType.other:
+      case TaskType.other:
         return Icons.miscellaneous_services;
     }
   }
 }
 
 class _ServiceRequestDetailsSheet extends StatelessWidget {
-  final ServiceRequestDisplayModel request;
+  final TaskDisplayModel request;
 
   const _ServiceRequestDetailsSheet({required this.request});
 
@@ -436,15 +431,15 @@ class _ServiceRequestDetailsSheet extends StatelessWidget {
                       ),
                       _DetailRow(
                         label: AppString.serviceType,
-                        value: getServiceRequestTypeText(request.type),
+                        value: getTaskTypeText(request.type),
                       ),
                       _DetailRow(
                         label: AppString.priority,
-                        value: getServiceRequestPriorityText(request.priority),
+                        value: getTaskPriorityText(request.priority),
                       ),
                       _DetailRow(
                         label: AppString.status,
-                        value: getServiceRequestStatusText(request.status),
+                        value: getTaskStatusText(request.status),
                       ),
                       _DetailRow(
                         label: AppString.building,

@@ -1,23 +1,14 @@
 import 'package:sync_pro/config/app_string.dart';
+import 'package:sync_pro/config/enum.dart';
 
-enum ServiceRequestStatus {
-  pending,
-  scheduled,
-  inProgress,
-  completed,
-  cancelled,
-  onHold,
-  awaitingApproval,
-}
-
-enum ServiceRequestPriority {
+enum TaskPriority {
   low,
   medium,
   high,
   urgent,
 }
 
-enum ServiceRequestType {
+enum TaskType {
   maintenance,
   repair,
   installation,
@@ -26,13 +17,13 @@ enum ServiceRequestType {
   other,
 }
 
-class ServiceRequestDisplayModel {
+class TaskDisplayModel {
   final String id;
   final String title;
   final String description;
-  final ServiceRequestType type;
-  final ServiceRequestPriority priority;
-  final ServiceRequestStatus status;
+  final TaskType type;
+  final TaskPriority priority;
+  final TaskStatus status;
   final String buildingId;
   final String buildingName;
   final String? buildingRoomNumber;
@@ -46,8 +37,11 @@ class ServiceRequestDisplayModel {
   final DateTime? scheduledDate;
   final DateTime? completedDate;
   final String? notes;
+  final String? customerName;
+  final String? address;
+  final DateTime? assignedAt;
 
-  const ServiceRequestDisplayModel({
+  const TaskDisplayModel({
     required this.id,
     required this.title,
     required this.description,
@@ -67,19 +61,22 @@ class ServiceRequestDisplayModel {
     this.scheduledDate,
     this.completedDate,
     this.notes,
+    this.customerName,
+    this.address,
+    this.assignedAt,
   });
 }
 
-// Mock data for service requests
-final List<ServiceRequestDisplayModel> mockServiceRequests = [
-  ServiceRequestDisplayModel(
+// Mock data for tasks
+final List<TaskDisplayModel> mockTasks = [
+  TaskDisplayModel(
     id: 'SR001',
     title: 'Air Conditioner Maintenance',
     description:
         'Regular maintenance and cleaning of AC unit in conference room',
-    type: ServiceRequestType.maintenance,
-    priority: ServiceRequestPriority.medium,
-    status: ServiceRequestStatus.scheduled,
+    type: TaskType.maintenance,
+    priority: TaskPriority.medium,
+    status: TaskStatus.notStarted,
     buildingId: 'B001',
     buildingName: 'Headquarters',
     buildingRoomNumber: 'R001',
@@ -91,14 +88,17 @@ final List<ServiceRequestDisplayModel> mockServiceRequests = [
     specialInstructions: 'Please bring replacement filters',
     assignedEngineer: 'Alice Johnson',
     scheduledDate: DateTime(2024, 1, 20, 10, 0),
+    customerName: 'John Smith',
+    address: '123 Main Street, Yangon',
+    assignedAt: DateTime(2024, 1, 15),
   ),
-  ServiceRequestDisplayModel(
+  TaskDisplayModel(
     id: 'SR002',
     title: 'Generator Repair',
     description: 'Generator not starting, needs immediate repair',
-    type: ServiceRequestType.repair,
-    priority: ServiceRequestPriority.high,
-    status: ServiceRequestStatus.inProgress,
+    type: TaskType.repair,
+    priority: TaskPriority.high,
+    status: TaskStatus.inProgress,
     buildingId: 'B001',
     buildingName: 'Headquarters',
     buildingRoomNumber: 'R002',
@@ -110,14 +110,17 @@ final List<ServiceRequestDisplayModel> mockServiceRequests = [
     specialInstructions: 'Emergency repair needed',
     assignedEngineer: 'Bob Williams',
     scheduledDate: DateTime(2024, 1, 17, 9, 0),
+    customerName: 'Global Industries Ltd.',
+    address: '456 Industrial Zone, Mandalay',
+    assignedAt: DateTime(2024, 1, 16),
   ),
-  ServiceRequestDisplayModel(
+  TaskDisplayModel(
     id: 'SR003',
     title: 'Solar Panel Installation',
     description: 'Install new solar panels on rooftop',
-    type: ServiceRequestType.installation,
-    priority: ServiceRequestPriority.medium,
-    status: ServiceRequestStatus.completed,
+    type: TaskType.installation,
+    priority: TaskPriority.medium,
+    status: TaskStatus.completed,
     buildingId: 'B002',
     buildingName: 'East Wing',
     buildingRoomNumber: null,
@@ -132,14 +135,17 @@ final List<ServiceRequestDisplayModel> mockServiceRequests = [
     completedDate: DateTime(2024, 1, 15, 16, 0),
     notes:
         'Installation completed successfully. All panels tested and working.',
+    customerName: 'Green Energy Co.',
+    address: '789 Energy Street, Naypyidaw',
+    assignedAt: DateTime(2024, 1, 10),
   ),
-  ServiceRequestDisplayModel(
+  TaskDisplayModel(
     id: 'SR004',
     title: 'Water Pump Inspection',
     description: 'Monthly inspection of water pump system',
-    type: ServiceRequestType.inspection,
-    priority: ServiceRequestPriority.low,
-    status: ServiceRequestStatus.completed,
+    type: TaskType.inspection,
+    priority: TaskPriority.low,
+    status: TaskStatus.completed,
     buildingId: 'B001',
     buildingName: 'Headquarters',
     buildingRoomNumber: 'R003',
@@ -152,14 +158,17 @@ final List<ServiceRequestDisplayModel> mockServiceRequests = [
     scheduledDate: DateTime(2024, 1, 12, 14, 0),
     completedDate: DateTime(2024, 1, 12, 15, 30),
     notes: 'Pump system in good condition. No issues found.',
+    customerName: 'AquaPure Ltd.',
+    address: '222 River Road, Yangon',
+    assignedAt: DateTime(2024, 1, 5),
   ),
-  ServiceRequestDisplayModel(
+  TaskDisplayModel(
     id: 'SR005',
     title: 'Elevator Emergency Repair',
     description: 'Elevator stuck between floors, emergency repair needed',
-    type: ServiceRequestType.emergency,
-    priority: ServiceRequestPriority.urgent,
-    status: ServiceRequestStatus.inProgress,
+    type: TaskType.emergency,
+    priority: TaskPriority.urgent,
+    status: TaskStatus.inProgress,
     buildingId: 'B003',
     buildingName: 'West Campus',
     buildingRoomNumber: null,
@@ -171,14 +180,17 @@ final List<ServiceRequestDisplayModel> mockServiceRequests = [
     specialInstructions: 'URGENT: People trapped in elevator',
     assignedEngineer: 'Daniel Lee',
     scheduledDate: DateTime(2024, 1, 18, 11, 0),
+    customerName: 'Sky Tower Apartments',
+    address: '15 Tower Street, Yangon',
+    assignedAt: DateTime(2024, 1, 18),
   ),
-  ServiceRequestDisplayModel(
+  TaskDisplayModel(
     id: 'SR006',
     title: 'Lighting System Upgrade',
     description: 'Upgrade lighting system to LED for energy efficiency',
-    type: ServiceRequestType.installation,
-    priority: ServiceRequestPriority.medium,
-    status: ServiceRequestStatus.awaitingApproval,
+    type: TaskType.installation,
+    priority: TaskPriority.medium,
+    status: TaskStatus.notStarted,
     buildingId: 'B001',
     buildingName: 'Headquarters',
     buildingRoomNumber: 'R004',
@@ -188,14 +200,17 @@ final List<ServiceRequestDisplayModel> mockServiceRequests = [
     preferredDate: DateTime(2024, 1, 25),
     preferredTime: '9:00 AM',
     specialInstructions: 'Need approval for budget before proceeding',
+    customerName: 'City Mall Yangon',
+    address: '88 Central Road, Yangon',
+    assignedAt: DateTime(2024, 1, 17),
   ),
-  ServiceRequestDisplayModel(
+  TaskDisplayModel(
     id: 'SR007',
     title: 'Boiler Pressure Test',
     description: 'Annual pressure test and safety valve inspection',
-    type: ServiceRequestType.inspection,
-    priority: ServiceRequestPriority.high,
-    status: ServiceRequestStatus.completed,
+    type: TaskType.inspection,
+    priority: TaskPriority.high,
+    status: TaskStatus.completed,
     buildingId: 'B004',
     buildingName: 'Data Center',
     buildingRoomNumber: 'R005',
@@ -209,14 +224,17 @@ final List<ServiceRequestDisplayModel> mockServiceRequests = [
     completedDate: DateTime(2024, 1, 14, 12, 0),
     notes:
         'All safety tests passed. Boiler operating within normal parameters.',
+    customerName: 'Yangon Textile Co.',
+    address: '77 Factory Zone, Yangon',
+    assignedAt: DateTime(2024, 1, 8),
   ),
-  ServiceRequestDisplayModel(
+  TaskDisplayModel(
     id: 'SR008',
     title: 'HVAC Filter Replacement',
     description: 'Replace all air filters and clean ducts',
-    type: ServiceRequestType.maintenance,
-    priority: ServiceRequestPriority.low,
-    status: ServiceRequestStatus.scheduled,
+    type: TaskType.maintenance,
+    priority: TaskPriority.low,
+    status: TaskStatus.notStarted,
     buildingId: 'B002',
     buildingName: 'East Wing',
     buildingRoomNumber: 'R006',
@@ -228,55 +246,52 @@ final List<ServiceRequestDisplayModel> mockServiceRequests = [
     specialInstructions: 'Bring replacement filters for all units',
     assignedEngineer: 'Bob Williams',
     scheduledDate: DateTime(2024, 1, 22, 11, 0),
+    customerName: 'Shwe Hospital',
+    address: 'Health Road, Yangon',
+    assignedAt: DateTime(2024, 1, 19),
   ),
 ];
 
 // Helper functions to get display strings
-String getServiceRequestStatusText(ServiceRequestStatus status) {
+String getTaskStatusText(TaskStatus status) {
   switch (status) {
-    case ServiceRequestStatus.pending:
+    case TaskStatus.notStarted:
       return AppString.pending;
-    case ServiceRequestStatus.scheduled:
-      return AppString.scheduled;
-    case ServiceRequestStatus.inProgress:
+    case TaskStatus.inProgress:
       return AppString.inProgress;
-    case ServiceRequestStatus.completed:
+    case TaskStatus.completed:
       return AppString.completed;
-    case ServiceRequestStatus.cancelled:
-      return AppString.cancelled;
-    case ServiceRequestStatus.onHold:
-      return AppString.onHold;
-    case ServiceRequestStatus.awaitingApproval:
-      return AppString.awaitingApproval;
+    case TaskStatus.overdue:
+      return AppString.overdue;
   }
 }
 
-String getServiceRequestPriorityText(ServiceRequestPriority priority) {
+String getTaskPriorityText(TaskPriority priority) {
   switch (priority) {
-    case ServiceRequestPriority.low:
+    case TaskPriority.low:
       return AppString.low;
-    case ServiceRequestPriority.medium:
+    case TaskPriority.medium:
       return AppString.medium;
-    case ServiceRequestPriority.high:
+    case TaskPriority.high:
       return AppString.high;
-    case ServiceRequestPriority.urgent:
+    case TaskPriority.urgent:
       return AppString.urgent;
   }
 }
 
-String getServiceRequestTypeText(ServiceRequestType type) {
+String getTaskTypeText(TaskType type) {
   switch (type) {
-    case ServiceRequestType.maintenance:
+    case TaskType.maintenance:
       return AppString.maintenance;
-    case ServiceRequestType.repair:
+    case TaskType.repair:
       return AppString.repair;
-    case ServiceRequestType.installation:
+    case TaskType.installation:
       return AppString.installation;
-    case ServiceRequestType.inspection:
+    case TaskType.inspection:
       return AppString.inspection;
-    case ServiceRequestType.emergency:
+    case TaskType.emergency:
       return AppString.emergency;
-    case ServiceRequestType.other:
+    case TaskType.other:
       return AppString.other;
   }
 }

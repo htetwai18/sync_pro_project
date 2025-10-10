@@ -5,7 +5,7 @@ class CustomerItemDisplayModel {
   const CustomerItemDisplayModel({required this.name, required this.phone});
 }
 
-final List<CustomerItemDisplayModel> mockCustomers = const [
+const List<CustomerItemDisplayModel> mockCustomers = [
   CustomerItemDisplayModel(name: 'Acme Corp', phone: '(555) 123-4567'),
   CustomerItemDisplayModel(
       name: 'Tech Solutions Inc.', phone: '(555) 987-6543'),

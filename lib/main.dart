@@ -20,3 +20,8 @@ class MyApp extends StatelessWidget {
     );
   }
 }
+
+
+//TODO : link customer list of admin to customer panel pages and configure for admin view of them.
+//TODO : add inventory management and link with part entity
+//TODO : extract customer contacts display model.

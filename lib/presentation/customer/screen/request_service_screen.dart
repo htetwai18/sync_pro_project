@@ -6,7 +6,7 @@ import 'package:sync_pro/config/extension.dart';
 import 'package:sync_pro/config/measurement.dart';
 import 'package:sync_pro/presentation/customer/display_models/building_item_display_model.dart';
 import 'package:sync_pro/presentation/customer/display_models/asset_item_display_model.dart';
-import 'package:sync_pro/presentation/customer/display_models/service_request_display_model.dart';
+import 'package:sync_pro/presentation/customer/display_models/task_display_model.dart';
 
 class RequestServiceScreen extends StatefulWidget {
   const RequestServiceScreen({super.key});
@@ -21,8 +21,8 @@ class _RequestServiceScreenState extends State<RequestServiceScreen> {
   final _descriptionController = TextEditingController();
   final _specialInstructionsController = TextEditingController();
 
-  ServiceRequestType? _selectedServiceType;
-  ServiceRequestPriority? _selectedPriority;
+  TaskType? _selectedServiceType;
+  TaskPriority? _selectedPriority;
   String? _selectedBuilding;
   String? _selectedAsset;
   DateTime? _selectedPreferredDate;
@@ -52,10 +52,10 @@ class _RequestServiceScreenState extends State<RequestServiceScreen> {
   }
 
   String _getDisplayText<T>(T item) {
-    if (item is ServiceRequestType) {
-      return getServiceRequestTypeText(item);
-    } else if (item is ServiceRequestPriority) {
-      return getServiceRequestPriorityText(item);
+    if (item is TaskType) {
+      return getTaskTypeText(item);
+    } else if (item is TaskPriority) {
+      return getTaskPriorityText(item);
     } else if (item is String) {
       // For building IDs, get the building name
       if (item.startsWith('B')) {
@@ -107,12 +107,12 @@ class _RequestServiceScreenState extends State<RequestServiceScreen> {
               // Service Type Field
               Text(AppString.serviceType).mediumBold(AppColor.white),
               Measurement.generalSize8.height,
-              _DropdownField<ServiceRequestType>(
+              _DropdownField<TaskType>(
                 value: _selectedServiceType,
                 hint: AppString.selectServiceType,
-                items: ServiceRequestType.values,
-                displayText: (item) => getServiceRequestTypeText(item),
-                onChanged: (ServiceRequestType? newValue) {
+                items: TaskType.values,
+                displayText: (item) => getTaskTypeText(item),
+                onChanged: (TaskType? newValue) {
                   setState(() {
                     _selectedServiceType = newValue;
                   });
@@ -123,12 +123,12 @@ class _RequestServiceScreenState extends State<RequestServiceScreen> {
               // Priority Field
               Text(AppString.priority).mediumBold(AppColor.white),
               Measurement.generalSize8.height,
-              _DropdownField<ServiceRequestPriority>(
+              _DropdownField<TaskPriority>(
                 value: _selectedPriority,
                 hint: AppString.selectPriority,
-                items: ServiceRequestPriority.values,
-                displayText: (item) => getServiceRequestPriorityText(item),
-                onChanged: (ServiceRequestPriority? newValue) {
+                items: TaskPriority.values,
+                displayText: (item) => getTaskPriorityText(item),
+                onChanged: (TaskPriority? newValue) {
                   setState(() {
                     _selectedPriority = newValue;
                   });

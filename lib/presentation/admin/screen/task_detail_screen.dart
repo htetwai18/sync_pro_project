@@ -65,7 +65,7 @@ class TaskDetailScreen extends StatelessWidget {
                         Text('${AppString.assetID}: ${item.assetId}')
                             .mediumBold(AppColor.white),
                         Measurement.generalSize4.height,
-                        Text(item.assetName).smallNormal(AppColor.grey),
+                        Text(item.title).smallNormal(AppColor.grey),
                       ],
                     ),
                   ),
@@ -91,7 +91,7 @@ class TaskDetailScreen extends StatelessWidget {
               icon: Icons.check_circle,
               iconColor: AppColor.greenStatusInner,
               title: AppString.taskCompleted,
-              subtitle: _format(item.completedAt),
+              subtitle: _format(item.completedDate),
             ),
             Measurement.generalSize24.height,
             const Text(AppString.serviceReport).mediumBold(AppColor.white),
@@ -122,7 +122,7 @@ class TaskDetailScreen extends StatelessWidget {
                         const Text(AppString.viewReport)
                             .mediumBold(AppColor.white),
                         Measurement.generalSize4.height,
-                        Text('${AppString.submittedOn} ${_format(item.completedAt).split(' ').first}')
+                        Text('${AppString.submittedOn} ${_format(item.completedDate).split(' ').first}')
                             .smallNormal(AppColor.grey),
                       ],
                     ),
