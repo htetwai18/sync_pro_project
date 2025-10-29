@@ -8,6 +8,7 @@ import 'package:sync_pro/config/routing.dart';
 import 'package:sync_pro/presentation/customer/screen/customer_request_change_screen.dart';
 import 'package:sync_pro/presentation/customer/screen/customer_add_contact_screen.dart';
 import 'package:sync_pro/presentation/customer/screen/customer_edit_contact_screen.dart';
+import 'package:sync_pro/presentation/customer/display_models/contact_display_model.dart';
 
 class CustomerProfileScreen extends StatelessWidget {
   final bool isFromAdmin;
@@ -126,22 +127,16 @@ class CustomerProfileScreen extends StatelessWidget {
             ),
             Measurement.generalSize16.height,
 
-            // Contact Cards
-            const _ContactCard(
-              name: AppString.aliceJohnson,
-              role: AppString.manager,
-            ),
-            Measurement.generalSize12.height,
-
-            const _ContactCard(
-              name: AppString.bobWilliams,
-              role: AppString.engineerContact,
-            ),
-            Measurement.generalSize12.height,
-
-            const _ContactCard(
-              name: AppString.charlieDavis,
-              role: AppString.technician,
+            // Contact List
+            ListView.separated(
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              itemCount: mockContacts.length,
+              separatorBuilder: (_, __) => Measurement.generalSize12.height,
+              itemBuilder: (context, index) {
+                final contact = mockContacts[index];
+                return _ContactCard(contact: contact);
+              },
             ),
 
             Measurement.generalSize24.height,
@@ -175,12 +170,10 @@ class _InfoField extends StatelessWidget {
 }
 
 class _ContactCard extends StatelessWidget {
-  final String name;
-  final String role;
+  final ContactDisplayModel contact;
 
   const _ContactCard({
-    required this.name,
-    required this.role,
+    required this.contact,
   });
 
   @override
@@ -197,9 +190,9 @@ class _ContactCard extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(name).mediumBold(AppColor.white),
+                Text(contact.name).mediumBold(AppColor.white),
                 Measurement.generalSize4.height,
-                Text(role).smallNormal(AppColor.grey),
+                Text(contact.role).smallNormal(AppColor.grey),
               ],
             ),
           ),
@@ -209,7 +202,7 @@ class _ContactCard extends StatelessWidget {
             onTap: () {
               Routing.transition(
                 context,
-                const CustomerEditContactScreen(),
+                CustomerEditContactScreen(contact: contact),
               );
             },
             child: Container(

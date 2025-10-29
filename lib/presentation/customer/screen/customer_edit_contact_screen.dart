@@ -1,3 +1,4 @@
+import 'package:sync_pro/presentation/customer/display_models/contact_display_model.dart';
 import 'package:flutter/material.dart';
 import 'package:sync_pro/config/app_bar.dart';
 import 'package:sync_pro/config/app_color.dart';
@@ -6,7 +7,8 @@ import 'package:sync_pro/config/extension.dart';
 import 'package:sync_pro/config/measurement.dart';
 
 class CustomerEditContactScreen extends StatefulWidget {
-  const CustomerEditContactScreen({super.key});
+  final ContactDisplayModel contact;
+  const CustomerEditContactScreen({super.key, required this.contact});
 
   @override
   State<CustomerEditContactScreen> createState() =>
@@ -15,10 +17,10 @@ class CustomerEditContactScreen extends StatefulWidget {
 
 class _CustomerEditContactScreenState extends State<CustomerEditContactScreen> {
   final _formKey = GlobalKey<FormState>();
-  final _nameController = TextEditingController(text: AppString.johnDoe);
-  final _emailController = TextEditingController(text: AppString.johnDoeEmail);
-  final _phoneController = TextEditingController(text: AppString.johnDoePhone);
-  String? _selectedRole = AppString.administrator;
+  late final TextEditingController _nameController;
+  late final TextEditingController _emailController;
+  late final TextEditingController _phoneController;
+  String? _selectedRole;
 
   final List<String> _roles = [
     AppString.manager,
@@ -26,6 +28,15 @@ class _CustomerEditContactScreenState extends State<CustomerEditContactScreen> {
     AppString.technician,
     AppString.administrator,
   ];
+
+  @override
+  void initState() {
+    super.initState();
+    _nameController = TextEditingController(text: widget.contact.name);
+    _emailController = TextEditingController(text: widget.contact.email);
+    _phoneController = TextEditingController(text: widget.contact.phone);
+    _selectedRole = widget.contact.role;
+  }
 
   @override
   void dispose() {
