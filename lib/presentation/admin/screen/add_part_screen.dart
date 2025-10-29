@@ -111,7 +111,7 @@ class _AddPartScreenState extends State<AddPartScreen> {
                   ),
                 ),
                 onPressed: () {},
-                child: const Text(AppString.generateInvoice)
+                child: const Text(AppString.addNewPart)
                     .mediumBold(AppColor.white),
               ),
             ),

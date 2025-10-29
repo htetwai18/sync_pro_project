@@ -161,6 +161,12 @@ class AppString {
   static const String dueDate = "Due Date";
   static const String invoiceLineItems = "Invoice Line Items";
   static const String addLineItem = "Add Line Item";
+
+  static const String pleaseEnterQuantity = "Please enter a valid quantity";
+  static const String pleaseEnterAmount = "Please enter a valid amount";
+  static const String delete = "Delete";
+  static const String areYouSureDelete =
+      "Are you sure you want to delete this item?";
   static const String totalAmount = "Total Amount";
   static const String generateInvoice = "Generate Invoice";
 

@@ -7,7 +7,9 @@ import 'package:sync_pro/presentation/admin/display_models/invoice_item_display_
 class InvoiceLineItemTile extends StatelessWidget {
   final InvoiceLineItem item;
   final VoidCallback? onEdit;
-  const InvoiceLineItemTile({super.key, required this.item, this.onEdit});
+  final VoidCallback? onDelete;
+  const InvoiceLineItemTile(
+      {super.key, required this.item, this.onEdit, this.onDelete});
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +27,7 @@ class InvoiceLineItemTile extends StatelessWidget {
               children: [
                 Text(item.name).mediumBold(AppColor.white),
                 Measurement.generalSize8.height,
-                Text('1 x \$${item.unitPrice.toStringAsFixed(2)}')
+                Text('${item.quantity} x \$${item.unitPrice.toStringAsFixed(2)}')
                     .smallNormal(AppColor.grey),
               ],
             ),
@@ -33,6 +35,10 @@ class InvoiceLineItemTile extends StatelessWidget {
           IconButton(
             onPressed: onEdit,
             icon: const Icon(Icons.edit, color: AppColor.grey),
+          ),
+          IconButton(
+            onPressed: onDelete,
+            icon: const Icon(Icons.delete_outline, color: AppColor.grey),
           ),
         ],
       ),
