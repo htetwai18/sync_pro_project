@@ -355,7 +355,7 @@ class AppString {
   static const String companyNameLabel = "Company Name";
   static const String addressLabel = "Address";
   static const String phoneNumberLabel = "Phone Number";
-  static const String reasonForChange = "Reason for Change";
+  static const String reasonForChange = "Reason for Change(Optional)";
   static const String reasonForChangePlaceholder =
       "Please provide a brief explanation...";
   static const String syncProInc = "SyncPro Inc.";

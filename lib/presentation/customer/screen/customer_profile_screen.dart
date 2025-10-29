@@ -10,7 +10,8 @@ import 'package:sync_pro/presentation/customer/screen/customer_add_contact_scree
 import 'package:sync_pro/presentation/customer/screen/customer_edit_contact_screen.dart';
 
 class CustomerProfileScreen extends StatelessWidget {
-  const CustomerProfileScreen({super.key});
+  final bool isFromAdmin;
+  const CustomerProfileScreen({super.key, required this.isFromAdmin});
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +20,7 @@ class CustomerProfileScreen extends StatelessWidget {
       appBar: getAppBar(
         title: AppString.myAccount,
         context: context,
-        canBack: false,
+        canBack: isFromAdmin ? true : false,
       ),
       body: SingleChildScrollView(
         padding: Measurement.generalSize16.horizontalIsToVertical,
@@ -39,7 +40,9 @@ class CustomerProfileScreen extends StatelessWidget {
                   onPressed: () {
                     Routing.transition(
                       context,
-                      const CustomerRequestChangeScreen(),
+                      CustomerRequestChangeScreen(
+                        isFromAdmin: isFromAdmin,
+                      ),
                     );
                   },
                   style: ElevatedButton.styleFrom(
@@ -52,8 +55,10 @@ class CustomerProfileScreen extends StatelessWidget {
                     ),
                     elevation: 0,
                   ),
-                  child: const Text(AppString.requestChanges)
-                      .smallBold(AppColor.white),
+                  child: isFromAdmin
+                      ? const Text(AppString.edit).smallBold(AppColor.white)
+                      : const Text(AppString.requestChanges)
+                          .smallBold(AppColor.white),
                 ),
               ],
             ),

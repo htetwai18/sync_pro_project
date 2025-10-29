@@ -6,7 +6,8 @@ import 'package:sync_pro/config/extension.dart';
 import 'package:sync_pro/config/measurement.dart';
 
 class CustomerRequestChangeScreen extends StatefulWidget {
-  const CustomerRequestChangeScreen({super.key});
+  final bool isFromAdmin;
+  const CustomerRequestChangeScreen({super.key,required this.isFromAdmin,});
 
   @override
   State<CustomerRequestChangeScreen> createState() =>
@@ -39,7 +40,7 @@ class _CustomerRequestChangeScreenState
     return Scaffold(
       backgroundColor: AppColor.background,
       appBar: getAppBar(
-        title: AppString.requestChange,
+        title: widget.isFromAdmin? AppString.editCustomer: AppString.requestChange,
         context: context,
         canBack: true,
       ),
@@ -159,7 +160,8 @@ class _CustomerRequestChangeScreenState
                     ),
                     elevation: 0,
                   ),
-                  child: const Text(AppString.submitRequest)
+                  child: widget.isFromAdmin? const Text(AppString.saveChanges)
+                      .mediumBold(AppColor.white):const Text(AppString.submitRequest)
                       .mediumBold(AppColor.white),
                 ),
               ),

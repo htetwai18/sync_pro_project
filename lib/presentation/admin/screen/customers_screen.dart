@@ -9,6 +9,7 @@ import 'package:sync_pro/config/routing.dart';
 import 'package:sync_pro/presentation/admin/display_models/customer_item_display_model.dart';
 import 'package:sync_pro/presentation/admin/screen/add_customer_screen.dart';
 import 'package:sync_pro/presentation/admin/widgets/customer_list_item.dart';
+import 'package:sync_pro/presentation/customer/screen/customer_profile_screen.dart';
 
 class CustomersScreen extends StatefulWidget {
   const CustomersScreen({super.key});
@@ -77,7 +78,10 @@ class _CustomersScreenState extends State<CustomersScreen> {
                 return CustomerListItem(
                     item: item,
                     onTap: () {
-                      Routing.transition(context, const AddCustomerScreen());
+                      Routing.transition(
+                        context,
+                        const CustomerProfileScreen(isFromAdmin: true,),
+                      );
                     });
               },
             ),
@@ -85,7 +89,12 @@ class _CustomersScreenState extends State<CustomersScreen> {
         ],
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          Routing.transition(
+            context,
+            const AddCustomerScreen(),
+          );
+        },
         backgroundColor: AppColor.blueStatusInner,
         foregroundColor: AppColor.white,
         child: const Icon(Icons.add),

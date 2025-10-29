@@ -29,7 +29,7 @@ class _BottomNavigationCustomerState extends State<BottomNavigationCustomer> {
       const CustomerDashboardScreen(),
       const CustomerBuildingsScreen(),
       const CustomerServiceListScreen(),
-      const CustomerProfileScreen(),
+      const CustomerProfileScreen(isFromAdmin: false,),
       const InvoicesCustomerScreen(),
     ];
   }
