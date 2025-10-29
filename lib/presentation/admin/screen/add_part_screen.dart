@@ -78,6 +78,7 @@ class _AddPartScreenState extends State<AddPartScreen> {
               ),
               child: DropdownButtonFormField<String>(
                 value: _warehouse,
+                style: TextStyle(color: AppColor.white),
                 decoration: const InputDecoration(
                   border: InputBorder.none,
                   contentPadding: EdgeInsets.symmetric(
