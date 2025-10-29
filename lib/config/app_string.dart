@@ -170,6 +170,13 @@ class AppString {
   static const String totalAmount = "Total Amount";
   static const String generateInvoice = "Generate Invoice";
 
+  // Warehouse hints
+  static const String hintWarehouseName = "Enter warehouse name";
+  static const String hintWarehouseCode = "Enter code";
+  static const String hintWarehouseLocation = "Enter location";
+  static const String hintContactNameOptional = "Enter contact name";
+  static const String hintContactPhoneOptional = "Enter contact phone";
+
   // Parts / Inventory
   static const String parts = "Parts";
   static const String searchByNameOrNumber = "Search by name or number";

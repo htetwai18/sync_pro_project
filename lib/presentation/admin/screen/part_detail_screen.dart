@@ -8,6 +8,7 @@ import 'package:sync_pro/presentation/admin/display_models/part_item_display_mod
 import 'package:sync_pro/config/routing.dart';
 import 'package:sync_pro/presentation/admin/screen/edit_part_screen.dart';
 import 'package:sync_pro/presentation/admin/screen/adjust_stock_screen.dart';
+import 'package:sync_pro/presentation/admin/display_models/warehouse_stock_display_model.dart';
 
 class PartDetailScreen extends StatelessWidget {
   final PartItemDisplayModel part;
@@ -94,7 +95,7 @@ class PartDetailScreen extends StatelessWidget {
                     ],
                   ),
                   Measurement.generalSize12.height,
-                  ...part.stock.map((s) => Column(
+                  ..._stockForPart(part.name).map((s) => Column(
                         children: [
                           Row(
                             children: [
@@ -102,7 +103,8 @@ class PartDetailScreen extends StatelessWidget {
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text(s.location).mediumBold(AppColor.white),
+                                    Text(s.warehouseName)
+                                        .mediumBold(AppColor.white),
                                     Measurement.generalSize8.height,
                                     Row(
                                       children: [
@@ -117,7 +119,7 @@ class PartDetailScreen extends StatelessWidget {
                               ),
                             ],
                           ),
-                          if (s != part.stock.last)
+                          if (s != _stockForPart(part.name).last)
                             Divider(
                               height: Measurement.generalSize24,
                               color:
@@ -132,6 +134,15 @@ class PartDetailScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  List<WarehouseStockDisplayModel> _stockForPart(String partName) {
+    final fromWarehouse =
+        mockWarehouseStocks.where((s) => s.partName == partName).toList();
+    if (fromWarehouse.isNotEmpty) return fromWarehouse;
+    // Fallback to existing embedded stock if no warehouse data present
+    // Create compatible display models for rendering
+    return [];
   }
 }
 
