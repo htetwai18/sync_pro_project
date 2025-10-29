@@ -69,14 +69,15 @@ class PartDetailScreen extends StatelessWidget {
                     children: [
                       const Text(AppString.inventoryStock)
                           .largeBold(AppColor.white),
+                      if(part.stock.isNotEmpty)
                       TextButton(
                         onPressed: () {
                           Routing.transition(
                             context,
                             AdjustStockScreen(
+                              partId: part.id,
                               partName: part.name,
                               partNumber: part.number,
-                              currentQty: part.onHand,
                             ),
                           );
                         },

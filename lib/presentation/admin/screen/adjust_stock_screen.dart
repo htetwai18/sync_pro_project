@@ -5,22 +5,24 @@ import 'package:sync_pro/config/app_string.dart';
 import 'package:sync_pro/config/extension.dart';
 import 'package:sync_pro/config/measurement.dart';
 
+import 'package:sync_pro/presentation/admin/display_models/warehouse_stock_display_model.dart';
+
 class AdjustStockScreen extends StatefulWidget {
+  final String partId;
   final String partName;
   final String partNumber;
-  final int currentQty;
   const AdjustStockScreen(
       {super.key,
+      required this.partId,
       required this.partName,
-      required this.partNumber,
-      required this.currentQty});
+      required this.partNumber});
 
   @override
   State<AdjustStockScreen> createState() => _AdjustStockScreenState();
 }
 
 class _AdjustStockScreenState extends State<AdjustStockScreen> {
-  String? _location = 'Warehouse A';
+  String? _warehouseId;
   final TextEditingController _newQtyController = TextEditingController();
   final TextEditingController _reasonController = TextEditingController();
 
@@ -33,6 +35,18 @@ class _AdjustStockScreenState extends State<AdjustStockScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final options =
+        mockWarehouseStocks.where((s) => s.partId == widget.partId).toList();
+    _warehouseId ??= options.isNotEmpty ? options.first.warehouseId : null;
+    final currentQty = options
+        .firstWhere((s) => s.warehouseId == _warehouseId,
+            orElse: () => const WarehouseStockDisplayModel(
+                warehouseId: '',
+                warehouseName: '',
+                partId: '',
+                partName: '',
+                quantity: 0))
+        .quantity;
     return Scaffold(
       backgroundColor: AppColor.background,
       appBar: getAppBar(title: AppString.adjustStock, context: context),
@@ -49,7 +63,7 @@ class _AdjustStockScreenState extends State<AdjustStockScreen> {
                 Text('${widget.partNumber} ${widget.partName}')
                     .mediumBold(AppColor.white),
                 Measurement.generalSize8.height,
-                Text('${AppString.currentQuantity}: ${widget.currentQty}')
+                Text('${AppString.currentQuantity}: $currentQty')
                     .smallNormal(AppColor.grey),
               ],
             ),
@@ -62,7 +76,7 @@ class _AdjustStockScreenState extends State<AdjustStockScreen> {
                 borderRadius: Measurement.generalSize12.allRadius,
               ),
               child: DropdownButtonFormField<String>(
-                value: _location,
+                value: _warehouseId,
                 decoration: const InputDecoration(
                   border: InputBorder.none,
                   contentPadding: EdgeInsets.symmetric(
@@ -72,19 +86,14 @@ class _AdjustStockScreenState extends State<AdjustStockScreen> {
                 ),
                 dropdownColor: AppColor.blueField,
                 iconEnabledColor: AppColor.grey,
-                items: [
-                  DropdownMenuItem(
-                    value: 'Warehouse A',
-                    child:
-                        const Text('Warehouse A').mediumNormal(AppColor.grey),
-                  ),
-                  DropdownMenuItem(
-                    value: 'Engineer Van 5',
-                    child: const Text('Engineer Van 5')
-                        .mediumNormal(AppColor.grey),
-                  ),
-                ],
-                onChanged: (v) => setState(() => _location = v),
+                items: options
+                    .map((e) => DropdownMenuItem<String>(
+                          value: e.warehouseId,
+                          child:
+                              Text(e.warehouseName).mediumNormal(AppColor.grey),
+                        ))
+                    .toList(),
+                onChanged: (v) => setState(() => _warehouseId = v),
               ),
             ),
             Measurement.generalSize16.height,
@@ -117,7 +126,18 @@ class _AdjustStockScreenState extends State<AdjustStockScreen> {
                     borderRadius: Measurement.generalSize12.allRadius,
                   ),
                 ),
-                onPressed: () {},
+                onPressed: () {
+                  final qty = int.tryParse(_newQtyController.text.trim());
+                  if (_warehouseId == null || qty == null) return;
+                  final idx = mockWarehouseStocks.indexWhere((s) =>
+                      s.warehouseId == _warehouseId &&
+                      s.partId == widget.partId);
+                  if (idx != -1) {
+                    mockWarehouseStocks[idx] =
+                        mockWarehouseStocks[idx].copyWith(quantity: qty);
+                    Navigator.pop(context, true);
+                  }
+                },
                 child: const Text(AppString.saveAdjustment)
                     .mediumBold(AppColor.white),
               ),
