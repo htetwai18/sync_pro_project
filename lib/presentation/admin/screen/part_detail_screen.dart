@@ -95,7 +95,7 @@ class PartDetailScreen extends StatelessWidget {
                     ],
                   ),
                   Measurement.generalSize12.height,
-                  ..._stockForPart(part.name).map((s) => Column(
+                  ..._stockForPart(part.id).map((s) => Column(
                         children: [
                           Row(
                             children: [
@@ -119,7 +119,7 @@ class PartDetailScreen extends StatelessWidget {
                               ),
                             ],
                           ),
-                          if (s != _stockForPart(part.name).last)
+                          if (s != _stockForPart(part.id).last)
                             Divider(
                               height: Measurement.generalSize24,
                               color:
@@ -136,9 +136,9 @@ class PartDetailScreen extends StatelessWidget {
     );
   }
 
-  List<WarehouseStockDisplayModel> _stockForPart(String partName) {
+  List<WarehouseStockDisplayModel> _stockForPart(String partId) {
     final fromWarehouse =
-        mockWarehouseStocks.where((s) => s.partName == partName).toList();
+        mockWarehouseStocks.where((s) => s.partId == partId).toList();
     if (fromWarehouse.isNotEmpty) return fromWarehouse;
     // Fallback to existing embedded stock if no warehouse data present
     // Create compatible display models for rendering

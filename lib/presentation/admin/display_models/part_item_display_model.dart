@@ -1,4 +1,5 @@
 class PartItemDisplayModel {
+  final String id;
   final String name;
   final String number;
   final int onHand;
@@ -8,6 +9,7 @@ class PartItemDisplayModel {
   final List<PartStockLocation> stock;
 
   const PartItemDisplayModel({
+    required this.id,
     required this.name,
     required this.number,
     required this.onHand,
@@ -25,6 +27,7 @@ class PartStockLocation {
 
 final List<PartItemDisplayModel> mockParts = [
   const PartItemDisplayModel(
+    id: 'P001',
     name: 'Widget A',
     number: '#12345',
     onHand: 100,
@@ -34,6 +37,7 @@ final List<PartItemDisplayModel> mockParts = [
     ],
   ),
   const PartItemDisplayModel(
+    id: 'P002',
     name: 'Widget B',
     number: '#12344',
     onHand: 100,
@@ -43,71 +47,9 @@ final List<PartItemDisplayModel> mockParts = [
     ],
   ),
   const PartItemDisplayModel(
+    id: 'P003',
     name: 'Widget C',
     number: '#12349',
-    onHand: 100,
-    stock: [
-      PartStockLocation(location: 'Warehouse A', quantity: 15),
-      PartStockLocation(location: 'Engineer Van 5', quantity: 5)
-    ],
-  ),
-  const PartItemDisplayModel(
-    name: 'Widget A',
-    number: '#12345',
-    onHand: 100,
-    stock: [
-      PartStockLocation(location: 'Warehouse A', quantity: 15),
-      PartStockLocation(location: 'Engineer Van 5', quantity: 5)
-    ],
-  ),
-  const PartItemDisplayModel(
-    name: 'Widget A',
-    number: '#12345',
-    onHand: 100,
-    stock: [
-      PartStockLocation(location: 'Warehouse A', quantity: 15),
-      PartStockLocation(location: 'Engineer Van 5', quantity: 5)
-    ],
-  ),
-  const PartItemDisplayModel(
-    name: 'Widget A',
-    number: '#12345',
-    onHand: 100,
-    stock: [
-      PartStockLocation(location: 'Warehouse A', quantity: 15),
-      PartStockLocation(location: 'Engineer Van 5', quantity: 5)
-    ],
-  ),
-  const PartItemDisplayModel(
-    name: 'Widget A',
-    number: '#12345',
-    onHand: 100,
-    stock: [
-      PartStockLocation(location: 'Warehouse A', quantity: 15),
-      PartStockLocation(location: 'Engineer Van 5', quantity: 5)
-    ],
-  ),
-  const PartItemDisplayModel(
-    name: 'Widget A',
-    number: '#12345',
-    onHand: 100,
-    stock: [
-      PartStockLocation(location: 'Warehouse A', quantity: 15),
-      PartStockLocation(location: 'Engineer Van 5', quantity: 5)
-    ],
-  ),
-  const PartItemDisplayModel(
-    name: 'Widget A',
-    number: '#12345',
-    onHand: 100,
-    stock: [
-      PartStockLocation(location: 'Warehouse A', quantity: 15),
-      PartStockLocation(location: 'Engineer Van 5', quantity: 5)
-    ],
-  ),
-  const PartItemDisplayModel(
-    name: 'Widget A',
-    number: '#12345',
     onHand: 100,
     stock: [
       PartStockLocation(location: 'Warehouse A', quantity: 15),
