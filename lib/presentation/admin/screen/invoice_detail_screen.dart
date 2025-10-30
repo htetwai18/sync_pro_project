@@ -6,17 +6,20 @@ import 'package:sync_pro/config/extension.dart';
 import 'package:sync_pro/config/measurement.dart';
 // enum colors are used indirectly via list screen; not needed here
 import 'package:sync_pro/presentation/admin/display_models/invoice_item_display_model.dart';
+import 'package:sync_pro/presentation/admin/display_models/invoice_line_item_model.dart';
 
 class InvoiceDetailScreen extends StatelessWidget {
   final bool isCustomer;
   final InvoiceModel invoice;
 
-  const InvoiceDetailScreen({super.key, required this.invoice,this.isCustomer = false});
+  const InvoiceDetailScreen(
+      {super.key, required this.invoice, this.isCustomer = false});
 
   @override
   Widget build(BuildContext context) {
-    final double subtotal = invoice.items.fold(0, (p, e) => p + e.total);
-    final double tax = subtotal * (invoice.taxPercent / 100);
+    final double subtotal = invoice.lineItems.fold(0, (p, e) => p + e.total);
+    final double taxPercent = 0;
+    final double tax = subtotal * (taxPercent / 100);
     final double total = subtotal + tax;
 
     return Scaffold(
@@ -41,7 +44,7 @@ class InvoiceDetailScreen extends StatelessWidget {
                   Text('${AppString.invoice} #${invoice.id}')
                       .xLargeBold(AppColor.white),
                   Measurement.generalSize4.height,
-                  Text(invoice.customer).smallNormal(AppColor.grey),
+                  Text(invoice.customer.name).smallNormal(AppColor.grey),
                   Measurement.generalSize16.height,
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -102,7 +105,7 @@ class InvoiceDetailScreen extends StatelessWidget {
                 children: [
                   const Text(AppString.lineItems).mediumBold(AppColor.white),
                   Measurement.generalSize16.height,
-                  ...invoice.items.map((e) => _LineItemRow(item: e)),
+                  ...invoice.lineItems.map((e) => _LineItemRow(item: e)),
                   Divider(
                       height: 1,
                       color: AppColor.greyPercentCircle.withOpacity(0.2)),
@@ -110,7 +113,7 @@ class InvoiceDetailScreen extends StatelessWidget {
                   _AmountRow(label: AppString.subtotal, value: subtotal),
                   _AmountRow(
                       label:
-                          '${AppString.tax} (${invoice.taxPercent.toStringAsFixed(0)}%)',
+                          '${AppString.tax} (${taxPercent.toStringAsFixed(0)}%)',
                       value: tax),
                   const SizedBox(height: 8),
                   _AmountRow(label: AppString.total, value: total, bold: true),
@@ -119,44 +122,47 @@ class InvoiceDetailScreen extends StatelessWidget {
             ),
 
             Measurement.generalSize16.height,
-            if(!isCustomer)
-            Row(
-              children: [
-                Expanded(
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: AppColor.blueStatusInner,
-                      foregroundColor: AppColor.white,
-                      padding: Measurement.generalSize16.horizontalIsToVertical,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: Measurement.generalSize12.allRadius,
+            if (!isCustomer)
+              Row(
+                children: [
+                  Expanded(
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: AppColor.blueStatusInner,
+                        foregroundColor: AppColor.white,
+                        padding:
+                            Measurement.generalSize16.horizontalIsToVertical,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: Measurement.generalSize12.allRadius,
+                        ),
                       ),
+                      onPressed: () {},
+                      child: const Text(AppString.markAsPaid)
+                          .mediumBold(AppColor.white),
                     ),
-                    onPressed: () {},
-                    child: const Text(AppString.markAsPaid)
-                        .mediumBold(AppColor.white),
                   ),
-                ),
-                Measurement.generalSize16.width,
-                Expanded(
-                  child: OutlinedButton(
-                    style: OutlinedButton.styleFrom(
-                      side: const BorderSide(color: AppColor.greyPercentCircle),
-                      foregroundColor: AppColor.white,
-                      backgroundColor: AppColor.blueField,
-                      padding: Measurement.generalSize16.horizontalIsToVertical,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: Measurement.generalSize12.allRadius,
+                  Measurement.generalSize16.width,
+                  Expanded(
+                    child: OutlinedButton(
+                      style: OutlinedButton.styleFrom(
+                        side:
+                            const BorderSide(color: AppColor.greyPercentCircle),
+                        foregroundColor: AppColor.white,
+                        backgroundColor: AppColor.blueField,
+                        padding:
+                            Measurement.generalSize16.horizontalIsToVertical,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: Measurement.generalSize12.allRadius,
+                        ),
                       ),
+                      onPressed: () {},
+                      child: const Text(AppString.voidInvoice)
+                          .mediumBold(AppColor.white),
                     ),
-                    onPressed: () {},
-                    child: const Text(AppString.voidInvoice)
-                        .mediumBold(AppColor.white),
                   ),
-                ),
-              ],
-            ),
-            if(isCustomer)
+                ],
+              ),
+            if (isCustomer)
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   backgroundColor: AppColor.blueStatusInner,
@@ -167,8 +173,7 @@ class InvoiceDetailScreen extends StatelessWidget {
                   ),
                 ),
                 onPressed: () {},
-                child: const Text(AppString.payNow)
-                    .mediumBold(AppColor.white),
+                child: const Text(AppString.payNow).mediumBold(AppColor.white),
               ),
           ],
         ),

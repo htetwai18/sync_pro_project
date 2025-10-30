@@ -10,6 +10,7 @@ import 'package:sync_pro/presentation/admin/display_models/user_item_display_mod
 import 'package:sync_pro/presentation/admin/widgets/user_list_item.dart';
 import 'package:sync_pro/presentation/admin/screen/add_user_screen.dart';
 import 'package:sync_pro/presentation/admin/screen/user_detail_screen.dart';
+import 'package:sync_pro/presentation/shared/mock.dart';
 
 class UsersScreen extends StatefulWidget {
   const UsersScreen({super.key});
@@ -30,11 +31,12 @@ class _UsersScreenState extends State<UsersScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final List<UserModel> filtered = mockUsers
+    final List<UserModel> all = [mockAdmin, mockEngineer];
+    final List<UserModel> filtered = all
         .where((e) =>
             e.name.toLowerCase().contains(_query.toLowerCase()) ||
             e.email.toLowerCase().contains(_query.toLowerCase()) ||
-            e.roleLabel.toLowerCase().contains(_query.toLowerCase()))
+            e.role.toLowerCase().contains(_query.toLowerCase()))
         .toList();
 
     return Scaffold(

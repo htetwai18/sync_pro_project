@@ -23,14 +23,15 @@ class UserDetailScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            CircleAvatar(
+            const CircleAvatar(
               radius: 52,
-              backgroundImage: NetworkImage(user.avatarUrl),
+              backgroundColor: AppColor.greyStatusOuter,
+              child: Icon(Icons.person, color: AppColor.white, size: 36),
             ),
             Measurement.generalSize16.height,
             Text(user.name).xLargeBold(AppColor.white),
             Measurement.generalSize8.height,
-            Text(user.roleLabel).mediumNormal(AppColor.grey),
+            Text(user.role).mediumNormal(AppColor.grey),
             Measurement.generalSize8.height,
             Text('${AppString.id}: ${user.id}').smallNormal(AppColor.grey),
             Measurement.generalSize24.height,
@@ -80,17 +81,21 @@ class UserDetailScreen extends StatelessWidget {
             _Divider(),
             _DetailRow(label: AppString.phone, value: user.phone),
             _Divider(),
-            _DetailRow(label: AppString.role, value: user.roleLabel),
+            _DetailRow(label: AppString.role, value: user.role),
             _Divider(),
-            _DetailRow(label: AppString.department, value: user.department),
+            _DetailRow(
+                label: AppString.department, value: user.department ?? ''),
             _Divider(),
-            _DetailRow(label: AppString.statusUpper, value: user.status),
+            // status not in current model; keep placeholder or remove
+            //_DetailRow(label: AppString.statusUpper, value: ''),
             _Divider(),
-            _DetailRow(label: AppString.locationLabel, value: user.specialization),
+            _DetailRow(
+                label: AppString.locationLabel,
+                value: user.specialization ?? ''),
             _Divider(),
-            _DetailRow(label: AppString.hireDate, value: user.hireDate),
+            _DetailRow(label: AppString.hireDate, value: user.hireDate ?? ''),
             _Divider(),
-            _DetailRow(label: AppString.lastLogin, value: user.lastLogin),
+            // lastLogin not in current model; omit
           ],
         ),
       ),

@@ -8,6 +8,7 @@ import 'package:sync_pro/presentation/admin/display_models/invoice_item_display_
 import 'package:sync_pro/presentation/admin/widgets/invoice_list_item.dart';
 import 'package:sync_pro/config/routing.dart';
 import 'package:sync_pro/presentation/admin/screen/invoice_detail_screen.dart';
+import 'package:sync_pro/presentation/shared/mock.dart';
 
 class InvoicesCustomerScreen extends StatefulWidget {
   const InvoicesCustomerScreen({super.key});
@@ -23,7 +24,7 @@ class _InvoicesCustomerScreenState extends State<InvoicesCustomerScreen> {
   @override
   Widget build(BuildContext context) {
     // TODO: Replace with repository/API once available. Using empty list to compile.
-    final List<InvoiceModel> all = [];
+    final List<InvoiceModel> all = mockInvoices;
     final List<InvoiceModel> filtered = all.where((e) {
       if (_statusFilter == AppString.all) return true;
       return e.status.toLowerCase() == _statusFilter.toLowerCase();

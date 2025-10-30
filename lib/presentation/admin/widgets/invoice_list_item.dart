@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sync_pro/config/app_color.dart';
 import 'package:sync_pro/config/app_string.dart';
-import 'package:sync_pro/config/enum.dart';
 import 'package:sync_pro/config/extension.dart';
 import 'package:sync_pro/config/measurement.dart';
 import 'package:sync_pro/presentation/admin/display_models/invoice_item_display_model.dart';
@@ -12,20 +11,43 @@ class InvoiceListItem extends StatelessWidget {
 
   const InvoiceListItem({super.key, required this.item, this.onTap});
 
-  String _statusLabel(InvoiceStatus status) {
+  String _statusLabel(String status) =>
+      status.isEmpty ? '' : status[0].toUpperCase() + status.substring(1);
+  Color _statusOuter(String status) {
     switch (status) {
-      case InvoiceStatus.paid:
-        return AppString.paid;
-      case InvoiceStatus.due:
-        return AppString.due;
-      case InvoiceStatus.overdue:
-        return AppString.overdue;
-      case InvoiceStatus.sent:
-        return AppString.sent;
-      case InvoiceStatus.voided:
-        return AppString.voided;
-      case InvoiceStatus.draft:
-        return AppString.draft;
+      case 'paid':
+        return AppColor.greenStatusOuter;
+      case 'sent':
+        return AppColor.blueStatusOuter;
+      case 'draft':
+        return AppColor.greyStatusOuter;
+      case 'voided':
+        return AppColor.redStatusOuter;
+      case 'due':
+        return AppColor.orangeStatusOuter;
+      case 'overdue':
+        return AppColor.redStatusOuter;
+      default:
+        return AppColor.blueField;
+    }
+  }
+
+  Color _statusInner(String status) {
+    switch (status) {
+      case 'paid':
+        return AppColor.greenStatusInner;
+      case 'sent':
+        return AppColor.blueStatusInner;
+      case 'draft':
+        return AppColor.greyStatusInner;
+      case 'voided':
+        return AppColor.redStatusInner;
+      case 'due':
+        return AppColor.orangeStatusInner;
+      case 'overdue':
+        return AppColor.redStatusInner;
+      default:
+        return AppColor.blueField;
     }
   }
 
@@ -53,7 +75,7 @@ class InvoiceListItem extends StatelessWidget {
                   Text('${AppString.invoice} #${item.id}')
                       .mediumBold(AppColor.white),
                   Measurement.generalSize8.height,
-                  Text(item.customer).smallNormal(AppColor.grey),
+                  Text(item.customer.name).smallNormal(AppColor.grey),
                   Measurement.generalSize4.height,
                   Text('${AppString.due}: ${item.dueDate}')
                       .smallNormal(AppColor.grey),
@@ -70,7 +92,7 @@ class InvoiceListItem extends StatelessWidget {
                 Container(
                   padding: Measurement.generalSize8.horizontalIsToVertical,
                   decoration: BoxDecoration(
-                    color: getInvoiceStatusOuterColor(item.status),
+                    color: _statusOuter(item.status),
                     borderRadius: Measurement.generalSize12.allRadius,
                   ),
                   child: Row(
@@ -80,7 +102,7 @@ class InvoiceListItem extends StatelessWidget {
                         width: 8,
                         height: 8,
                         decoration: BoxDecoration(
-                          color: getInvoiceStatusInnerColor(item.status),
+                          color: _statusInner(item.status),
                           shape: BoxShape.circle,
                         ),
                       ),

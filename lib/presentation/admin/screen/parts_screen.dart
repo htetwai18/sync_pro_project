@@ -5,11 +5,12 @@ import 'package:sync_pro/config/app_string.dart';
 import 'package:sync_pro/config/extension.dart';
 import 'package:sync_pro/config/measurement.dart';
 import 'package:sync_pro/config/app_drawer.dart';
-import 'package:sync_pro/presentation/admin/display_models/part_item_display_model.dart';
+// PartModel imported through shared mocks usage in this file
 import 'package:sync_pro/presentation/admin/widgets/part_list_item.dart';
 import 'package:sync_pro/config/routing.dart';
 import 'package:sync_pro/presentation/admin/screen/part_detail_screen.dart';
 import 'package:sync_pro/presentation/admin/screen/add_part_screen.dart';
+import 'package:sync_pro/presentation/shared/mock.dart';
 
 class PartsScreen extends StatefulWidget {
   const PartsScreen({super.key});

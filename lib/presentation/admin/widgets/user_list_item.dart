@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:sync_pro/config/app_color.dart';
-import 'package:sync_pro/config/enum.dart';
 import 'package:sync_pro/config/extension.dart';
 import 'package:sync_pro/config/measurement.dart';
 import 'package:sync_pro/presentation/admin/display_models/user_item_display_model.dart';
@@ -11,14 +10,16 @@ class UserListItem extends StatelessWidget {
 
   const UserListItem({super.key, required this.item, this.onTap});
 
-  Color _getRoleColor(UserRole role) {
+  Color _getRoleColor(String role) {
     switch (role) {
-      case UserRole.admin:
+      case 'admin':
         return AppColor.greenStatusInner;
-      case UserRole.engineer:
+      case 'engineer':
         return AppColor.blueStatusInner;
-      case UserRole.manager:
+      case 'manager':
         return AppColor.orangeStatusInner;
+      default:
+        return AppColor.blueField;
     }
   }
 
@@ -39,8 +40,8 @@ class UserListItem extends StatelessWidget {
           children: [
             CircleAvatar(
               radius: Measurement.generalSize20,
-              backgroundImage: NetworkImage(item.avatarUrl),
               backgroundColor: AppColor.greyStatusOuter,
+              child: const Icon(Icons.person, color: AppColor.white, size: 18),
             ),
             Measurement.generalSize12.width,
             Expanded(
@@ -59,7 +60,7 @@ class UserListItem extends StatelessWidget {
                 color: _getRoleColor(item.role),
                 borderRadius: Measurement.generalSize12.allRadius,
               ),
-              child: Text(item.roleLabel).smallBold(AppColor.white),
+              child: Text(item.role).smallBold(AppColor.white),
             ),
             Measurement.generalSize8.width,
             const Icon(

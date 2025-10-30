@@ -8,7 +8,7 @@ import 'package:sync_pro/presentation/admin/display_models/part_item_display_mod
 import 'package:sync_pro/config/routing.dart';
 import 'package:sync_pro/presentation/admin/screen/edit_part_screen.dart';
 import 'package:sync_pro/presentation/admin/screen/adjust_stock_screen.dart';
-import 'package:sync_pro/presentation/admin/display_models/warehouse_stock_display_model.dart';
+import 'package:sync_pro/presentation/admin/display_models/part_inventory_model.dart';
 
 class PartDetailScreen extends StatelessWidget {
   final PartModel part;
@@ -95,7 +95,7 @@ class PartDetailScreen extends StatelessWidget {
                     ],
                   ),
                   Measurement.generalSize12.height,
-                  ..._stockForPart(part.id).map((s) => Column(
+                  ..._stockForPart(part).map((s) => Column(
                         children: [
                           Row(
                             children: [
@@ -103,14 +103,14 @@ class PartDetailScreen extends StatelessWidget {
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text(s.warehouseName)
+                                    Text(s.location.name)
                                         .mediumBold(AppColor.white),
                                     Measurement.generalSize8.height,
                                     Row(
                                       children: [
                                         const Text('Quantity: ')
                                             .smallNormal(AppColor.grey),
-                                        Text(s.quantity.toString())
+                                        Text(s.quantityOnHand.toString())
                                             .smallBold(AppColor.white),
                                       ],
                                     ),
@@ -119,7 +119,7 @@ class PartDetailScreen extends StatelessWidget {
                               ),
                             ],
                           ),
-                          if (s != _stockForPart(part.id).last)
+                          if (s != _stockForPart(part).last)
                             Divider(
                               height: Measurement.generalSize24,
                               color:
@@ -136,13 +136,8 @@ class PartDetailScreen extends StatelessWidget {
     );
   }
 
-  List<WarehouseStockDisplayModel> _stockForPart(String partId) {
-    final fromWarehouse =
-        mockWarehouseStocks.where((s) => s.partId == partId).toList();
-    if (fromWarehouse.isNotEmpty) return fromWarehouse;
-    // Fallback to existing embedded stock if no warehouse data present
-    // Create compatible display models for rendering
-    return [];
+  List<PartInventoryModel> _stockForPart(PartModel p) {
+    return p.stockLevels ?? const [];
   }
 }
 

@@ -6,10 +6,10 @@ import 'package:sync_pro/config/extension.dart';
 import 'package:sync_pro/config/measurement.dart';
 import 'package:sync_pro/config/app_drawer.dart';
 import 'package:sync_pro/config/routing.dart';
-import 'package:sync_pro/presentation/admin/display_models/customer_item_display_model.dart';
 import 'package:sync_pro/presentation/admin/screen/add_customer_screen.dart';
 import 'package:sync_pro/presentation/admin/widgets/customer_list_item.dart';
 import 'package:sync_pro/presentation/customer/screen/customer_profile_screen.dart';
+import 'package:sync_pro/presentation/shared/mock.dart';
 
 class CustomersScreen extends StatefulWidget {
   const CustomersScreen({super.key});
@@ -30,7 +30,8 @@ class _CustomersScreenState extends State<CustomersScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final filtered = mockCustomers
+    final all = [mockCustomer];
+    final filtered = all
         .where((c) =>
             c.name.toLowerCase().contains(_query.toLowerCase()) ||
             c.phone.toLowerCase().contains(_query.toLowerCase()))
@@ -80,7 +81,9 @@ class _CustomersScreenState extends State<CustomersScreen> {
                     onTap: () {
                       Routing.transition(
                         context,
-                        const CustomerProfileScreen(isFromAdmin: true,),
+                        const CustomerProfileScreen(
+                          isFromAdmin: true,
+                        ),
                       );
                     });
               },

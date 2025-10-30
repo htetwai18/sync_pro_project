@@ -4,7 +4,6 @@ import 'package:sync_pro/config/app_color.dart';
 import 'package:sync_pro/config/app_string.dart';
 import 'package:sync_pro/config/extension.dart';
 import 'package:sync_pro/config/measurement.dart';
-import 'package:sync_pro/config/enum.dart';
 import 'package:sync_pro/presentation/admin/display_models/user_item_display_model.dart';
 
 class EditUserScreen extends StatefulWidget {
@@ -19,7 +18,7 @@ class _EditUserScreenState extends State<EditUserScreen> {
   late final TextEditingController _nameController;
   late final TextEditingController _emailController;
   late final TextEditingController _phoneController;
-  UserRole _role = UserRole.engineer;
+  String _role = 'engineer';
   String _status = AppString.active;
 
   @override
@@ -29,7 +28,7 @@ class _EditUserScreenState extends State<EditUserScreen> {
     _emailController = TextEditingController(text: widget.user.email);
     _phoneController = TextEditingController(text: widget.user.phone);
     _role = widget.user.role;
-    _status = widget.user.status;
+    _status = 'Active';
   }
 
   @override
@@ -92,7 +91,7 @@ class _EditUserScreenState extends State<EditUserScreen> {
             const Text(AppString.role).mediumBold(AppColor.white),
             Measurement.generalSize8.height,
             _Field(
-              child: DropdownButtonFormField<UserRole>(
+              child: DropdownButtonFormField<String>(
                 value: _role,
                 decoration: const InputDecoration(
                   border: InputBorder.none,
@@ -104,22 +103,13 @@ class _EditUserScreenState extends State<EditUserScreen> {
                 iconEnabledColor: AppColor.grey,
                 style: Measurement.mediumFont
                     .textStyle(AppColor.white, Measurement.font400),
-                items: [
+                items: const [
                   DropdownMenuItem(
-                    value: UserRole.admin,
-                    child: const Text(AppString.adminRole)
-                        .mediumNormal(AppColor.white),
-                  ),
+                      value: 'admin', child: Text(AppString.adminRole)),
                   DropdownMenuItem(
-                    value: UserRole.engineer,
-                    child: const Text(AppString.engineerRole)
-                        .mediumNormal(AppColor.white),
-                  ),
+                      value: 'engineer', child: Text(AppString.engineerRole)),
                   DropdownMenuItem(
-                    value: UserRole.manager,
-                    child: const Text(AppString.managerRole)
-                        .mediumNormal(AppColor.white),
-                  ),
+                      value: 'manager', child: Text(AppString.managerRole)),
                 ],
                 onChanged: (val) => setState(() => _role = val ?? _role),
               ),

@@ -33,23 +33,23 @@ class ReportDetailScreen extends StatelessWidget {
             // Attachments
             const Text(AppString.attachments).mediumBold(AppColor.grey),
             Measurement.generalSize16.height,
-            ...item.attachmentUrls.map((url) => Padding(
+            Padding(
                   padding:
                       const EdgeInsets.only(bottom: Measurement.generalSize16),
                   child: ClipRRect(
                     borderRadius: Measurement.generalSize12.allRadius,
-                    child: Image.network(url, fit: BoxFit.cover),
+                    child: Image.network(item.attachmentUrl??"", fit: BoxFit.cover),
                   ),
-                )),
+                ),
             Measurement.generalSize24.height,
             // Task Details
             const Text(AppString.taskDetails).mediumBold(AppColor.grey),
             Measurement.generalSize16.height,
-            _DetailRow(label: AppString.taskId, value: item.taskId),
+            _DetailRow(label: AppString.taskId, value: item.task.id),
             _Divider(),
-            _DetailRow(label: AppString.engineer, value: item.author),
+            _DetailRow(label: AppString.engineer, value: item.submittedBy.name),
             _Divider(),
-            _DetailRow(label: AppString.date, value: item.date),
+            _DetailRow(label: AppString.date, value: item.submittedDate),
             _Divider(),
             _DetailRow(label: AppString.status, value: item.status),
 

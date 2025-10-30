@@ -9,6 +9,7 @@ import 'package:sync_pro/presentation/admin/display_models/task_item_display_mod
 import 'package:sync_pro/presentation/admin/widgets/task_list_item.dart';
 import 'package:sync_pro/presentation/admin/screen/create_task_screen.dart';
 import 'package:sync_pro/presentation/admin/screen/task_detail_screen.dart';
+import 'package:sync_pro/presentation/shared/mock.dart';
 
 class TasksScreen extends StatelessWidget {
   const TasksScreen({super.key});

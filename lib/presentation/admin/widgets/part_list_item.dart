@@ -41,7 +41,7 @@ class PartListItem extends StatelessWidget {
               children: [
                 Text(AppString.onHand).smallNormal(AppColor.grey),
                 Measurement.generalSize8.height,
-                Text(item.onHand.toString()).largeBold(AppColor.white),
+                Text(_onHand(item).toString()).largeBold(AppColor.white),
               ],
             )
           ],
@@ -50,3 +50,6 @@ class PartListItem extends StatelessWidget {
     );
   }
 }
+
+int _onHand(PartModel p) =>
+    p.stockLevels?.fold<int>(0, (prev, s) => prev + s.quantityOnHand) ?? 0;

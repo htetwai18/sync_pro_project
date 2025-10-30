@@ -7,6 +7,7 @@ import 'package:sync_pro/config/measurement.dart';
 import 'package:sync_pro/presentation/admin/display_models/invoice_item_display_model.dart';
 import 'package:sync_pro/presentation/admin/display_models/invoice_line_item_model.dart';
 import 'package:sync_pro/presentation/admin/widgets/invoice_line_item_tile.dart';
+import 'package:sync_pro/presentation/shared/mock.dart';
 
 class CreateInvoiceScreen extends StatefulWidget {
   const CreateInvoiceScreen({super.key});
@@ -18,14 +19,22 @@ class CreateInvoiceScreen extends StatefulWidget {
 class _CreateInvoiceScreenState extends State<CreateInvoiceScreen> {
   String? _selectedCustomer;
   DateTime? _dueDate;
-  final List<InvoiceLineItemModel> _items = [
-    const InvoiceLineItemModel(
-        name: 'Web Design Services', quantity: 1, unitPrice: 1000),
-    const InvoiceLineItemModel(
-        name: 'Hosting (1 year)', quantity: 1, unitPrice: 250),
-  ];
+  final List<InvoiceLineItemModel> _items = [];
+
+  late InvoiceModel _draftInvoice = InvoiceModel(
+    id: 'draft',
+    invoiceDate: _formatDate(DateTime.now()),
+    dueDate: '',
+    amount: 0,
+    status: 'draft',
+    customer: mockCustomer,
+    lineItems: const [],
+  );
 
   double get _total => _items.fold(0, (p, e) => p + e.total);
+
+  String _formatDate(DateTime d) =>
+      '${d.month.toString().padLeft(2, '0')}/${d.day.toString().padLeft(2, '0')}/${d.year}';
 
   Future<void> _openLineItemDialog({int? editIndex}) async {
     final isEdit = editIndex != null;
@@ -116,9 +125,11 @@ class _CreateInvoiceScreenState extends State<CreateInvoiceScreen> {
               onPressed: () {
                 if (formKey.currentState!.validate()) {
                   final item = InvoiceLineItemModel(
+                    id: DateTime.now().millisecondsSinceEpoch.toString(),
                     name: nameController.text.trim(),
                     quantity: int.parse(qtyController.text.trim()),
                     unitPrice: double.parse(priceController.text.trim()),
+                    invoice: _draftInvoice,
                   );
                   Navigator.pop(ctx, item);
                 }
@@ -216,14 +227,8 @@ class _CreateInvoiceScreenState extends State<CreateInvoiceScreen> {
                     .mediumNormal(AppColor.grey),
                 items: [
                   DropdownMenuItem(
-                    value: 'Tech Solutions Inc.',
-                    child: const Text('Tech Solutions Inc.')
-                        .smallNormal(AppColor.white),
-                  ),
-                  DropdownMenuItem(
-                    value: 'Global Innovations Ltd.',
-                    child: const Text('Global Innovations Ltd.')
-                        .smallNormal(AppColor.white),
+                    value: 'Acme Corp',
+                    child: const Text('Acme Corp').smallNormal(AppColor.white),
                   ),
                 ],
                 onChanged: (v) => setState(() => _selectedCustomer = v),
@@ -329,7 +334,28 @@ class _CreateInvoiceScreenState extends State<CreateInvoiceScreen> {
                     borderRadius: Measurement.generalSize12.allRadius,
                   ),
                 ),
-                onPressed: () {},
+                onPressed: () {
+                  final due = _dueDate != null ? _formatDate(_dueDate!) : '';
+                  final created = _formatDate(DateTime.now());
+                  final invoice = InvoiceModel(
+                    id: DateTime.now().millisecondsSinceEpoch.toString(),
+                    dueDate: due,
+                    amount: _total,
+                    status: 'sent',
+                    invoiceDate: created,
+                    customer: mockCustomer,
+                    lineItems: _items,
+                  );
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(
+                        'Invoice created: ${invoice.id}',
+                      ),
+                    ),
+                  );
+                  Navigator.pop(context);
+                },
+                onLongPress: null,
                 child: const Text(AppString.generateInvoice)
                     .mediumBold(AppColor.white),
               ),

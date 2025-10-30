@@ -64,7 +64,7 @@ class TaskDetailScreen extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('${AppString.assetID}: ${item.assetId}')
+                        Text('${AppString.assetID}: ${item.asset.id}')
                             .mediumBold(AppColor.white),
                         Measurement.generalSize4.height,
                         Text(item.title).smallNormal(AppColor.grey),
@@ -80,7 +80,7 @@ class TaskDetailScreen extends StatelessWidget {
             _TimelineTile(
               icon: Icons.radio_button_unchecked,
               title: AppString.taskCreated,
-              subtitle: _format(item.assignedDate),
+              subtitle: _format(item.requestDate),
             ),
             _TimelineDivider(),
             _TimelineTile(
@@ -97,7 +97,7 @@ class TaskDetailScreen extends StatelessWidget {
             ),
             Measurement.generalSize24.height,
             if (item.report != null)
-            const Text(AppString.serviceReport).mediumBold(AppColor.white),
+              const Text(AppString.serviceReport).mediumBold(AppColor.white),
             Measurement.generalSize12.height,
             if (item.report != null)
               InkWell(

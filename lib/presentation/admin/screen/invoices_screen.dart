@@ -6,13 +6,15 @@ import 'package:sync_pro/config/extension.dart';
 import 'package:sync_pro/config/measurement.dart';
 import 'package:sync_pro/config/app_drawer.dart';
 import 'package:sync_pro/presentation/admin/display_models/invoice_item_display_model.dart';
+// Optionally import shared mocks when available
+// import 'package:sync_pro/presentation/shared/mock.dart';
 import 'package:sync_pro/presentation/admin/widgets/invoice_list_item.dart';
 import 'package:sync_pro/config/routing.dart';
 import 'package:sync_pro/presentation/admin/screen/invoice_detail_screen.dart';
 import 'package:sync_pro/presentation/admin/screen/create_invoice_screen.dart';
+import 'package:sync_pro/presentation/shared/mock.dart';
 
 class InvoicesScreen extends StatefulWidget {
-
   const InvoicesScreen({super.key});
 
   @override
@@ -25,10 +27,11 @@ class _InvoicesScreenState extends State<InvoicesScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final List<InvoiceModel> filtered = mockInvoices.where((e) {
+    final List<InvoiceModel> all = mockInvoices;
+    final List<InvoiceModel> filtered = all.where((e) {
       // simple status filter demo
       if (_statusFilter == 'All') return true;
-      return e.status.name.toLowerCase() == _statusFilter.toLowerCase();
+      return e.status.toLowerCase() == _statusFilter.toLowerCase();
     }).toList();
 
     return Scaffold(
@@ -87,7 +90,7 @@ class _InvoicesScreenState extends State<InvoicesScreen> {
           ),
         ],
       ),
-      floatingActionButton:FloatingActionButton(
+      floatingActionButton: FloatingActionButton(
         onPressed: () {
           Routing.transition(context, const CreateInvoiceScreen());
         },

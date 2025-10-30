@@ -3,10 +3,11 @@ import 'package:sync_pro/config/app_bar.dart';
 import 'package:sync_pro/config/app_color.dart';
 import 'package:sync_pro/config/extension.dart';
 import 'package:sync_pro/config/measurement.dart';
-import 'package:sync_pro/config/routing.dart';
 import 'package:sync_pro/presentation/admin/display_models/warehouse_display_model.dart';
 import 'package:sync_pro/presentation/admin/screen/create_edit_warehouse_screen.dart';
-import 'package:sync_pro/presentation/admin/screen/warehouse_detail_screen.dart';
+import 'package:sync_pro/presentation/shared/mock.dart';
+import 'package:sync_pro/presentation/admin/display_models/part_item_display_model.dart';
+import 'package:sync_pro/presentation/admin/display_models/part_inventory_model.dart';
 
 class WarehousesScreen extends StatefulWidget {
   const WarehousesScreen({super.key});
@@ -17,7 +18,6 @@ class WarehousesScreen extends StatefulWidget {
 
 class _WarehousesScreenState extends State<WarehousesScreen> {
   final TextEditingController _search = TextEditingController();
-  List<InventoryModel> _items = mockWarehouses;
 
   @override
   void dispose() {
@@ -27,7 +27,14 @@ class _WarehousesScreenState extends State<WarehousesScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final filtered = _items
+    // Derive unique inventories from part stock levels (mock data source)
+    final List<InventoryModel> items = {
+      for (final level in mockParts.expand(
+          (PartModel p) => (p.stockLevels ?? const <PartInventoryModel>[])))
+        level.location.id: level.location
+    }.values.toList();
+
+    final filtered = items
         .where((w) =>
             _search.text.isEmpty ||
             w.name.toLowerCase().contains(_search.text.toLowerCase()) ||
@@ -64,10 +71,7 @@ class _WarehousesScreenState extends State<WarehousesScreen> {
                   final w = filtered[idx];
                   return _WarehouseItem(
                     warehouse: w,
-                    onTap: () => Routing.transition(
-                      context,
-                      WarehouseDetailScreen(warehouse: w),
-                    ),
+                    onTap: () {},
                     onEdit: () async {
                       final updated = await Navigator.push(
                         context,

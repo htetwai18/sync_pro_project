@@ -30,7 +30,7 @@ class _CreateEditWarehouseScreenState extends State<CreateEditWarehouseScreen> {
     final w = widget.warehouse;
     _name = TextEditingController(text: w?.name ?? '');
     _code = TextEditingController(text: w?.code ?? '');
-    _location = TextEditingController(text: w?.specialization ?? '');
+    _location = TextEditingController(text: '');
     _contactName = TextEditingController(text: w?.contactName ?? '');
     _contactPhone = TextEditingController(text: w?.contactPhone ?? '');
     _isActive = w?.isActive ?? true;

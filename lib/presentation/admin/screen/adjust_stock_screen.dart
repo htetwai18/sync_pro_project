@@ -4,8 +4,10 @@ import 'package:sync_pro/config/app_color.dart';
 import 'package:sync_pro/config/app_string.dart';
 import 'package:sync_pro/config/extension.dart';
 import 'package:sync_pro/config/measurement.dart';
-
-import 'package:sync_pro/presentation/admin/display_models/warehouse_stock_display_model.dart';
+import 'package:sync_pro/presentation/shared/mock.dart';
+import 'package:sync_pro/presentation/admin/display_models/part_item_display_model.dart';
+import 'package:sync_pro/presentation/admin/display_models/part_inventory_model.dart';
+import 'package:sync_pro/presentation/admin/display_models/warehouse_display_model.dart';
 
 class AdjustStockScreen extends StatefulWidget {
   final String partId;
@@ -35,18 +37,41 @@ class _AdjustStockScreenState extends State<AdjustStockScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final options =
-        mockWarehouseStocks.where((s) => s.partId == widget.partId).toList();
-    _warehouseId ??= options.isNotEmpty ? options.first.warehouseId : null;
-    final currentQty = options
-        .firstWhere((s) => s.warehouseId == _warehouseId,
-            orElse: () => const WarehouseStockDisplayModel(
-                warehouseId: '',
-                warehouseName: '',
-                partId: '',
-                partName: '',
-                quantity: 0))
-        .quantity;
+    final PartModel part = mockParts.firstWhere(
+      (p) => p.id == widget.partId,
+      orElse: () => PartModel(
+        id: widget.partId,
+        name: widget.partName,
+        number: widget.partNumber,
+        manufacturer: '',
+        unitPrice: 0,
+        stockLevels: const [],
+      ),
+    );
+
+    final List<InventoryModel> inventories =
+        (part.stockLevels ?? const <PartInventoryModel>[])
+            .map((e) => e.location)
+            .toList();
+    _warehouseId ??= inventories.isNotEmpty ? inventories.first.id : null;
+
+    int currentQty = 0;
+    final levels = part.stockLevels ?? <PartInventoryModel>[];
+    final match = levels.firstWhere(
+      (s) => s.location.id == _warehouseId,
+      orElse: () => PartInventoryModel(
+        quantityOnHand: 0,
+        part: PartModel(
+            id: '', name: '', number: '', manufacturer: '', unitPrice: 0),
+        location: InventoryModel(
+            id: '',
+            name: '',
+            code: '',
+            isActive: true,
+            createdAt: DateTime.now()),
+      ),
+    );
+    currentQty = match.quantityOnHand;
     return Scaffold(
       backgroundColor: AppColor.background,
       appBar: getAppBar(title: AppString.adjustStock, context: context),
@@ -86,11 +111,10 @@ class _AdjustStockScreenState extends State<AdjustStockScreen> {
                 ),
                 dropdownColor: AppColor.blueField,
                 iconEnabledColor: AppColor.grey,
-                items: options
-                    .map((e) => DropdownMenuItem<String>(
-                          value: e.warehouseId,
-                          child:
-                              Text(e.warehouseName).mediumNormal(AppColor.grey),
+                items: inventories
+                    .map((inv) => DropdownMenuItem<String>(
+                          value: inv.id,
+                          child: Text(inv.name).mediumNormal(AppColor.grey),
                         ))
                     .toList(),
                 onChanged: (v) => setState(() => _warehouseId = v),
@@ -129,14 +153,14 @@ class _AdjustStockScreenState extends State<AdjustStockScreen> {
                 onPressed: () {
                   final qty = int.tryParse(_newQtyController.text.trim());
                   if (_warehouseId == null || qty == null) return;
-                  final idx = mockWarehouseStocks.indexWhere((s) =>
-                      s.warehouseId == _warehouseId &&
-                      s.partId == widget.partId);
-                  if (idx != -1) {
-                    mockWarehouseStocks[idx] =
-                        mockWarehouseStocks[idx].copyWith(quantity: qty);
-                    Navigator.pop(context, true);
-                  }
+                  // In this mock UI, we don't mutate immutable mocks.
+                  // Consider integrating with backend later.
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(AppString.saveAdjustment),
+                    ),
+                  );
+                  Navigator.pop(context, true);
                 },
                 child: const Text(AppString.saveAdjustment)
                     .mediumBold(AppColor.white),
