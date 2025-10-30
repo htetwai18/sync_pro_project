@@ -4,7 +4,6 @@ import 'package:sync_pro/config/app_string.dart';
 import 'package:sync_pro/config/extension.dart';
 import 'package:sync_pro/config/measurement.dart';
 import 'package:sync_pro/presentation/admin/screen/approval_queue_screen.dart';
-import 'package:sync_pro/presentation/admin/screen/reports_review_screen.dart';
 import 'package:sync_pro/presentation/admin/screen/tasks_screen.dart';
 import 'package:sync_pro/presentation/admin/screen/dashboard_screen.dart';
 import 'package:sync_pro/presentation/admin/screen/users_screen.dart';
@@ -44,12 +43,6 @@ class AppDrawer extends StatelessWidget {
               title: const Text(AppString.approvalQueue)
                   .mediumBold(AppColor.white),
               onTap: () => _navigate(context, const ApprovalQueueScreen()),
-            ),
-            ListTile(
-              leading: const Icon(Icons.article, color: AppColor.white),
-              title: const Text(AppString.reportsToBeReviewed)
-                  .mediumBold(AppColor.white),
-              onTap: () => _navigate(context, const ReportsReviewScreen()),
             ),
             ListTile(
               leading: const Icon(Icons.task_alt, color: AppColor.white),

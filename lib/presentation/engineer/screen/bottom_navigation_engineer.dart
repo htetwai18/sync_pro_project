@@ -22,7 +22,7 @@ class _BottomNavigationEngineerState extends State<BottomNavigationEngineer> {
   List<Widget> mobileScreens = [];
 
   //TODO : will replace with login engineer later
-  UserItemDisplayModel engineer = const UserItemDisplayModel(
+  UserModel engineer = const UserModel(
     name: 'Alice Johnson',
     email: 'alice.johnson@example.com',
     role: UserRole.engineer,

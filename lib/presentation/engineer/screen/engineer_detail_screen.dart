@@ -9,7 +9,7 @@ import 'package:sync_pro/config/routing.dart';
 import 'package:sync_pro/presentation/engineer/screen/edit_engineer_screen.dart';
 
 class EngineerDetailScreen extends StatelessWidget {
-  final UserItemDisplayModel user;
+  final UserModel user;
 
   const EngineerDetailScreen({super.key, required this.user});
 
@@ -87,7 +87,7 @@ class EngineerDetailScreen extends StatelessWidget {
             _Divider(),
             _DetailRow(label: AppString.statusUpper, value: user.status),
             _Divider(),
-            _DetailRow(label: AppString.locationLabel, value: user.location),
+            _DetailRow(label: AppString.locationLabel, value: user.specialization),
             _Divider(),
             _DetailRow(label: AppString.hireDate, value: user.hireDate),
             _Divider(),

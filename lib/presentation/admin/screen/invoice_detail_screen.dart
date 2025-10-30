@@ -9,7 +9,7 @@ import 'package:sync_pro/presentation/admin/display_models/invoice_item_display_
 
 class InvoiceDetailScreen extends StatelessWidget {
   final bool isCustomer;
-  final InvoiceItemDisplayModel invoice;
+  final InvoiceModel invoice;
 
   const InvoiceDetailScreen({super.key, required this.invoice,this.isCustomer = false});
 
@@ -196,7 +196,7 @@ class _KV extends StatelessWidget {
 }
 
 class _LineItemRow extends StatelessWidget {
-  final InvoiceLineItem item;
+  final InvoiceLineItemModel item;
   const _LineItemRow({required this.item});
 
   @override

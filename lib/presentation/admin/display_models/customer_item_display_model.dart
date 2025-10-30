@@ -1,16 +1,24 @@
-class CustomerItemDisplayModel {
+import 'package:sync_pro/presentation/admin/display_models/invoice_item_display_model.dart';
+import 'package:sync_pro/presentation/customer/display_models/building_item_display_model.dart';
+import 'package:sync_pro/presentation/customer/display_models/contact_display_model.dart';
+
+class CustomerModel {
+  final String id;
   final String name;
   final String phone;
+  final String email;
+  final List<ContactModel>? contacts;
+  final List<BuildingModel>? buildings;
+  final List<InvoiceModel>? invoices;
 
-  const CustomerItemDisplayModel({required this.name, required this.phone});
+  const CustomerModel({
+    required this.id,
+    required this.name,
+    required this.phone,
+    required this.email,
+    this.contacts,
+    this.buildings,
+    this.invoices,
+  });
 }
 
-const List<CustomerItemDisplayModel> mockCustomers = [
-  CustomerItemDisplayModel(name: 'Acme Corp', phone: '(555) 123-4567'),
-  CustomerItemDisplayModel(
-      name: 'Tech Solutions Inc.', phone: '(555) 987-6543'),
-  CustomerItemDisplayModel(name: 'Global Innovations', phone: '(555) 246-8013'),
-  CustomerItemDisplayModel(name: 'Dynamic Systems', phone: '(555) 135-7924'),
-  CustomerItemDisplayModel(
-      name: 'Pinnacle Enterprises', phone: '(555) 369-1212'),
-];

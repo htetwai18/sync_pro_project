@@ -7,7 +7,7 @@ import 'package:sync_pro/config/measurement.dart';
 import 'package:sync_pro/presentation/admin/display_models/part_item_display_model.dart';
 
 class EditPartScreen extends StatefulWidget {
-  final PartItemDisplayModel part;
+  final PartModel part;
   const EditPartScreen({super.key, required this.part});
 
   @override

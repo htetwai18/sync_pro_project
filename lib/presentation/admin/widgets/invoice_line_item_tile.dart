@@ -5,7 +5,7 @@ import 'package:sync_pro/config/measurement.dart';
 import 'package:sync_pro/presentation/admin/display_models/invoice_item_display_model.dart';
 
 class InvoiceLineItemTile extends StatelessWidget {
-  final InvoiceLineItem item;
+  final InvoiceLineItemModel item;
   final VoidCallback? onEdit;
   final VoidCallback? onDelete;
   const InvoiceLineItemTile(

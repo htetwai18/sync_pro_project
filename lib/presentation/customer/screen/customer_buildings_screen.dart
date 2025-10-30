@@ -96,7 +96,7 @@ class CustomerBuildingsScreen extends StatelessWidget {
 }
 
 class _BuildingItem extends StatelessWidget {
-  final BuildingItemDisplayModel building;
+  final BuildingModel building;
   final VoidCallback? onTap;
 
   const _BuildingItem({

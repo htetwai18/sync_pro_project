@@ -4,7 +4,9 @@ import 'package:sync_pro/config/app_color.dart';
 import 'package:sync_pro/config/app_string.dart';
 import 'package:sync_pro/config/extension.dart';
 import 'package:sync_pro/config/measurement.dart';
+import 'package:sync_pro/config/routing.dart';
 import 'package:sync_pro/presentation/admin/display_models/task_item_display_model.dart';
+import 'package:sync_pro/presentation/admin/screen/report_detail_screen.dart';
 
 class TaskDetailScreen extends StatelessWidget {
   final TaskItemDisplayModel item;
@@ -78,13 +80,13 @@ class TaskDetailScreen extends StatelessWidget {
             _TimelineTile(
               icon: Icons.radio_button_unchecked,
               title: AppString.taskCreated,
-              subtitle: _format(item.assignedAt),
+              subtitle: _format(item.assignedDate),
             ),
             _TimelineDivider(),
             _TimelineTile(
               icon: Icons.radio_button_unchecked,
               title: AppString.assignedToEngineer,
-              subtitle: _format(item.assignedAt),
+              subtitle: _format(item.assignedDate),
             ),
             _TimelineDivider(),
             _TimelineTile(
@@ -94,42 +96,52 @@ class TaskDetailScreen extends StatelessWidget {
               subtitle: _format(item.completedDate),
             ),
             Measurement.generalSize24.height,
+            if (item.report != null)
             const Text(AppString.serviceReport).mediumBold(AppColor.white),
             Measurement.generalSize12.height,
-            Container(
-              padding: Measurement.generalSize16.horizontalIsToVertical,
-              decoration: BoxDecoration(
-                color: AppColor.blueField,
-                borderRadius: Measurement.generalSize12.allRadius,
-              ),
-              child: Row(
-                children: [
-                  Container(
-                    width: Measurement.generalSize48,
-                    height: Measurement.generalSize48,
-                    decoration: BoxDecoration(
-                      color: AppColor.blueStatusOuter,
-                      borderRadius: Measurement.generalSize10.allRadius,
-                    ),
-                    child: const Icon(Icons.description,
-                        color: AppColor.blueStatusInner),
+            if (item.report != null)
+              InkWell(
+                onTap: () {
+                  Routing.transition(
+                    context,
+                    ReportDetailScreen(item: item.report!),
+                  );
+                },
+                child: Container(
+                  padding: Measurement.generalSize16.horizontalIsToVertical,
+                  decoration: BoxDecoration(
+                    color: AppColor.blueField,
+                    borderRadius: Measurement.generalSize12.allRadius,
                   ),
-                  Measurement.generalSize12.width,
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Text(AppString.viewReport)
-                            .mediumBold(AppColor.white),
-                        Measurement.generalSize4.height,
-                        Text('${AppString.submittedOn} ${_format(item.completedDate).split(' ').first}')
-                            .smallNormal(AppColor.grey),
-                      ],
-                    ),
+                  child: Row(
+                    children: [
+                      Container(
+                        width: Measurement.generalSize48,
+                        height: Measurement.generalSize48,
+                        decoration: BoxDecoration(
+                          color: AppColor.blueStatusOuter,
+                          borderRadius: Measurement.generalSize10.allRadius,
+                        ),
+                        child: const Icon(Icons.description,
+                            color: AppColor.blueStatusInner),
+                      ),
+                      Measurement.generalSize12.width,
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text(AppString.viewReport)
+                                .mediumBold(AppColor.white),
+                            Measurement.generalSize4.height,
+                            Text('${AppString.submittedOn} ${_format(item.completedDate).split(' ').first}')
+                                .smallNormal(AppColor.grey),
+                          ],
+                        ),
+                      ),
+                    ],
                   ),
-                ],
+                ),
               ),
-            ),
           ],
         ),
       ),

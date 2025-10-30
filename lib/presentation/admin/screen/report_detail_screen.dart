@@ -7,7 +7,7 @@ import 'package:sync_pro/config/measurement.dart';
 import 'package:sync_pro/presentation/admin/display_models/report_item_display_model.dart';
 
 class ReportDetailScreen extends StatelessWidget {
-  final ReportItemDisplayModel item;
+  final ReportModel item;
 
   const ReportDetailScreen({super.key, required this.item});
 

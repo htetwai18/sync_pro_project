@@ -9,7 +9,7 @@ import 'package:sync_pro/config/routing.dart';
 import 'package:sync_pro/presentation/admin/screen/edit_user_screen.dart';
 
 class UserDetailScreen extends StatelessWidget {
-  final UserItemDisplayModel user;
+  final UserModel user;
 
   const UserDetailScreen({super.key, required this.user});
 
@@ -86,7 +86,7 @@ class UserDetailScreen extends StatelessWidget {
             _Divider(),
             _DetailRow(label: AppString.statusUpper, value: user.status),
             _Divider(),
-            _DetailRow(label: AppString.locationLabel, value: user.location),
+            _DetailRow(label: AppString.locationLabel, value: user.specialization),
             _Divider(),
             _DetailRow(label: AppString.hireDate, value: user.hireDate),
             _Divider(),

@@ -181,7 +181,7 @@ class _CustomerServiceListScreenState extends State<CustomerServiceListScreen>
     );
   }
 
-  void _showServiceRequestDetails(TaskDisplayModel request) {
+  void _showServiceRequestDetails(TaskOrRequestedServiceModel request) {
     showModalBottomSheet(
       elevation: 0.0,
       context: context,
@@ -196,7 +196,7 @@ class _CustomerServiceListScreenState extends State<CustomerServiceListScreen>
 }
 
 class _ServiceRequestCard extends StatelessWidget {
-  final TaskDisplayModel request;
+  final TaskOrRequestedServiceModel request;
   final VoidCallback? onTap;
 
   const _ServiceRequestCard({
@@ -382,7 +382,7 @@ class _ServiceRequestCard extends StatelessWidget {
 }
 
 class _ServiceRequestDetailsSheet extends StatelessWidget {
-  final TaskDisplayModel request;
+  final TaskOrRequestedServiceModel request;
 
   const _ServiceRequestDetailsSheet({required this.request});
 

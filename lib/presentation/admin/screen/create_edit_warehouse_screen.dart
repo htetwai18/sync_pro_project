@@ -7,7 +7,7 @@ import 'package:sync_pro/config/measurement.dart';
 import 'package:sync_pro/presentation/admin/display_models/warehouse_display_model.dart';
 
 class CreateEditWarehouseScreen extends StatefulWidget {
-  final WarehouseDisplayModel? warehouse;
+  final InventoryModel? warehouse;
   const CreateEditWarehouseScreen({super.key, this.warehouse});
 
   @override
@@ -30,7 +30,7 @@ class _CreateEditWarehouseScreenState extends State<CreateEditWarehouseScreen> {
     final w = widget.warehouse;
     _name = TextEditingController(text: w?.name ?? '');
     _code = TextEditingController(text: w?.code ?? '');
-    _location = TextEditingController(text: w?.location ?? '');
+    _location = TextEditingController(text: w?.specialization ?? '');
     _contactName = TextEditingController(text: w?.contactName ?? '');
     _contactPhone = TextEditingController(text: w?.contactPhone ?? '');
     _isActive = w?.isActive ?? true;

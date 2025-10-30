@@ -6,7 +6,7 @@ import 'package:sync_pro/config/measurement.dart';
 import 'package:sync_pro/presentation/admin/display_models/report_item_display_model.dart';
 
 class ReportListItem extends StatelessWidget {
-  final ReportItemDisplayModel item;
+  final ReportModel item;
   final VoidCallback? onTap;
 
   const ReportListItem({super.key, required this.item, this.onTap});

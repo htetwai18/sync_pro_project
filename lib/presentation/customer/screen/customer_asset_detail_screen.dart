@@ -7,7 +7,7 @@ import 'package:sync_pro/config/measurement.dart';
 import 'package:sync_pro/presentation/customer/display_models/asset_item_display_model.dart';
 
 class CustomerAssetDetailScreen extends StatelessWidget {
-  final AssetItemDisplayModel asset;
+  final AssetModel asset;
 
   const CustomerAssetDetailScreen({
     super.key,

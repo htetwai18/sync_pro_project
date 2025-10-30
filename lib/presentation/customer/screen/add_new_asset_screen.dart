@@ -23,7 +23,7 @@ class _AddNewAssetScreenState extends State<AddNewAssetScreen> {
   String? _selectedBuilding;
   DateTime? _selectedInstallationDate;
 
-  final List<BuildingItemDisplayModel> _buildings = mockBuildings;
+  final List<BuildingModel> _buildings = mockBuildings;
 
   @override
   void dispose() {

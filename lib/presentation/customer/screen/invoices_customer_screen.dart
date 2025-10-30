@@ -23,7 +23,7 @@ class _InvoicesCustomerScreenState extends State<InvoicesCustomerScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final List<InvoiceItemDisplayModel> filtered = mockInvoices.where((e) {
+    final List<InvoiceModel> filtered = mockInvoices.where((e) {
       // simple status filter demo
       if (_statusFilter == AppString.all) return true;
       return e.status.name.toLowerCase() == _statusFilter.toLowerCase();

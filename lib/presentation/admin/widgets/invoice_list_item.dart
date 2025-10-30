@@ -7,7 +7,7 @@ import 'package:sync_pro/config/measurement.dart';
 import 'package:sync_pro/presentation/admin/display_models/invoice_item_display_model.dart';
 
 class InvoiceListItem extends StatelessWidget {
-  final InvoiceItemDisplayModel item;
+  final InvoiceModel item;
   final VoidCallback? onTap;
 
   const InvoiceListItem({super.key, required this.item, this.onTap});

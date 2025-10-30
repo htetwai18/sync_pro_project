@@ -30,7 +30,7 @@ class _UsersScreenState extends State<UsersScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final List<UserItemDisplayModel> filtered = mockUsers
+    final List<UserModel> filtered = mockUsers
         .where((e) =>
             e.name.toLowerCase().contains(_query.toLowerCase()) ||
             e.email.toLowerCase().contains(_query.toLowerCase()) ||

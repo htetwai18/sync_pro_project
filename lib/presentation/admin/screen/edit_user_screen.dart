@@ -8,7 +8,7 @@ import 'package:sync_pro/config/enum.dart';
 import 'package:sync_pro/presentation/admin/display_models/user_item_display_model.dart';
 
 class EditUserScreen extends StatefulWidget {
-  final UserItemDisplayModel user;
+  final UserModel user;
   const EditUserScreen({super.key, required this.user});
 
   @override

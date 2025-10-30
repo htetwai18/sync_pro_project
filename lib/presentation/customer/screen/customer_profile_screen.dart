@@ -170,7 +170,7 @@ class _InfoField extends StatelessWidget {
 }
 
 class _ContactCard extends StatelessWidget {
-  final ContactDisplayModel contact;
+  final ContactModel contact;
 
   const _ContactCard({
     required this.contact,

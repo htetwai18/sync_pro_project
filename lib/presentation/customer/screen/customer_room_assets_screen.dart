@@ -108,7 +108,7 @@ class CustomerRoomAssetsScreen extends StatelessWidget {
 }
 
 class _AssetItem extends StatelessWidget {
-  final AssetItemDisplayModel asset;
+  final AssetModel asset;
   final VoidCallback? onTap;
 
   const _AssetItem({

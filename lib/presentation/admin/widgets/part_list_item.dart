@@ -6,7 +6,7 @@ import 'package:sync_pro/config/measurement.dart';
 import 'package:sync_pro/presentation/admin/display_models/part_item_display_model.dart';
 
 class PartListItem extends StatelessWidget {
-  final PartItemDisplayModel item;
+  final PartModel item;
   final VoidCallback? onTap;
 
   const PartListItem({super.key, required this.item, this.onTap});

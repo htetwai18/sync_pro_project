@@ -28,8 +28,8 @@ class _RequestServiceScreenState extends State<RequestServiceScreen> {
   DateTime? _selectedPreferredDate;
   String? _selectedPreferredTime;
 
-  final List<BuildingItemDisplayModel> _buildings = mockBuildings;
-  final List<AssetItemDisplayModel> _assets = mockAssets;
+  final List<BuildingModel> _buildings = mockBuildings;
+  final List<AssetModel> _assets = mockAssets;
   final List<String> _timeSlots = [
     '8:00 AM',
     '9:00 AM',
@@ -44,7 +44,7 @@ class _RequestServiceScreenState extends State<RequestServiceScreen> {
   ];
 
   // Get assets for selected building
-  List<AssetItemDisplayModel> get _selectedBuildingAssets {
+  List<AssetModel> get _selectedBuildingAssets {
     if (_selectedBuilding == null) return [];
     return _assets
         .where((asset) => asset.buildingId == _selectedBuilding)

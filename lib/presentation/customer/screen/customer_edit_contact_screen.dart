@@ -7,7 +7,7 @@ import 'package:sync_pro/config/extension.dart';
 import 'package:sync_pro/config/measurement.dart';
 
 class CustomerEditContactScreen extends StatefulWidget {
-  final ContactDisplayModel contact;
+  final ContactModel contact;
   const CustomerEditContactScreen({super.key, required this.contact});
 
   @override

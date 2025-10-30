@@ -5,7 +5,7 @@ import 'package:sync_pro/config/measurement.dart';
 import 'package:sync_pro/presentation/admin/display_models/customer_item_display_model.dart';
 
 class CustomerListItem extends StatelessWidget {
-  final CustomerItemDisplayModel item;
+  final CustomerModel item;
   final VoidCallback? onTap;
 
   const CustomerListItem({super.key, required this.item, this.onTap});

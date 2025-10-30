@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sync_pro/config/app_color.dart';
+import 'package:sync_pro/config/app_string.dart';
 
 enum LoadingState { loading, success, error }
 
@@ -8,6 +9,61 @@ enum TaskStatus { notStarted, inProgress, completed, overdue }
 enum InvoiceStatus { paid, due, overdue, sent, voided, draft }
 
 enum UserRole { admin, engineer, manager }
+
+enum TaskPriority { low, medium, high, urgent }
+
+enum TaskType {
+  maintenance,
+  repair,
+  installation,
+  inspection,
+  emergency,
+  other
+}
+
+// Helper functions to get display strings
+String getTaskStatusText(TaskStatus status) {
+  switch (status) {
+    case TaskStatus.notStarted:
+      return AppString.pending;
+    case TaskStatus.inProgress:
+      return AppString.inProgress;
+    case TaskStatus.completed:
+      return AppString.completed;
+    case TaskStatus.overdue:
+      return AppString.overdue;
+  }
+}
+
+String getTaskPriorityText(TaskPriority priority) {
+  switch (priority) {
+    case TaskPriority.low:
+      return AppString.low;
+    case TaskPriority.medium:
+      return AppString.medium;
+    case TaskPriority.high:
+      return AppString.high;
+    case TaskPriority.urgent:
+      return AppString.urgent;
+  }
+}
+
+String getTaskTypeText(TaskType type) {
+  switch (type) {
+    case TaskType.maintenance:
+      return AppString.maintenance;
+    case TaskType.repair:
+      return AppString.repair;
+    case TaskType.installation:
+      return AppString.installation;
+    case TaskType.inspection:
+      return AppString.inspection;
+    case TaskType.emergency:
+      return AppString.emergency;
+    case TaskType.other:
+      return AppString.other;
+  }
+}
 
 Color getInvoiceStatusOuterColor(InvoiceStatus status) {
   switch (status) {

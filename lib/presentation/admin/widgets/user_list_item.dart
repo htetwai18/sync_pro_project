@@ -6,7 +6,7 @@ import 'package:sync_pro/config/measurement.dart';
 import 'package:sync_pro/presentation/admin/display_models/user_item_display_model.dart';
 
 class UserListItem extends StatelessWidget {
-  final UserItemDisplayModel item;
+  final UserModel item;
   final VoidCallback? onTap;
 
   const UserListItem({super.key, required this.item, this.onTap});

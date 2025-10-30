@@ -11,7 +11,7 @@ import 'package:sync_pro/presentation/admin/screen/adjust_stock_screen.dart';
 import 'package:sync_pro/presentation/admin/display_models/warehouse_stock_display_model.dart';
 
 class PartDetailScreen extends StatelessWidget {
-  final PartItemDisplayModel part;
+  final PartModel part;
   const PartDetailScreen({super.key, required this.part});
 
   @override
@@ -69,7 +69,6 @@ class PartDetailScreen extends StatelessWidget {
                     children: [
                       const Text(AppString.inventoryStock)
                           .largeBold(AppColor.white),
-                      if(part.stock.isNotEmpty)
                       TextButton(
                         onPressed: () {
                           Routing.transition(

@@ -85,7 +85,7 @@ class _EngineerTasksScreenState extends State<EngineerTasksScreen>
                           address: task.buildingName,
                           priority: task.priority.name,
                           scheduledAt: task.scheduledDate,
-                          assignedAt: task.assignedAt,
+                          assignedAt: task.assignedDate,
                         ),
                       );
                     },

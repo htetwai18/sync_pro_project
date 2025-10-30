@@ -17,7 +17,7 @@ class WarehousesScreen extends StatefulWidget {
 
 class _WarehousesScreenState extends State<WarehousesScreen> {
   final TextEditingController _search = TextEditingController();
-  List<WarehouseDisplayModel> _items = mockWarehouses;
+  List<InventoryModel> _items = mockWarehouses;
 
   @override
   void dispose() {
@@ -112,7 +112,7 @@ class _WarehousesScreenState extends State<WarehousesScreen> {
 }
 
 class _WarehouseItem extends StatelessWidget {
-  final WarehouseDisplayModel warehouse;
+  final InventoryModel warehouse;
   final VoidCallback onTap;
   final VoidCallback onEdit;
   const _WarehouseItem(

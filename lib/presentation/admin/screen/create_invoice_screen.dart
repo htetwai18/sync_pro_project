@@ -5,6 +5,7 @@ import 'package:sync_pro/config/app_string.dart';
 import 'package:sync_pro/config/extension.dart';
 import 'package:sync_pro/config/measurement.dart';
 import 'package:sync_pro/presentation/admin/display_models/invoice_item_display_model.dart';
+import 'package:sync_pro/presentation/admin/display_models/invoice_line_item_model.dart';
 import 'package:sync_pro/presentation/admin/widgets/invoice_line_item_tile.dart';
 
 class CreateInvoiceScreen extends StatefulWidget {
@@ -17,10 +18,10 @@ class CreateInvoiceScreen extends StatefulWidget {
 class _CreateInvoiceScreenState extends State<CreateInvoiceScreen> {
   String? _selectedCustomer;
   DateTime? _dueDate;
-  final List<InvoiceLineItem> _items = [
-    const InvoiceLineItem(
+  final List<InvoiceLineItemModel> _items = [
+    const InvoiceLineItemModel(
         name: 'Web Design Services', quantity: 1, unitPrice: 1000),
-    const InvoiceLineItem(
+    const InvoiceLineItemModel(
         name: 'Hosting (1 year)', quantity: 1, unitPrice: 250),
   ];
 
@@ -36,7 +37,7 @@ class _CreateInvoiceScreenState extends State<CreateInvoiceScreen> {
         text: existing != null ? existing.unitPrice.toStringAsFixed(2) : '');
     final formKey = GlobalKey<FormState>();
 
-    final result = await showDialog<InvoiceLineItem>(
+    final result = await showDialog<InvoiceLineItemModel>(
       context: context,
       builder: (ctx) {
         return AlertDialog(
@@ -114,7 +115,7 @@ class _CreateInvoiceScreenState extends State<CreateInvoiceScreen> {
               ),
               onPressed: () {
                 if (formKey.currentState!.validate()) {
-                  final item = InvoiceLineItem(
+                  final item = InvoiceLineItemModel(
                     name: nameController.text.trim(),
                     quantity: int.parse(qtyController.text.trim()),
                     unitPrice: double.parse(priceController.text.trim()),
