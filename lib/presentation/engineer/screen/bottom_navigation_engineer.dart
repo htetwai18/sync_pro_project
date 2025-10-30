@@ -6,6 +6,7 @@ import 'package:sync_pro/config/measurement.dart';
 import 'package:sync_pro/presentation/admin/display_models/user_item_display_model.dart';
 import 'package:sync_pro/presentation/engineer/screen/engineer_detail_screen.dart';
 import 'package:sync_pro/presentation/engineer/screen/engineer_tasks_screen.dart';
+import 'package:sync_pro/presentation/shared/mock.dart';
 
 class BottomNavigationEngineer extends StatefulWidget {
   const BottomNavigationEngineer({
@@ -21,19 +22,13 @@ class _BottomNavigationEngineerState extends State<BottomNavigationEngineer> {
   int currentIndex = 0;
   List<Widget> mobileScreens = [];
 
-  //TODO : will replace with login engineer later
-  UserModel engineer = const UserModel(
-    id: 'u008',
-    name: 'Alice Johnson',
-    email: 'alice.johnson@example.com',
-    role: 'Engineer', phone: '09765529310',
-  );
+
   @override
   void initState() {
     super.initState();
     mobileScreens = [
       const EngineerTasksScreen(),
-      EngineerDetailScreen(user: engineer),
+      const EngineerDetailScreen(user: mockEngineer),
     ];
   }
 

@@ -115,11 +115,11 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                   ),
                   onPressed: () {
-                     Routing.transition(context, const DashboardScreen());
+                     //Routing.transition(context, const DashboardScreen());
                     // Routing.transition(
                     //     context, const BottomNavigationEngineer());
-                    // Routing.transition(
-                    //     context, const BottomNavigationCustomer());
+                    Routing.transition(
+                        context, const BottomNavigationCustomer());
                   },
                   child: const Text(AppString.logIn).mediumBold(AppColor.white),
                 ),

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:sync_pro/config/app_bar.dart';
 import 'package:sync_pro/config/app_color.dart';
+import 'package:sync_pro/config/app_drawer.dart';
+import 'package:sync_pro/config/app_string.dart';
 import 'package:sync_pro/config/extension.dart';
 import 'package:sync_pro/config/measurement.dart';
 import 'package:sync_pro/presentation/admin/display_models/warehouse_display_model.dart';
@@ -43,7 +45,8 @@ class _WarehousesScreenState extends State<WarehousesScreen> {
 
     return Scaffold(
       backgroundColor: AppColor.background,
-      appBar: getAppBar(title: 'Warehouses', context: context),
+      drawer: const AppDrawer(),
+      appBar: getAppBarWithDrawer(title: AppString.warehouse, context: context),
       floatingActionButton: FloatingActionButton(
         backgroundColor: AppColor.blueStatusInner,
         onPressed: () async {

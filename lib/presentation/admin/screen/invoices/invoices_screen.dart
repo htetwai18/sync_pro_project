@@ -6,8 +6,6 @@ import 'package:sync_pro/config/extension.dart';
 import 'package:sync_pro/config/measurement.dart';
 import 'package:sync_pro/config/app_drawer.dart';
 import 'package:sync_pro/presentation/admin/display_models/invoice_item_display_model.dart';
-// Optionally import shared mocks when available
-// import 'package:sync_pro/presentation/shared/mock.dart';
 import 'package:sync_pro/presentation/admin/widgets/invoice_list_item.dart';
 import 'package:sync_pro/config/routing.dart';
 import 'package:sync_pro/presentation/admin/screen/invoices/invoice_detail_screen.dart';

@@ -171,6 +171,7 @@ class AppString {
   static const String generateInvoice = "Generate Invoice";
 
   // Warehouse hints
+  static const String warehouse = "Warehouse";
   static const String hintWarehouseName = "Enter warehouse name";
   static const String hintWarehouseCode = "Enter code";
   static const String hintWarehouseLocation = "Enter location";

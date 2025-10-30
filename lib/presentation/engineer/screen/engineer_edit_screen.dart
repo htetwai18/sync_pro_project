@@ -27,7 +27,7 @@ class _EngineerEditScreenState extends State<EngineerEditScreen> {
     _nameController = TextEditingController(text: widget.user.name);
     _emailController = TextEditingController(text: widget.user.email);
     _phoneController = TextEditingController(text: widget.user.phone);
-    _role = widget.user.role;
+    _role = (widget.user.role).toLowerCase();
     _status = 'Active';
   }
 
@@ -111,7 +111,7 @@ class _EngineerEditScreenState extends State<EngineerEditScreen> {
             Measurement.generalSize8.height,
             _Field(
               child: DropdownButtonFormField<String>(
-                value: _role,
+                value: const ['engineer'].contains(_role) ? _role : null,
                 decoration: const InputDecoration(
                   border: InputBorder.none,
                   contentPadding: EdgeInsets.symmetric(
