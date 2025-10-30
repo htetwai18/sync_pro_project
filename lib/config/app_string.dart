@@ -232,6 +232,7 @@ class AppString {
 
   // Customers
   static const String customers = "Customers";
+  static const String customerProfile = "Customer Profile";
   static const String searchCustomers = "Search customers";
 
   // Admin Customer Forms

@@ -9,18 +9,21 @@ import 'package:sync_pro/presentation/customer/screen/customer_profile_edit_scre
 import 'package:sync_pro/presentation/customer/screen/customer_contact_add_screen.dart';
 import 'package:sync_pro/presentation/customer/screen/customer_contact_edit_screen.dart';
 import 'package:sync_pro/presentation/customer/display_models/contact_display_model.dart';
+import 'package:sync_pro/presentation/admin/display_models/customer_item_display_model.dart';
 import 'package:sync_pro/presentation/shared/mock.dart';
 
 class CustomerProfileScreen extends StatelessWidget {
   final bool isFromAdmin;
-  const CustomerProfileScreen({super.key, required this.isFromAdmin});
+  final CustomerModel customer;
+  const CustomerProfileScreen(
+      {super.key, required this.isFromAdmin, required this.customer});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColor.background,
       appBar: getAppBar(
-        title: AppString.myAccount,
+        title: isFromAdmin ? AppString.customerProfile : AppString.myAccount,
         context: context,
         canBack: isFromAdmin ? true : false,
       ),
@@ -77,23 +80,23 @@ class CustomerProfileScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   // Company Name
-                  const _InfoField(
+                  _InfoField(
                     label: AppString.companyName,
-                    value: AppString.acmeCorp,
+                    value: customer.name,
                   ),
                   Measurement.generalSize16.height,
 
                   // Phone
-                  const _InfoField(
+                  _InfoField(
                     label: AppString.phoneLabel,
-                    value: AppString.phoneNumber,
+                    value: customer.phone,
                   ),
                   Measurement.generalSize16.height,
 
                   // Email
-                  const _InfoField(
+                  _InfoField(
                     label: AppString.emailLabel,
-                    value: AppString.supportEmail,
+                    value: customer.email,
                   ),
                   Measurement.generalSize16.width,
                 ],
@@ -132,10 +135,10 @@ class CustomerProfileScreen extends StatelessWidget {
             ListView.separated(
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
-              itemCount: mockContacts.length,
+              itemCount: (customer.contacts ?? mockContacts).length,
               separatorBuilder: (_, __) => Measurement.generalSize12.height,
               itemBuilder: (context, index) {
-                final contact = mockContacts[index];
+                final contact = (customer.contacts ?? mockContacts)[index];
                 return _ContactCard(contact: contact);
               },
             ),

@@ -81,8 +81,9 @@ class _CustomersScreenState extends State<CustomersScreen> {
                     onTap: () {
                       Routing.transition(
                         context,
-                        const CustomerProfileScreen(
+                        CustomerProfileScreen(
                           isFromAdmin: true,
+                          customer: item,
                         ),
                       );
                     });

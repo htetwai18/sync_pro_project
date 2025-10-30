@@ -7,6 +7,7 @@ import 'package:sync_pro/presentation/customer/screen/customer_profile_screen.da
 import 'package:sync_pro/presentation/customer/screen/customer_buildings_screen.dart';
 import 'package:sync_pro/presentation/customer/screen/customer_service_list_screen.dart';
 import 'package:sync_pro/presentation/customer/screen/customer_invoices_screen.dart';
+import 'package:sync_pro/presentation/shared/mock.dart';
 
 class BottomNavigationCustomer extends StatefulWidget {
   const BottomNavigationCustomer({
@@ -29,7 +30,7 @@ class _BottomNavigationCustomerState extends State<BottomNavigationCustomer> {
       const CustomerDashboardScreen(),
       const CustomerBuildingsScreen(),
       const CustomerServiceListScreen(),
-      const CustomerProfileScreen(isFromAdmin: false,),
+      CustomerProfileScreen(isFromAdmin: false, customer: mockCustomer),
       const CustomerInvoicesScreen(),
     ];
   }

@@ -4,17 +4,19 @@ import 'package:sync_pro/config/app_color.dart';
 import 'package:sync_pro/config/app_string.dart';
 import 'package:sync_pro/config/extension.dart';
 import 'package:sync_pro/config/measurement.dart';
-// PartModel is pulled via shared mocks; direct import not required here
 import 'package:sync_pro/presentation/shared/mock.dart';
+import 'package:sync_pro/presentation/admin/display_models/part_item_display_model.dart';
 
 class EngineerAddPartToTaskScreen extends StatefulWidget {
   const EngineerAddPartToTaskScreen({super.key});
 
   @override
-  State<EngineerAddPartToTaskScreen> createState() => _EngineerAddPartToTaskScreenState();
+  State<EngineerAddPartToTaskScreen> createState() =>
+      _EngineerAddPartToTaskScreenState();
 }
 
-class _EngineerAddPartToTaskScreenState extends State<EngineerAddPartToTaskScreen> {
+class _EngineerAddPartToTaskScreenState
+    extends State<EngineerAddPartToTaskScreen> {
   final TextEditingController _searchController = TextEditingController();
   late final List<int> _counts;
 
@@ -149,7 +151,15 @@ class _EngineerAddPartToTaskScreenState extends State<EngineerAddPartToTaskScree
                     borderRadius: Measurement.generalSize12.allRadius,
                   ),
                 ),
-                onPressed: () {},
+                onPressed: () {
+                  final selected = <PartModel>[];
+                  for (int i = 0; i < mockParts.length; i++) {
+                    if (_counts[i] > 0) {
+                      selected.add(mockParts[i]);
+                    }
+                  }
+                  Navigator.pop<List<PartModel>>(context, selected);
+                },
                 child:
                     const Text(AppString.addToTask).mediumBold(AppColor.white),
               ),

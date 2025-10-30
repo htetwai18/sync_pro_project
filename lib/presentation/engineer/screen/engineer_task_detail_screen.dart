@@ -6,9 +6,10 @@ import 'package:sync_pro/config/extension.dart';
 import 'package:sync_pro/config/measurement.dart';
 import 'package:sync_pro/config/routing.dart';
 import 'package:sync_pro/presentation/engineer/screen/engineer_add_part_to_task_screen.dart';
+import 'package:sync_pro/presentation/admin/display_models/part_item_display_model.dart';
 import 'package:sync_pro/presentation/engineer/screen/engineer_service_report_screen.dart';
 
-class EngineerTaskDetailScreen extends StatelessWidget {
+class EngineerTaskDetailScreen extends StatefulWidget {
   final String title, asset, assetName;
   final String status;
   final String description;
@@ -33,6 +34,14 @@ class EngineerTaskDetailScreen extends StatelessWidget {
   });
 
   @override
+  State<EngineerTaskDetailScreen> createState() =>
+      _EngineerTaskDetailScreenState();
+}
+
+class _EngineerTaskDetailScreenState extends State<EngineerTaskDetailScreen> {
+  final List<PartModel> _addedParts = [];
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColor.background,
@@ -43,7 +52,7 @@ class EngineerTaskDetailScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // Title and status
-            Text(title).xLargeBold(AppColor.white),
+            Text(widget.title).xLargeBold(AppColor.white),
             Measurement.generalSize24.height,
             Row(
               children: [
@@ -52,12 +61,12 @@ class EngineerTaskDetailScreen extends StatelessWidget {
                 Container(
                   padding: Measurement.generalSize8.horizontalIsToVertical,
                   decoration: BoxDecoration(
-                    color: _statusColor(status).withOpacity(0.15),
+                    color: _statusColor(widget.status).withOpacity(0.15),
                     borderRadius: Measurement.generalSize12.allRadius,
                   ),
                   child: Text(
-                    _statusLabel(status),
-                  ).smallBold(_statusColor(status)),
+                    _statusLabel(widget.status),
+                  ).smallBold(_statusColor(widget.status)),
                 ),
               ],
             ),
@@ -77,8 +86,20 @@ class EngineerTaskDetailScreen extends StatelessWidget {
                         borderRadius: Measurement.generalSize12.allRadius,
                       ),
                     ),
-                    onPressed: () {
-                      Routing.transition(context, const EngineerAddPartToTaskScreen());
+                    onPressed: () async {
+                      final selected = await Navigator.push<List<PartModel>>(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => const EngineerAddPartToTaskScreen(),
+                        ),
+                      );
+                      if (selected != null && selected.isNotEmpty) {
+                        setState(() {
+                          _addedParts
+                            ..clear()
+                            ..addAll(selected.toSet());
+                        });
+                      }
                     },
                     child: const Text(AppString.addParts)
                         .mediumBold(AppColor.white),
@@ -97,7 +118,8 @@ class EngineerTaskDetailScreen extends StatelessWidget {
                       ),
                     ),
                     onPressed: () {
-                      Routing.transition(context, const EngineerServiceReportScreen());
+                      Routing.transition(
+                          context, const EngineerServiceReportScreen());
                     },
                     child: const Text(AppString.reportAction)
                         .mediumBold(AppColor.white),
@@ -111,9 +133,9 @@ class EngineerTaskDetailScreen extends StatelessWidget {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(locationName).smallNormal(AppColor.grey),
+                Text(widget.locationName).smallNormal(AppColor.grey),
                 Measurement.generalSize8.height,
-                Text(address).mediumBold(AppColor.white),
+                Text(widget.address).mediumBold(AppColor.white),
               ],
             ),
             Measurement.generalSize24.height,
@@ -121,9 +143,10 @@ class EngineerTaskDetailScreen extends StatelessWidget {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('${AppString.assetID}: $asset').smallNormal(AppColor.grey),
+                Text('${AppString.assetID}: ${widget.asset}')
+                    .smallNormal(AppColor.grey),
                 Measurement.generalSize4.height,
-                Text(assetName).mediumBold(AppColor.white),
+                Text(widget.assetName).mediumBold(AppColor.white),
               ],
             ),
 
@@ -133,38 +156,38 @@ class EngineerTaskDetailScreen extends StatelessWidget {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                if (priority != null) ...[
+                if (widget.priority != null) ...[
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const Text('Priority').smallNormal(AppColor.grey),
                       Measurement.generalSize4.height,
-                      Text(priority!).mediumBold(AppColor.white),
+                      Text(widget.priority!).mediumBold(AppColor.white),
                     ],
                   ),
                 ],
                 Measurement.generalSize24.height,
-                if (scheduledAt != null) ...[
+                if (widget.scheduledAt != null) ...[
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const Text(AppString.scheduledAtLabel)
                           .smallNormal(AppColor.grey),
                       Measurement.generalSize4.height,
-                      Text(_fmtDateTime(scheduledAt!))
+                      Text(_fmtDateTime(widget.scheduledAt!))
                           .mediumBold(AppColor.white),
                     ],
                   ),
                 ],
                 Measurement.generalSize24.height,
-                if (assignedAt != null) ...[
+                if (widget.assignedAt != null) ...[
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const Text(AppString.assignedAtLabel)
                           .smallNormal(AppColor.grey),
                       Measurement.generalSize4.height,
-                      Text(_fmtDateTime(assignedAt!))
+                      Text(_fmtDateTime(widget.assignedAt!))
                           .mediumBold(AppColor.white),
                     ],
                   ),
@@ -177,7 +200,43 @@ class EngineerTaskDetailScreen extends StatelessWidget {
             // Description
             const Text(AppString.taskDescription).smallNormal(AppColor.grey),
             Measurement.generalSize12.height,
-            Text(description).mediumBold(AppColor.white),
+            Text(widget.description).mediumBold(AppColor.white),
+
+            Measurement.generalSize24.height,
+
+            // Parts section
+            const Text('Parts').smallNormal(AppColor.grey),
+            Measurement.generalSize8.height,
+            if (_addedParts.isEmpty)
+              Text('No parts added').smallNormal(AppColor.grey)
+            else
+              Column(
+                children: _addedParts
+                    .map((p) => Container(
+                          margin: Measurement.generalSize8.verticalPadding,
+                          padding:
+                              Measurement.generalSize12.horizontalIsToVertical,
+                          decoration: BoxDecoration(
+                            color: AppColor.blueField,
+                            borderRadius: Measurement.generalSize12.allRadius,
+                          ),
+                          child: Row(
+                            children: [
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(p.name).mediumBold(AppColor.white),
+                                    Measurement.generalSize4.height,
+                                    Text(p.number).smallNormal(AppColor.grey),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        ))
+                    .toList(),
+              ),
           ],
         ),
       ),
