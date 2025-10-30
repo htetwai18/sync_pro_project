@@ -5,15 +5,15 @@ import 'package:sync_pro/config/app_string.dart';
 import 'package:sync_pro/config/extension.dart';
 import 'package:sync_pro/config/measurement.dart';
 
-class CustomerNewBuildingRequestScreen extends StatefulWidget {
-  const CustomerNewBuildingRequestScreen({super.key});
+class CustomerBuildingAddScreen extends StatefulWidget {
+  const CustomerBuildingAddScreen({super.key});
 
   @override
-  State<CustomerNewBuildingRequestScreen> createState() =>
-      _CustomerNewBuildingRequestScreenState();
+  State<CustomerBuildingAddScreen> createState() =>
+      _CustomerBuildingAddScreenState();
 }
 
-class _CustomerNewBuildingRequestScreenState extends State<CustomerNewBuildingRequestScreen> {
+class _CustomerBuildingAddScreenState extends State<CustomerBuildingAddScreen> {
   final _formKey = GlobalKey<FormState>();
   final _buildingNameController = TextEditingController();
   final _addressController = TextEditingController();

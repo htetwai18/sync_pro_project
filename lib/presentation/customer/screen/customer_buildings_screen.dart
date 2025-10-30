@@ -72,7 +72,7 @@ class CustomerBuildingsScreen extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => const CustomerNewBuildingRequestScreen(),
+                      builder: (context) => const CustomerBuildingAddScreen(),
                     ),
                   );
                 },

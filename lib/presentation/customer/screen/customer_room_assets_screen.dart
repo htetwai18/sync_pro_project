@@ -90,7 +90,7 @@ class CustomerRoomAssetsScreen extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => const CustomerAddNewAssetScreen(),
+                      builder: (context) => const CustomerAssetAddScreen(),
                     ),
                   );
                 },

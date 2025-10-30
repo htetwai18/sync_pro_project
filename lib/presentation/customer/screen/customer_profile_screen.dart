@@ -42,7 +42,7 @@ class CustomerProfileScreen extends StatelessWidget {
                   onPressed: () {
                     Routing.transition(
                       context,
-                      CustomerRequestChangeScreen(
+                      CustomerProfileEditScreen(
                         isFromAdmin: isFromAdmin,
                       ),
                     );

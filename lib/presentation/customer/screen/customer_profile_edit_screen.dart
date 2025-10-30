@@ -5,17 +5,17 @@ import 'package:sync_pro/config/app_string.dart';
 import 'package:sync_pro/config/extension.dart';
 import 'package:sync_pro/config/measurement.dart';
 
-class CustomerRequestChangeScreen extends StatefulWidget {
+class CustomerProfileEditScreen extends StatefulWidget {
   final bool isFromAdmin;
-  const CustomerRequestChangeScreen({super.key,required this.isFromAdmin,});
+  const CustomerProfileEditScreen({super.key,required this.isFromAdmin,});
 
   @override
-  State<CustomerRequestChangeScreen> createState() =>
-      _CustomerRequestChangeScreenState();
+  State<CustomerProfileEditScreen> createState() =>
+      _CustomerProfileEditScreenState();
 }
 
-class _CustomerRequestChangeScreenState
-    extends State<CustomerRequestChangeScreen> {
+class _CustomerProfileEditScreenState
+    extends State<CustomerProfileEditScreen> {
   final _formKey = GlobalKey<FormState>();
   final _companyNameController =
       TextEditingController(text: AppString.syncProInc);

@@ -7,14 +7,14 @@ import 'package:sync_pro/config/measurement.dart';
 import 'package:sync_pro/presentation/customer/display_models/building_item_display_model.dart';
 import 'package:sync_pro/presentation/shared/mock.dart';
 
-class CustomerAddNewAssetScreen extends StatefulWidget {
-  const CustomerAddNewAssetScreen({super.key});
+class CustomerAssetAddScreen extends StatefulWidget {
+  const CustomerAssetAddScreen({super.key});
 
   @override
-  State<CustomerAddNewAssetScreen> createState() => _CustomerAddNewAssetScreenState();
+  State<CustomerAssetAddScreen> createState() => _CustomerAssetAddScreenState();
 }
 
-class _CustomerAddNewAssetScreenState extends State<CustomerAddNewAssetScreen> {
+class _CustomerAssetAddScreenState extends State<CustomerAssetAddScreen> {
   final _formKey = GlobalKey<FormState>();
   final _assetNameController = TextEditingController();
   final _manufacturerController = TextEditingController();
