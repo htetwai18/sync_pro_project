@@ -7,8 +7,8 @@ import 'package:sync_pro/config/app_drawer.dart';
 import 'package:sync_pro/config/routing.dart';
 import 'package:sync_pro/presentation/admin/display_models/task_item_display_model.dart';
 import 'package:sync_pro/presentation/admin/widgets/task_list_item.dart';
-import 'package:sync_pro/presentation/admin/screen/create_task_screen.dart';
-import 'package:sync_pro/presentation/admin/screen/task_detail_screen.dart';
+import 'package:sync_pro/presentation/admin/screen/tasks/create_task_screen.dart';
+import 'package:sync_pro/presentation/admin/screen/tasks/task_detail_screen.dart';
 import 'package:sync_pro/presentation/shared/mock.dart';
 
 class TasksScreen extends StatelessWidget {

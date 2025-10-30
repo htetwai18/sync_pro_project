@@ -5,14 +5,14 @@ import 'package:sync_pro/config/app_string.dart';
 import 'package:sync_pro/config/extension.dart';
 import 'package:sync_pro/config/measurement.dart';
 
-class ServiceReportScreen extends StatefulWidget {
-  const ServiceReportScreen({super.key});
+class EngineerServiceReportScreen extends StatefulWidget {
+  const EngineerServiceReportScreen({super.key});
 
   @override
-  State<ServiceReportScreen> createState() => _ServiceReportScreenState();
+  State<EngineerServiceReportScreen> createState() => _EngineerServiceReportScreenState();
 }
 
-class _ServiceReportScreenState extends State<ServiceReportScreen> {
+class _EngineerServiceReportScreenState extends State<EngineerServiceReportScreen> {
   final TextEditingController _summaryController = TextEditingController();
 
   @override

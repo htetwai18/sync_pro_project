@@ -5,8 +5,8 @@ import 'package:sync_pro/config/app_string.dart';
 import 'package:sync_pro/config/extension.dart';
 import 'package:sync_pro/config/measurement.dart';
 import 'package:sync_pro/config/routing.dart';
-import 'package:sync_pro/presentation/engineer/screen/add_part_to_task_screen.dart';
-import 'package:sync_pro/presentation/engineer/screen/service_report_screen.dart';
+import 'package:sync_pro/presentation/engineer/screen/engineer_add_part_to_task_screen.dart';
+import 'package:sync_pro/presentation/engineer/screen/engineer_service_report_screen.dart';
 
 class EngineerTaskDetailScreen extends StatelessWidget {
   final String title, asset, assetName;
@@ -78,7 +78,7 @@ class EngineerTaskDetailScreen extends StatelessWidget {
                       ),
                     ),
                     onPressed: () {
-                      Routing.transition(context, const AddPartToTaskScreen());
+                      Routing.transition(context, const EngineerAddPartToTaskScreen());
                     },
                     child: const Text(AppString.addParts)
                         .mediumBold(AppColor.white),
@@ -97,7 +97,7 @@ class EngineerTaskDetailScreen extends StatelessWidget {
                       ),
                     ),
                     onPressed: () {
-                      Routing.transition(context, const ServiceReportScreen());
+                      Routing.transition(context, const EngineerServiceReportScreen());
                     },
                     child: const Text(AppString.reportAction)
                         .mediumBold(AppColor.white),

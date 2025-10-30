@@ -8,14 +8,14 @@ import 'package:sync_pro/presentation/customer/display_models/building_item_disp
 import 'package:sync_pro/presentation/customer/display_models/asset_item_display_model.dart';
 import 'package:sync_pro/presentation/shared/mock.dart';
 
-class RequestServiceScreen extends StatefulWidget {
-  const RequestServiceScreen({super.key});
+class CustomerRequestServiceScreen extends StatefulWidget {
+  const CustomerRequestServiceScreen({super.key});
 
   @override
-  State<RequestServiceScreen> createState() => _RequestServiceScreenState();
+  State<CustomerRequestServiceScreen> createState() => _CustomerRequestServiceScreenState();
 }
 
-class _RequestServiceScreenState extends State<RequestServiceScreen> {
+class _CustomerRequestServiceScreenState extends State<CustomerRequestServiceScreen> {
   final _formKey = GlobalKey<FormState>();
   final _titleController = TextEditingController();
   final _descriptionController = TextEditingController();

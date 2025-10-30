@@ -6,15 +6,15 @@ import 'package:sync_pro/config/extension.dart';
 import 'package:sync_pro/config/measurement.dart';
 import 'package:sync_pro/presentation/admin/display_models/user_item_display_model.dart';
 
-class EditEngineerScreen extends StatefulWidget {
+class EngineerEditScreen extends StatefulWidget {
   final UserModel user;
-  const EditEngineerScreen({super.key, required this.user});
+  const EngineerEditScreen({super.key, required this.user});
 
   @override
-  State<EditEngineerScreen> createState() => _EditEngineerScreenState();
+  State<EngineerEditScreen> createState() => _EngineerEditScreenState();
 }
 
-class _EditEngineerScreenState extends State<EditEngineerScreen> {
+class _EngineerEditScreenState extends State<EngineerEditScreen> {
   late final TextEditingController _nameController;
   late final TextEditingController _emailController;
   late final TextEditingController _phoneController;

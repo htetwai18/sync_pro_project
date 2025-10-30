@@ -7,7 +7,7 @@ import 'package:sync_pro/config/measurement.dart';
 import 'package:sync_pro/config/routing.dart';
 import 'package:sync_pro/presentation/customer/display_models/asset_item_display_model.dart';
 import 'package:sync_pro/presentation/customer/screen/customer_asset_detail_screen.dart';
-import 'package:sync_pro/presentation/customer/screen/add_new_asset_screen.dart';
+import 'package:sync_pro/presentation/customer/screen/customer_asset_add_screen.dart';
 import 'package:sync_pro/presentation/shared/mock.dart';
 
 class CustomerRoomAssetsScreen extends StatelessWidget {
@@ -90,7 +90,7 @@ class CustomerRoomAssetsScreen extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => const AddNewAssetScreen(),
+                      builder: (context) => const CustomerAddNewAssetScreen(),
                     ),
                   );
                 },

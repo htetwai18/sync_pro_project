@@ -7,14 +7,14 @@ import 'package:sync_pro/config/measurement.dart';
 // PartModel is pulled via shared mocks; direct import not required here
 import 'package:sync_pro/presentation/shared/mock.dart';
 
-class AddPartToTaskScreen extends StatefulWidget {
-  const AddPartToTaskScreen({super.key});
+class EngineerAddPartToTaskScreen extends StatefulWidget {
+  const EngineerAddPartToTaskScreen({super.key});
 
   @override
-  State<AddPartToTaskScreen> createState() => _AddPartToTaskScreenState();
+  State<EngineerAddPartToTaskScreen> createState() => _EngineerAddPartToTaskScreenState();
 }
 
-class _AddPartToTaskScreenState extends State<AddPartToTaskScreen> {
+class _EngineerAddPartToTaskScreenState extends State<EngineerAddPartToTaskScreen> {
   final TextEditingController _searchController = TextEditingController();
   late final List<int> _counts;
 

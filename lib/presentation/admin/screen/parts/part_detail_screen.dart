@@ -6,8 +6,8 @@ import 'package:sync_pro/config/extension.dart';
 import 'package:sync_pro/config/measurement.dart';
 import 'package:sync_pro/presentation/admin/display_models/part_item_display_model.dart';
 import 'package:sync_pro/config/routing.dart';
-import 'package:sync_pro/presentation/admin/screen/edit_part_screen.dart';
-import 'package:sync_pro/presentation/admin/screen/adjust_stock_screen.dart';
+import 'package:sync_pro/presentation/admin/screen/parts/edit_part_screen.dart';
+import 'package:sync_pro/presentation/admin/screen/parts/adjust_stock_screen.dart';
 import 'package:sync_pro/presentation/admin/display_models/part_inventory_model.dart';
 
 class PartDetailScreen extends StatelessWidget {

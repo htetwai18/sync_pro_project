@@ -6,19 +6,20 @@ import 'package:sync_pro/config/extension.dart';
 import 'package:sync_pro/config/measurement.dart';
 import 'package:sync_pro/config/app_drawer.dart';
 import 'package:sync_pro/config/routing.dart';
-import 'package:sync_pro/presentation/admin/screen/add_customer_screen.dart';
-import 'package:sync_pro/presentation/admin/widgets/customer_list_item.dart';
-import 'package:sync_pro/presentation/customer/screen/customer_profile_screen.dart';
+import 'package:sync_pro/presentation/admin/display_models/user_item_display_model.dart';
+import 'package:sync_pro/presentation/admin/widgets/user_list_item.dart';
+import 'package:sync_pro/presentation/admin/screen/users/add_user_screen.dart';
+import 'package:sync_pro/presentation/admin/screen/users/user_detail_screen.dart';
 import 'package:sync_pro/presentation/shared/mock.dart';
 
-class CustomersScreen extends StatefulWidget {
-  const CustomersScreen({super.key});
+class UsersScreen extends StatefulWidget {
+  const UsersScreen({super.key});
 
   @override
-  State<CustomersScreen> createState() => _CustomersScreenState();
+  State<UsersScreen> createState() => _UsersScreenState();
 }
 
-class _CustomersScreenState extends State<CustomersScreen> {
+class _UsersScreenState extends State<UsersScreen> {
   final TextEditingController _searchController = TextEditingController();
   String _query = '';
 
@@ -30,19 +31,21 @@ class _CustomersScreenState extends State<CustomersScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final all = [mockCustomer];
-    final filtered = all
-        .where((c) =>
-            c.name.toLowerCase().contains(_query.toLowerCase()) ||
-            c.phone.toLowerCase().contains(_query.toLowerCase()))
+    final List<UserModel> all = [mockAdmin, mockEngineer];
+    final List<UserModel> filtered = all
+        .where((e) =>
+            e.name.toLowerCase().contains(_query.toLowerCase()) ||
+            e.email.toLowerCase().contains(_query.toLowerCase()) ||
+            e.role.toLowerCase().contains(_query.toLowerCase()))
         .toList();
 
     return Scaffold(
       backgroundColor: AppColor.background,
-      appBar: getAppBarWithDrawer(context: context, title: AppString.customers),
+      appBar: getAppBarWithDrawer(context: context, title: AppString.users),
       drawer: const AppDrawer(),
       body: Column(
         children: [
+          // Search bar
           Padding(
             padding: Measurement.generalSize16.horizontalIsToVertical,
             child: Container(
@@ -55,7 +58,7 @@ class _CustomersScreenState extends State<CustomersScreen> {
                 style: Measurement.mediumFont
                     .textStyle(AppColor.white, Measurement.font400),
                 decoration: InputDecoration(
-                  hintText: AppString.searchCustomers,
+                  hintText: AppString.searchUsers,
                   hintStyle: Measurement.mediumFont
                       .textStyle(AppColor.grey, Measurement.font400),
                   prefixIcon: const Icon(Icons.search, color: AppColor.grey),
@@ -69,23 +72,24 @@ class _CustomersScreenState extends State<CustomersScreen> {
               ),
             ),
           ),
+          Measurement.generalSize16.height,
+          // Users list
           Expanded(
             child: ListView.separated(
-              padding: Measurement.generalSize16.horizontalIsToVertical,
               itemCount: filtered.length,
-              separatorBuilder: (_, __) => Measurement.generalSize12.height,
+              separatorBuilder: (_, __) => Divider(
+                height: Measurement.generalSize4,
+                color: AppColor.greyPercentCircle.withOpacity(0.2),
+              ),
               itemBuilder: (context, index) {
                 final item = filtered[index];
-                return CustomerListItem(
-                    item: item,
-                    onTap: () {
-                      Routing.transition(
-                        context,
-                        const CustomerProfileScreen(
-                          isFromAdmin: true,
-                        ),
-                      );
-                    });
+                return UserListItem(
+                  item: item,
+                  onTap: () {
+                    Routing.rightToLeftTransition(
+                        context, UserDetailScreen(user: item));
+                  },
+                );
               },
             ),
           ),
@@ -93,10 +97,7 @@ class _CustomersScreenState extends State<CustomersScreen> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Routing.transition(
-            context,
-            const AddCustomerScreen(),
-          );
+          Routing.transition(context, const AddUserScreen());
         },
         backgroundColor: AppColor.blueStatusInner,
         foregroundColor: AppColor.white,

@@ -7,7 +7,7 @@ import 'package:sync_pro/config/extension.dart';
 import 'package:sync_pro/config/measurement.dart';
 import 'package:sync_pro/presentation/customer/display_models/task_display_model.dart';
 import 'package:sync_pro/presentation/shared/mock.dart';
-import 'package:sync_pro/presentation/customer/screen/request_service_screen.dart';
+import 'package:sync_pro/presentation/customer/screen/customer_service_request_screen.dart';
 
 class CustomerServiceListScreen extends StatefulWidget {
   const CustomerServiceListScreen({super.key});
@@ -95,7 +95,7 @@ class _CustomerServiceListScreenState extends State<CustomerServiceListScreen>
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => const RequestServiceScreen(),
+                      builder: (context) => const CustomerRequestServiceScreen(),
                     ),
                   );
                 },

@@ -6,7 +6,7 @@ import 'package:sync_pro/config/extension.dart';
 import 'package:sync_pro/config/measurement.dart';
 import 'package:sync_pro/config/routing.dart';
 import 'package:sync_pro/presentation/admin/display_models/task_item_display_model.dart';
-import 'package:sync_pro/presentation/admin/screen/report_detail_screen.dart';
+import 'package:sync_pro/presentation/admin/screen/tasks/report_detail_screen.dart';
 
 class TaskDetailScreen extends StatelessWidget {
   final TaskItemDisplayModel item;

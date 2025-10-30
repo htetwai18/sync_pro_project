@@ -5,40 +5,41 @@ import 'package:sync_pro/config/app_string.dart';
 import 'package:sync_pro/config/extension.dart';
 import 'package:sync_pro/config/measurement.dart';
 import 'package:sync_pro/config/app_drawer.dart';
-// PartModel imported through shared mocks usage in this file
-import 'package:sync_pro/presentation/admin/widgets/part_list_item.dart';
 import 'package:sync_pro/config/routing.dart';
-import 'package:sync_pro/presentation/admin/screen/part_detail_screen.dart';
-import 'package:sync_pro/presentation/admin/screen/add_part_screen.dart';
+import 'package:sync_pro/presentation/admin/screen/customers/add_customer_screen.dart';
+import 'package:sync_pro/presentation/admin/widgets/customer_list_item.dart';
+import 'package:sync_pro/presentation/customer/screen/customer_profile_screen.dart';
 import 'package:sync_pro/presentation/shared/mock.dart';
 
-class PartsScreen extends StatefulWidget {
-  const PartsScreen({super.key});
+class CustomersScreen extends StatefulWidget {
+  const CustomersScreen({super.key});
 
   @override
-  State<PartsScreen> createState() => _PartsScreenState();
+  State<CustomersScreen> createState() => _CustomersScreenState();
 }
 
-class _PartsScreenState extends State<PartsScreen> {
-  final TextEditingController _search = TextEditingController();
+class _CustomersScreenState extends State<CustomersScreen> {
+  final TextEditingController _searchController = TextEditingController();
   String _query = '';
 
   @override
   void dispose() {
-    _search.dispose();
+    _searchController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    final filtered = mockParts
-        .where((e) =>
-            e.name.toLowerCase().contains(_query.toLowerCase()) ||
-            e.number.toLowerCase().contains(_query.toLowerCase()))
+    final all = [mockCustomer];
+    final filtered = all
+        .where((c) =>
+            c.name.toLowerCase().contains(_query.toLowerCase()) ||
+            c.phone.toLowerCase().contains(_query.toLowerCase()))
         .toList();
+
     return Scaffold(
       backgroundColor: AppColor.background,
-      appBar: getAppBarWithDrawer(context: context, title: AppString.parts),
+      appBar: getAppBarWithDrawer(context: context, title: AppString.customers),
       drawer: const AppDrawer(),
       body: Column(
         children: [
@@ -50,11 +51,11 @@ class _PartsScreenState extends State<PartsScreen> {
                 borderRadius: Measurement.generalSize12.allRadius,
               ),
               child: TextField(
-                controller: _search,
+                controller: _searchController,
                 style: Measurement.mediumFont
                     .textStyle(AppColor.white, Measurement.font400),
                 decoration: InputDecoration(
-                  hintText: AppString.searchByNameOrNumber,
+                  hintText: AppString.searchCustomers,
                   hintStyle: Measurement.mediumFont
                       .textStyle(AppColor.grey, Measurement.font400),
                   prefixIcon: const Icon(Icons.search, color: AppColor.grey),
@@ -72,18 +73,19 @@ class _PartsScreenState extends State<PartsScreen> {
             child: ListView.separated(
               padding: Measurement.generalSize16.horizontalIsToVertical,
               itemCount: filtered.length,
-              separatorBuilder: (_, __) => Measurement.generalSize16.height,
+              separatorBuilder: (_, __) => Measurement.generalSize12.height,
               itemBuilder: (context, index) {
                 final item = filtered[index];
-                return PartListItem(
-                  item: item,
-                  onTap: () {
-                    Routing.transition(
-                      context,
-                      PartDetailScreen(part: item),
-                    );
-                  },
-                );
+                return CustomerListItem(
+                    item: item,
+                    onTap: () {
+                      Routing.transition(
+                        context,
+                        const CustomerProfileScreen(
+                          isFromAdmin: true,
+                        ),
+                      );
+                    });
               },
             ),
           ),
@@ -91,7 +93,10 @@ class _PartsScreenState extends State<PartsScreen> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Routing.transition(context, const AddPartScreen());
+          Routing.transition(
+            context,
+            const AddCustomerScreen(),
+          );
         },
         backgroundColor: AppColor.blueStatusInner,
         foregroundColor: AppColor.white,

@@ -4,40 +4,37 @@ import 'package:sync_pro/config/app_color.dart';
 import 'package:sync_pro/config/app_string.dart';
 import 'package:sync_pro/config/extension.dart';
 import 'package:sync_pro/config/measurement.dart';
-import 'package:sync_pro/config/app_drawer.dart';
 import 'package:sync_pro/presentation/admin/display_models/invoice_item_display_model.dart';
-// Optionally import shared mocks when available
-// import 'package:sync_pro/presentation/shared/mock.dart';
 import 'package:sync_pro/presentation/admin/widgets/invoice_list_item.dart';
 import 'package:sync_pro/config/routing.dart';
-import 'package:sync_pro/presentation/admin/screen/invoice_detail_screen.dart';
-import 'package:sync_pro/presentation/admin/screen/create_invoice_screen.dart';
+import 'package:sync_pro/presentation/admin/screen/invoices/invoice_detail_screen.dart';
 import 'package:sync_pro/presentation/shared/mock.dart';
 
-class InvoicesScreen extends StatefulWidget {
-  const InvoicesScreen({super.key});
+class CustomerInvoicesScreen extends StatefulWidget {
+  const CustomerInvoicesScreen({super.key});
 
   @override
-  State<InvoicesScreen> createState() => _InvoicesScreenState();
+  State<CustomerInvoicesScreen> createState() => _CustomerInvoicesScreenState();
 }
 
-class _InvoicesScreenState extends State<InvoicesScreen> {
-  String _statusFilter = 'All';
-  String _dateRange = 'All';
+class _CustomerInvoicesScreenState extends State<CustomerInvoicesScreen> {
+  String _statusFilter = AppString.all;
+  String _dateRange = AppString.all;
 
   @override
   Widget build(BuildContext context) {
+    // TODO: Replace with repository/API once available. Using empty list to compile.
     final List<InvoiceModel> all = mockInvoices;
     final List<InvoiceModel> filtered = all.where((e) {
-      // simple status filter demo
-      if (_statusFilter == 'All') return true;
+      if (_statusFilter == AppString.all) return true;
       return e.status.toLowerCase() == _statusFilter.toLowerCase();
     }).toList();
 
     return Scaffold(
       backgroundColor: AppColor.background,
-      appBar: getAppBarWithDrawer(context: context, title: AppString.invoices),
-      drawer: const AppDrawer(),
+      appBar: getAppBar(
+          context: context, title: AppString.invoices, canBack: false),
+      // drawer: const AppDrawer(),
       body: Column(
         children: [
           Padding(
@@ -81,7 +78,10 @@ class _InvoicesScreenState extends State<InvoicesScreen> {
                   onTap: () {
                     Routing.transition(
                       context,
-                      InvoiceDetailScreen(invoice: item),
+                      InvoiceDetailScreen(
+                        invoice: item,
+                        isCustomer: true,
+                      ),
                     );
                   },
                 );
@@ -90,20 +90,12 @@ class _InvoicesScreenState extends State<InvoicesScreen> {
           ),
         ],
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Routing.transition(context, const CreateInvoiceScreen());
-        },
-        backgroundColor: AppColor.blueStatusInner,
-        foregroundColor: AppColor.white,
-        child: const Icon(Icons.add),
-      ),
     );
   }
 
   Future<String?> _showStatusSheet(BuildContext context, String current) async {
     final options = [
-      'All',
+      AppString.all,
       'paid',
       'sent',
       'draft',
@@ -134,7 +126,12 @@ class _InvoicesScreenState extends State<InvoicesScreen> {
 
   Future<String?> _showDateRangeSheet(
       BuildContext context, String current) async {
-    final options = ['All', 'Last 7 days', 'Last 30 days', 'This year'];
+    final options = [
+      AppString.all,
+      AppString.last7Days,
+      AppString.last30Days,
+      AppString.thisYear
+    ];
     return showModalBottomSheet<String>(
       context: context,
       backgroundColor: AppColor.blueField,

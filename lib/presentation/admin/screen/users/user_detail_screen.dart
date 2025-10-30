@@ -6,7 +6,7 @@ import 'package:sync_pro/config/extension.dart';
 import 'package:sync_pro/config/measurement.dart';
 import 'package:sync_pro/presentation/admin/display_models/user_item_display_model.dart';
 import 'package:sync_pro/config/routing.dart';
-import 'package:sync_pro/presentation/admin/screen/edit_user_screen.dart';
+import 'package:sync_pro/presentation/admin/screen/users/edit_user_screen.dart';
 
 class UserDetailScreen extends StatelessWidget {
   final UserModel user;

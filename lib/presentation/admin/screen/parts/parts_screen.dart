@@ -5,47 +5,43 @@ import 'package:sync_pro/config/app_string.dart';
 import 'package:sync_pro/config/extension.dart';
 import 'package:sync_pro/config/measurement.dart';
 import 'package:sync_pro/config/app_drawer.dart';
+// PartModel imported through shared mocks usage in this file
+import 'package:sync_pro/presentation/admin/widgets/part_list_item.dart';
 import 'package:sync_pro/config/routing.dart';
-import 'package:sync_pro/presentation/admin/display_models/user_item_display_model.dart';
-import 'package:sync_pro/presentation/admin/widgets/user_list_item.dart';
-import 'package:sync_pro/presentation/admin/screen/add_user_screen.dart';
-import 'package:sync_pro/presentation/admin/screen/user_detail_screen.dart';
+import 'package:sync_pro/presentation/admin/screen/parts/part_detail_screen.dart';
+import 'package:sync_pro/presentation/admin/screen/parts/add_part_screen.dart';
 import 'package:sync_pro/presentation/shared/mock.dart';
 
-class UsersScreen extends StatefulWidget {
-  const UsersScreen({super.key});
+class PartsScreen extends StatefulWidget {
+  const PartsScreen({super.key});
 
   @override
-  State<UsersScreen> createState() => _UsersScreenState();
+  State<PartsScreen> createState() => _PartsScreenState();
 }
 
-class _UsersScreenState extends State<UsersScreen> {
-  final TextEditingController _searchController = TextEditingController();
+class _PartsScreenState extends State<PartsScreen> {
+  final TextEditingController _search = TextEditingController();
   String _query = '';
 
   @override
   void dispose() {
-    _searchController.dispose();
+    _search.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    final List<UserModel> all = [mockAdmin, mockEngineer];
-    final List<UserModel> filtered = all
+    final filtered = mockParts
         .where((e) =>
             e.name.toLowerCase().contains(_query.toLowerCase()) ||
-            e.email.toLowerCase().contains(_query.toLowerCase()) ||
-            e.role.toLowerCase().contains(_query.toLowerCase()))
+            e.number.toLowerCase().contains(_query.toLowerCase()))
         .toList();
-
     return Scaffold(
       backgroundColor: AppColor.background,
-      appBar: getAppBarWithDrawer(context: context, title: AppString.users),
+      appBar: getAppBarWithDrawer(context: context, title: AppString.parts),
       drawer: const AppDrawer(),
       body: Column(
         children: [
-          // Search bar
           Padding(
             padding: Measurement.generalSize16.horizontalIsToVertical,
             child: Container(
@@ -54,11 +50,11 @@ class _UsersScreenState extends State<UsersScreen> {
                 borderRadius: Measurement.generalSize12.allRadius,
               ),
               child: TextField(
-                controller: _searchController,
+                controller: _search,
                 style: Measurement.mediumFont
                     .textStyle(AppColor.white, Measurement.font400),
                 decoration: InputDecoration(
-                  hintText: AppString.searchUsers,
+                  hintText: AppString.searchByNameOrNumber,
                   hintStyle: Measurement.mediumFont
                       .textStyle(AppColor.grey, Measurement.font400),
                   prefixIcon: const Icon(Icons.search, color: AppColor.grey),
@@ -72,22 +68,20 @@ class _UsersScreenState extends State<UsersScreen> {
               ),
             ),
           ),
-          Measurement.generalSize16.height,
-          // Users list
           Expanded(
             child: ListView.separated(
+              padding: Measurement.generalSize16.horizontalIsToVertical,
               itemCount: filtered.length,
-              separatorBuilder: (_, __) => Divider(
-                height: Measurement.generalSize4,
-                color: AppColor.greyPercentCircle.withOpacity(0.2),
-              ),
+              separatorBuilder: (_, __) => Measurement.generalSize16.height,
               itemBuilder: (context, index) {
                 final item = filtered[index];
-                return UserListItem(
+                return PartListItem(
                   item: item,
                   onTap: () {
-                    Routing.rightToLeftTransition(
-                        context, UserDetailScreen(user: item));
+                    Routing.transition(
+                      context,
+                      PartDetailScreen(part: item),
+                    );
                   },
                 );
               },
@@ -97,7 +91,7 @@ class _UsersScreenState extends State<UsersScreen> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Routing.transition(context, const AddUserScreen());
+          Routing.transition(context, const AddPartScreen());
         },
         backgroundColor: AppColor.blueStatusInner,
         foregroundColor: AppColor.white,

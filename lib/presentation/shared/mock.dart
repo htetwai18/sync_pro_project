@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+import 'package:sync_pro/presentation/admin/display_models/approval_item_display_model.dart';
 import 'package:sync_pro/presentation/admin/display_models/customer_item_display_model.dart';
 import 'package:sync_pro/presentation/admin/display_models/user_item_display_model.dart';
 import 'package:sync_pro/presentation/admin/display_models/warehouse_display_model.dart';
@@ -10,6 +12,47 @@ import 'package:sync_pro/presentation/admin/display_models/part_inventory_model.
 import 'package:sync_pro/presentation/admin/display_models/invoice_item_display_model.dart';
 import 'package:sync_pro/presentation/admin/display_models/invoice_line_item_model.dart';
 import 'package:sync_pro/presentation/admin/display_models/report_item_display_model.dart';
+
+/// Sample data to populate the list
+/// will replace from api fetch later
+List<ApprovalItemDisplayModel> approvalItems = const [
+  ApprovalItemDisplayModel(
+    title: 'New Building',
+    submittedBy: 'Sarah Miller',
+    icon: Icons.corporate_fare,
+    buildingName: 'Corporate Headquarters',
+    buildingRoomNumber: '1402',
+    assetType: 'HVAC Unit',
+    assetDescription: 'Model #ABC-123, Serial #XYZ-987',
+    statusText: 'Pending Approval',
+    dateAdded: '2024-07-22',
+    lastUpdated: '2024-07-22',
+  ),
+  ApprovalItemDisplayModel(
+    title: 'New Building',
+    submittedBy: 'David Chen',
+    icon: Icons.meeting_room,
+    buildingName: 'West Campus',
+    buildingRoomNumber: 'B12',
+    assetType: 'Building',
+    assetDescription: 'Conference room renovation',
+    statusText: 'Pending Approval',
+    dateAdded: '2024-07-21',
+    lastUpdated: '2024-07-22',
+  ),
+  ApprovalItemDisplayModel(
+    title: 'New Asset',
+    submittedBy: 'Emily Carter',
+    icon: Icons.inventory_2,
+    buildingName: 'R&D Center',
+    buildingRoomNumber: '220',
+    assetType: '3D Printer',
+    assetDescription: 'Model Mark X7',
+    statusText: 'Pending Approval',
+    dateAdded: '2024-07-20',
+    lastUpdated: '2024-07-21',
+  ),
+];
 
 // Public, fully-populated mocks
 final CustomerModel mockCustomer = _bundle.customer;
@@ -82,6 +125,7 @@ _MockBundle _buildMocks() {
     createdAt: DateTime(2024, 1, 1),
     updatedAt: DateTime(2024, 6, 1),
   );
+
   final inv2 = InventoryModel(
     id: 'wh-0002',
     name: 'Engineer Van 5',

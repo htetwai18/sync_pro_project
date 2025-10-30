@@ -4,39 +4,33 @@ import 'package:sync_pro/config/app_color.dart';
 import 'package:sync_pro/config/app_string.dart';
 import 'package:sync_pro/config/extension.dart';
 import 'package:sync_pro/config/measurement.dart';
+import 'package:sync_pro/presentation/customer/display_models/building_item_display_model.dart';
+import 'package:sync_pro/presentation/shared/mock.dart';
 
-class NewBuildingRequestScreen extends StatefulWidget {
-  const NewBuildingRequestScreen({super.key});
+class CustomerAddNewAssetScreen extends StatefulWidget {
+  const CustomerAddNewAssetScreen({super.key});
 
   @override
-  State<NewBuildingRequestScreen> createState() =>
-      _NewBuildingRequestScreenState();
+  State<CustomerAddNewAssetScreen> createState() => _CustomerAddNewAssetScreenState();
 }
 
-class _NewBuildingRequestScreenState extends State<NewBuildingRequestScreen> {
+class _CustomerAddNewAssetScreenState extends State<CustomerAddNewAssetScreen> {
   final _formKey = GlobalKey<FormState>();
-  final _buildingNameController = TextEditingController();
-  final _addressController = TextEditingController();
+  final _assetNameController = TextEditingController();
+  final _manufacturerController = TextEditingController();
+  final _modelController = TextEditingController();
   final _notesController = TextEditingController();
 
-  String? _selectedBuildingType;
+  String? _selectedBuilding;
+  DateTime? _selectedInstallationDate;
 
-  final List<String> _buildingTypes = [
-    'Office Building',
-    'Warehouse',
-    'Data Center',
-    'Retail Space',
-    'Manufacturing Facility',
-    'Healthcare Facility',
-    'Educational Institution',
-    'Residential Complex',
-    'Other'
-  ];
+  final List<BuildingModel> _buildings = mockBuildings;
 
   @override
   void dispose() {
-    _buildingNameController.dispose();
-    _addressController.dispose();
+    _assetNameController.dispose();
+    _manufacturerController.dispose();
+    _modelController.dispose();
     _notesController.dispose();
     super.dispose();
   }
@@ -46,7 +40,7 @@ class _NewBuildingRequestScreenState extends State<NewBuildingRequestScreen> {
     return Scaffold(
       backgroundColor: AppColor.background,
       appBar: getAppBar(
-        title: AppString.newBuildingRequest,
+        title: AppString.addNewAsset,
         context: context,
         canBack: true,
       ),
@@ -57,53 +51,105 @@ class _NewBuildingRequestScreenState extends State<NewBuildingRequestScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Building Name Field
+              // Asset Name Field
               _FieldBlock(
-                label: AppString.buildingName,
+                label: AppString.assetNameLabel,
                 child: TextFormField(
-                  controller: _buildingNameController,
-                  decoration: _decoration(hint: AppString.enterBuildingName),
+                  controller: _assetNameController,
+                  decoration: _decoration(hint: AppString.enterAssetName),
                   style: Measurement.mediumFont
                       .textStyle(AppColor.white, Measurement.font400),
                   validator: (v) => (v == null || v.isEmpty)
-                      ? AppString.pleaseEnterBuildingName
+                      ? AppString.pleaseEnterAssetName
+                      : null,
+                ),
+              ),
+              Measurement.generalSize20.height,
+
+              // Manufacturer Field
+              _FieldBlock(
+                label: AppString.manufacturerLabel,
+                child: TextFormField(
+                  controller: _manufacturerController,
+                  decoration: _decoration(hint: AppString.enterManufacturer),
+                  style: Measurement.mediumFont
+                      .textStyle(AppColor.white, Measurement.font400),
+                  validator: (v) => (v == null || v.isEmpty)
+                      ? AppString.pleaseEnterManufacturer
+                      : null,
+                ),
+              ),
+              Measurement.generalSize20.height,
+
+              // Model Field
+              _FieldBlock(
+                label: AppString.modelLabel,
+                child: TextFormField(
+                  controller: _modelController,
+                  decoration: _decoration(hint: AppString.enterModel),
+                  style: Measurement.mediumFont
+                      .textStyle(AppColor.white, Measurement.font400),
+                  validator: (v) => (v == null || v.isEmpty)
+                      ? AppString.pleaseEnterModel
                       : null,
                 ),
               ),
               Measurement.generalSize20.height,
 
               Measurement.generalSize20.height,
-              // Address Field
-              _FieldBlock(
-                label: AppString.addressLabel,
-                child: TextFormField(
-                  controller: _addressController,
-                  decoration: _decoration(hint: AppString.enterBuildingAddress),
-                  style: Measurement.mediumFont
-                      .textStyle(AppColor.white, Measurement.font400),
-                  validator: (v) => (v == null || v.isEmpty)
-                      ? AppString.pleaseEnterBuildingAddress
-                      : null,
-                ),
-              ),
-              Measurement.generalSize20.height,
 
-              // Building Type Dropdown
-              Text(AppString.buildingType).mediumBold(AppColor.white),
+              // Building Selection Dropdown
+              Text(AppString.building).mediumBold(AppColor.white),
               Measurement.generalSize8.height,
               _DropdownField<String>(
-                value: _selectedBuildingType,
-                hint: AppString.selectBuildingType,
-                items: _buildingTypes,
+                value: _selectedBuilding,
+                hint: AppString.selectBuilding,
+                items: _buildings.map((building) => building.id).toList(),
+                displayText: (item) =>
+                    _buildings.firstWhere((b) => b.id == item).name,
                 onChanged: (String? newValue) {
                   setState(() {
-                    _selectedBuildingType = newValue;
+                    _selectedBuilding = newValue;
                   });
                 },
               ),
               Measurement.generalSize20.height,
 
-              // Notes Field
+              // Installation Date Field (Optional)
+              _FieldBlock(
+                label: AppString.installationDateLabel,
+                child: InkWell(
+                  onTap: _selectInstallationDate,
+                  child: Container(
+                    padding: Measurement.generalSize16.horizontalIsToVertical,
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: Text(
+                            _selectedInstallationDate != null
+                                ? '${_selectedInstallationDate!.day}/${_selectedInstallationDate!.month}/${_selectedInstallationDate!.year}'
+                                : AppString.selectInstallationDate,
+                            style: Measurement.mediumFont.textStyle(
+                              _selectedInstallationDate != null
+                                  ? AppColor.white
+                                  : AppColor.grey,
+                              Measurement.font400,
+                            ),
+                          ),
+                        ),
+                        const Icon(
+                          Icons.calendar_today,
+                          color: AppColor.grey,
+                          size: Measurement.generalSize20,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+              Measurement.generalSize20.height,
+
+              // Notes Field (Optional)
               _FieldBlock(
                 label: AppString.notes,
                 child: TextFormField(
@@ -124,7 +170,7 @@ class _NewBuildingRequestScreenState extends State<NewBuildingRequestScreen> {
         child: SizedBox(
           width: double.infinity,
           child: ElevatedButton(
-            onPressed: _submitRequest,
+            onPressed: _addAsset,
             style: ElevatedButton.styleFrom(
               backgroundColor: AppColor.blueStatusInner,
               foregroundColor: AppColor.white,
@@ -134,20 +180,46 @@ class _NewBuildingRequestScreenState extends State<NewBuildingRequestScreen> {
               ),
               elevation: 0,
             ),
-            child:
-                const Text(AppString.submitRequest).mediumBold(AppColor.white),
+            child: const Text(AppString.addAsset).mediumBold(AppColor.white),
           ),
         ),
       ),
     );
   }
 
-  void _submitRequest() {
+  Future<void> _selectInstallationDate() async {
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: _selectedInstallationDate ?? DateTime.now(),
+      firstDate: DateTime(2000),
+      lastDate: DateTime.now(),
+      builder: (context, child) {
+        return Theme(
+          data: Theme.of(context).copyWith(
+            colorScheme: const ColorScheme.dark(
+              primary: AppColor.blueStatusInner,
+              onPrimary: AppColor.white,
+              surface: AppColor.blueField,
+              onSurface: AppColor.white,
+            ),
+          ),
+          child: child!,
+        );
+      },
+    );
+    if (picked != null && picked != _selectedInstallationDate) {
+      setState(() {
+        _selectedInstallationDate = picked;
+      });
+    }
+  }
+
+  void _addAsset() {
     if (_formKey.currentState!.validate()) {
-      // TODO: Implement actual submission logic
+      // TODO: Implement actual asset creation logic
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text(AppString.buildingRequestSubmittedSuccessfully)
+          content: Text(AppString.assetAddedSuccessfully)
               .mediumNormal(AppColor.white),
           backgroundColor: AppColor.greenStatusInner,
           behavior: SnackBarBehavior.floating,
@@ -218,12 +290,14 @@ class _DropdownField<T> extends StatelessWidget {
   final String hint;
   final List<T> items;
   final ValueChanged<T?> onChanged;
+  final String Function(T)? displayText;
 
   const _DropdownField({
     required this.value,
     required this.hint,
     required this.items,
     required this.onChanged,
+    this.displayText,
   });
 
   @override
@@ -243,7 +317,8 @@ class _DropdownField<T> extends StatelessWidget {
         items: items
             .map((e) => DropdownMenuItem<T>(
                   value: e,
-                  child: Text('$e').mediumNormal(AppColor.white),
+                  child: Text(displayText?.call(e) ?? e.toString())
+                      .mediumNormal(AppColor.white),
                 ))
             .toList(),
         onChanged: onChanged,

@@ -5,9 +5,9 @@ import 'package:sync_pro/config/app_string.dart';
 import 'package:sync_pro/config/extension.dart';
 import 'package:sync_pro/config/measurement.dart';
 import 'package:sync_pro/config/routing.dart';
-import 'package:sync_pro/presentation/customer/screen/customer_request_change_screen.dart';
-import 'package:sync_pro/presentation/customer/screen/customer_add_contact_screen.dart';
-import 'package:sync_pro/presentation/customer/screen/customer_edit_contact_screen.dart';
+import 'package:sync_pro/presentation/customer/screen/customer_profile_edit_screen.dart';
+import 'package:sync_pro/presentation/customer/screen/customer_contact_add_screen.dart';
+import 'package:sync_pro/presentation/customer/screen/customer_contact_edit_screen.dart';
 import 'package:sync_pro/presentation/customer/display_models/contact_display_model.dart';
 import 'package:sync_pro/presentation/shared/mock.dart';
 

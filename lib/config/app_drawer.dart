@@ -4,13 +4,13 @@ import 'package:sync_pro/config/app_string.dart';
 import 'package:sync_pro/config/extension.dart';
 import 'package:sync_pro/config/measurement.dart';
 import 'package:sync_pro/presentation/admin/screen/approval_queue_screen.dart';
-import 'package:sync_pro/presentation/admin/screen/tasks_screen.dart';
+import 'package:sync_pro/presentation/admin/screen/tasks/tasks_screen.dart';
 import 'package:sync_pro/presentation/admin/screen/dashboard_screen.dart';
-import 'package:sync_pro/presentation/admin/screen/users_screen.dart';
-import 'package:sync_pro/presentation/admin/screen/invoices_screen.dart';
-import 'package:sync_pro/presentation/admin/screen/customers_screen.dart';
-import 'package:sync_pro/presentation/admin/screen/parts_screen.dart';
-import 'package:sync_pro/presentation/admin/screen/warehouses_screen.dart';
+import 'package:sync_pro/presentation/admin/screen/users/users_screen.dart';
+import 'package:sync_pro/presentation/admin/screen/invoices/invoices_screen.dart';
+import 'package:sync_pro/presentation/admin/screen/customers/customers_screen.dart';
+import 'package:sync_pro/presentation/admin/screen/parts/parts_screen.dart';
+import 'package:sync_pro/presentation/admin/screen/warehouses/warehouses_screen.dart';
 
 class AppDrawer extends StatelessWidget {
   const AppDrawer({super.key});
