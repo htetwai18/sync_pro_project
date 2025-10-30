@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:sync_pro/config/app_bar.dart';
 import 'package:sync_pro/config/app_color.dart';
 import 'package:sync_pro/config/app_string.dart';
-import 'package:sync_pro/config/enum.dart';
+// enum.dart not used; models carry string values for status/type/priority
 import 'package:sync_pro/config/extension.dart';
 import 'package:sync_pro/config/measurement.dart';
 import 'package:sync_pro/presentation/customer/display_models/task_display_model.dart';
+import 'package:sync_pro/presentation/shared/mock.dart';
 import 'package:sync_pro/presentation/customer/screen/request_service_screen.dart';
 
 class CustomerServiceListScreen extends StatefulWidget {
@@ -119,9 +120,8 @@ class _CustomerServiceListScreenState extends State<CustomerServiceListScreen>
   }
 
   Widget _buildActiveRequestsTab() {
-    final activeRequests = mockTasks
-        .where((request) => request.status != TaskStatus.completed)
-        .toList();
+    final activeRequests =
+        mockTasks.where((request) => request.status != 'completed').toList();
 
     if (activeRequests.isEmpty) {
       return _buildEmptyState(AppString.noActiveRequests);
@@ -142,9 +142,8 @@ class _CustomerServiceListScreenState extends State<CustomerServiceListScreen>
   }
 
   Widget _buildCompletedRequestsTab() {
-    final completedRequests = mockTasks
-        .where((request) => request.status == TaskStatus.completed)
-        .toList();
+    final completedRequests =
+        mockTasks.where((request) => request.status == 'completed').toList();
 
     if (completedRequests.isEmpty) {
       return _buildEmptyState(AppString.noCompletedRequests);
@@ -258,9 +257,7 @@ class _ServiceRequestCard extends StatelessWidget {
                     color: _getStatusColor(request.status),
                     borderRadius: Measurement.generalSize12.allRadius,
                   ),
-                  child: Text(
-                    getTaskStatusText(request.status),
-                  ).smallBold(AppColor.white),
+                  child: Text(_label(request.status)).smallBold(AppColor.white),
                 ),
               ],
             ),
@@ -284,7 +281,7 @@ class _ServiceRequestCard extends StatelessWidget {
                     borderRadius: Measurement.generalSize8.allRadius,
                   ),
                   child: Text(
-                    getTaskPriorityText(request.priority),
+                    _label(request.priority),
                   ).smallBold(AppColor.white),
                 ),
                 Measurement.generalSize8.width,
@@ -297,9 +294,7 @@ class _ServiceRequestCard extends StatelessWidget {
                     color: AppColor.blueField,
                     borderRadius: Measurement.generalSize8.allRadius,
                   ),
-                  child: Text(
-                    getTaskTypeText(request.type),
-                  ).smallBold(AppColor.white),
+                  child: Text(_label(request.type)).smallBold(AppColor.white),
                 ),
               ],
             ),
@@ -316,7 +311,7 @@ class _ServiceRequestCard extends StatelessWidget {
                 ),
                 Measurement.generalSize4.width,
                 Expanded(
-                  child: Text(request.buildingName).smallNormal(AppColor.grey),
+                  child: Text(request.building.name).smallNormal(AppColor.grey),
                 ),
                 if (request.scheduledDate != null) ...[
                   Icon(
@@ -337,45 +332,55 @@ class _ServiceRequestCard extends StatelessWidget {
     );
   }
 
-  Color _getStatusColor(TaskStatus status) {
+  String _label(String v) =>
+      v.isEmpty ? '' : v[0].toUpperCase() + v.substring(1).replaceAll('_', ' ');
+
+  Color _getStatusColor(String status) {
     switch (status) {
-      case TaskStatus.notStarted:
+      case 'pending':
         return AppColor.greyStatusInner;
-      case TaskStatus.inProgress:
+      case 'scheduled':
+      case 'in_progress':
         return AppColor.orangeStatusInner;
-      case TaskStatus.completed:
+      case 'completed':
         return AppColor.greenStatusInner;
-      case TaskStatus.overdue:
+      case 'cancelled':
+      case 'on_hold':
+      case 'overdue':
         return AppColor.redStatusInner;
+      default:
+        return AppColor.blueField;
     }
   }
 
-  Color _getPriorityColor(TaskPriority priority) {
+  Color _getPriorityColor(String priority) {
     switch (priority) {
-      case TaskPriority.low:
+      case 'low':
         return AppColor.greenStatusInner;
-      case TaskPriority.medium:
+      case 'medium':
         return AppColor.blueStatusInner;
-      case TaskPriority.high:
+      case 'high':
         return AppColor.orangeStatusInner;
-      case TaskPriority.urgent:
+      case 'urgent':
         return AppColor.redStatusInner;
+      default:
+        return AppColor.blueField;
     }
   }
 
-  IconData _getServiceTypeIcon(TaskType type) {
+  IconData _getServiceTypeIcon(String type) {
     switch (type) {
-      case TaskType.maintenance:
+      case 'maintenance':
         return Icons.build;
-      case TaskType.repair:
+      case 'repair':
         return Icons.handyman;
-      case TaskType.installation:
+      case 'installation':
         return Icons.install_desktop;
-      case TaskType.inspection:
+      case 'inspection':
         return Icons.search;
-      case TaskType.emergency:
+      case 'emergency':
         return Icons.warning;
-      case TaskType.other:
+      default:
         return Icons.miscellaneous_services;
     }
   }
@@ -388,6 +393,9 @@ class _ServiceRequestDetailsSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    String _labelLocal(String v) => v.isEmpty
+        ? ''
+        : v[0].toUpperCase() + v.substring(1).replaceAll('_', ' ');
     return DraggableScrollableSheet(
       expand: false,
       initialChildSize: 0.7,
@@ -431,29 +439,29 @@ class _ServiceRequestDetailsSheet extends StatelessWidget {
                       ),
                       _DetailRow(
                         label: AppString.serviceType,
-                        value: getTaskTypeText(request.type),
+                        value: _labelLocal(request.type),
                       ),
                       _DetailRow(
                         label: AppString.priority,
-                        value: getTaskPriorityText(request.priority),
+                        value: _labelLocal(request.priority),
                       ),
                       _DetailRow(
                         label: AppString.status,
-                        value: getTaskStatusText(request.status),
+                        value: _labelLocal(request.status),
                       ),
                       _DetailRow(
                         label: AppString.building,
-                        value: request.buildingName,
+                        value: request.building.name,
                       ),
-                      if (request.buildingRoomNumber != null)
+                      if (request.building.roomNumber != null)
                         _DetailRow(
                           label: AppString.room,
-                          value: request.buildingRoomNumber!,
+                          value: request.building.roomNumber!,
                         ),
-                      if (request.assetName != null)
+                      if (request.asset.name.isNotEmpty)
                         _DetailRow(
                           label: AppString.asset,
-                          value: request.assetName!,
+                          value: request.asset.name,
                         ),
                       _DetailRow(
                         label: AppString.requestDate,
@@ -466,24 +474,24 @@ class _ServiceRequestDetailsSheet extends StatelessWidget {
                           value:
                               '${request.scheduledDate!.day}/${request.scheduledDate!.month}/${request.scheduledDate!.year}',
                         ),
-                      if (request.assignedEngineer != null)
+                      if (request.assignedTo != null)
                         _DetailRow(
                           label: AppString.assignedEngineer,
-                          value: request.assignedEngineer!,
+                          value: request.assignedTo!.name,
                         ),
-                      if (request.specialInstructions != null) ...[
+                      if (request.specialInstructions.isNotEmpty) ...[
                         Measurement.generalSize16.height,
                         Text(AppString.specialInstructions)
                             .mediumBold(AppColor.white),
                         Measurement.generalSize8.height,
-                        Text(request.specialInstructions!)
+                        Text(request.specialInstructions)
                             .smallNormal(AppColor.grey),
                       ],
-                      if (request.notes != null) ...[
+                      if (request.notes.isNotEmpty) ...[
                         Measurement.generalSize16.height,
                         Text(AppString.notes).mediumBold(AppColor.white),
                         Measurement.generalSize8.height,
-                        Text(request.notes!).smallNormal(AppColor.grey),
+                        Text(request.notes).smallNormal(AppColor.grey),
                       ],
                     ],
                   ),

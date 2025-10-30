@@ -9,6 +9,7 @@ import 'package:sync_pro/presentation/customer/screen/customer_request_change_sc
 import 'package:sync_pro/presentation/customer/screen/customer_add_contact_screen.dart';
 import 'package:sync_pro/presentation/customer/screen/customer_edit_contact_screen.dart';
 import 'package:sync_pro/presentation/customer/display_models/contact_display_model.dart';
+import 'package:sync_pro/presentation/shared/mock.dart';
 
 class CustomerProfileScreen extends StatelessWidget {
   final bool isFromAdmin;

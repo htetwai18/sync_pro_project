@@ -4,7 +4,8 @@ import 'package:sync_pro/config/app_color.dart';
 import 'package:sync_pro/config/app_string.dart';
 import 'package:sync_pro/config/extension.dart';
 import 'package:sync_pro/config/measurement.dart';
-import 'package:sync_pro/presentation/admin/display_models/part_item_display_model.dart';
+// PartModel is pulled via shared mocks; direct import not required here
+import 'package:sync_pro/presentation/shared/mock.dart';
 
 class AddPartToTaskScreen extends StatefulWidget {
   const AddPartToTaskScreen({super.key});
@@ -81,13 +82,15 @@ class _AddPartToTaskScreenState extends State<AddPartToTaskScreen> {
           ),
           Expanded(
             child: ListView.separated(
-
               padding: Measurement.generalSize16.horizontalIsToVertical,
               itemCount: filtered.length,
               separatorBuilder: (_, __) => Measurement.generalSize12.height,
               itemBuilder: (context, index) {
                 final part = filtered[index];
                 final originalIndex = mockParts.indexOf(part);
+                final onHand = part.stockLevels
+                        ?.fold<int>(0, (prev, s) => prev + s.quantityOnHand) ??
+                    0;
                 return Container(
                   decoration: BoxDecoration(
                     color: AppColor.blueField,
@@ -104,7 +107,7 @@ class _AddPartToTaskScreenState extends State<AddPartToTaskScreen> {
                             Measurement.generalSize8.height,
                             Text(part.number).smallNormal(AppColor.grey),
                             Measurement.generalSize4.height,
-                            Text('${AppString.onHandLabel}: ${part.onHand}')
+                            Text('${AppString.onHandLabel}: $onHand')
                                 .smallNormal(AppColor.grey),
                           ],
                         ),

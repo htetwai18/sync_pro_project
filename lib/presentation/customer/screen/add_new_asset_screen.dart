@@ -5,6 +5,7 @@ import 'package:sync_pro/config/app_string.dart';
 import 'package:sync_pro/config/extension.dart';
 import 'package:sync_pro/config/measurement.dart';
 import 'package:sync_pro/presentation/customer/display_models/building_item_display_model.dart';
+import 'package:sync_pro/presentation/shared/mock.dart';
 
 class AddNewAssetScreen extends StatefulWidget {
   const AddNewAssetScreen({super.key});

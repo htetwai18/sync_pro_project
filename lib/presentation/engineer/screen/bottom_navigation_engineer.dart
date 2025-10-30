@@ -23,11 +23,10 @@ class _BottomNavigationEngineerState extends State<BottomNavigationEngineer> {
 
   //TODO : will replace with login engineer later
   UserModel engineer = const UserModel(
+    id: 'u008',
     name: 'Alice Johnson',
     email: 'alice.johnson@example.com',
-    role: UserRole.engineer,
-    avatarUrl:
-        'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150',
+    role: 'Engineer', phone: '09765529310',
   );
   @override
   void initState() {

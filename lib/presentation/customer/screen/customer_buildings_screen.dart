@@ -7,6 +7,7 @@ import 'package:sync_pro/config/measurement.dart';
 import 'package:sync_pro/presentation/customer/display_models/building_item_display_model.dart';
 import 'package:sync_pro/presentation/customer/screen/customer_room_assets_screen.dart';
 import 'package:sync_pro/presentation/customer/screen/new_building_request_screen.dart';
+import 'package:sync_pro/presentation/shared/mock.dart';
 
 class CustomerBuildingsScreen extends StatelessWidget {
   const CustomerBuildingsScreen({super.key});
@@ -29,7 +30,6 @@ class CustomerBuildingsScreen extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-
                   // Buildings List
                   ListView.separated(
                     shrinkWrap: true,
@@ -45,8 +45,10 @@ class CustomerBuildingsScreen extends StatelessWidget {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) =>
-                                  const CustomerRoomAssetsScreen(),
+                              builder: (context) => CustomerRoomAssetsScreen(
+                                buildingId: building.id,
+                                buildingName: building.name,
+                              ),
                             ),
                           );
                         },

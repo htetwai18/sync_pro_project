@@ -8,16 +8,20 @@ import 'package:sync_pro/config/routing.dart';
 import 'package:sync_pro/presentation/customer/display_models/asset_item_display_model.dart';
 import 'package:sync_pro/presentation/customer/screen/customer_asset_detail_screen.dart';
 import 'package:sync_pro/presentation/customer/screen/add_new_asset_screen.dart';
+import 'package:sync_pro/presentation/shared/mock.dart';
 
 class CustomerRoomAssetsScreen extends StatelessWidget {
-  const CustomerRoomAssetsScreen({super.key});
+  final String buildingId;
+  final String buildingName;
+  const CustomerRoomAssetsScreen(
+      {super.key, required this.buildingId, required this.buildingName});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColor.background,
       appBar: getAppBar(
-        title: AppString.assets,
+        title: buildingName,
         context: context,
         canBack: true,
       ),
@@ -59,10 +63,14 @@ class CustomerRoomAssetsScreen extends StatelessWidget {
           Expanded(
             child: ListView.separated(
               padding: Measurement.generalSize16.horizontalPadding,
-              itemCount: mockAssets.length,
+              itemCount:
+                  mockAssets.where((a) => a.building.id == buildingId).length,
               separatorBuilder: (_, __) => Measurement.generalSize8.height,
               itemBuilder: (context, index) {
-                final asset = mockAssets[index];
+                final list = mockAssets
+                    .where((a) => a.building.id == buildingId)
+                    .toList();
+                final asset = list[index];
                 return _AssetItem(
                   asset: asset,
                   onTap: () {

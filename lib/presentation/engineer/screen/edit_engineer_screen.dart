@@ -4,7 +4,6 @@ import 'package:sync_pro/config/app_color.dart';
 import 'package:sync_pro/config/app_string.dart';
 import 'package:sync_pro/config/extension.dart';
 import 'package:sync_pro/config/measurement.dart';
-import 'package:sync_pro/config/enum.dart';
 import 'package:sync_pro/presentation/admin/display_models/user_item_display_model.dart';
 
 class EditEngineerScreen extends StatefulWidget {
@@ -19,7 +18,7 @@ class _EditEngineerScreenState extends State<EditEngineerScreen> {
   late final TextEditingController _nameController;
   late final TextEditingController _emailController;
   late final TextEditingController _phoneController;
-  UserRole _role = UserRole.engineer;
+  String _role = '';
   String _status = AppString.active;
 
   @override
@@ -29,7 +28,7 @@ class _EditEngineerScreenState extends State<EditEngineerScreen> {
     _emailController = TextEditingController(text: widget.user.email);
     _phoneController = TextEditingController(text: widget.user.phone);
     _role = widget.user.role;
-    _status = widget.user.status;
+    _status = 'Active';
   }
 
   @override
@@ -111,7 +110,7 @@ class _EditEngineerScreenState extends State<EditEngineerScreen> {
             const Text(AppString.role).mediumBold(AppColor.white),
             Measurement.generalSize8.height,
             _Field(
-              child: DropdownButtonFormField<UserRole>(
+              child: DropdownButtonFormField<String>(
                 value: _role,
                 decoration: const InputDecoration(
                   border: InputBorder.none,
@@ -124,8 +123,8 @@ class _EditEngineerScreenState extends State<EditEngineerScreen> {
                 style: Measurement.mediumFont
                     .textStyle(AppColor.white, Measurement.font400),
                 items: [
-                  DropdownMenuItem(
-                    value: UserRole.engineer,
+                  DropdownMenuItem<String>(
+                    value: 'engineer',
                     child: const Text(AppString.engineerRole)
                         .mediumNormal(AppColor.white),
                   ),
@@ -137,7 +136,7 @@ class _EditEngineerScreenState extends State<EditEngineerScreen> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const Text('${AppString.lastUpdatedText}: 2 days ago')
+                Text('${AppString.lastUpdatedText}: 2 days ago')
                     .smallNormal(AppColor.grey),
                 Container(
                   padding: Measurement.generalSize8.horizontalIsToVertical,

@@ -4,7 +4,6 @@ import 'package:sync_pro/config/app_color.dart';
 import 'package:sync_pro/config/app_string.dart';
 import 'package:sync_pro/config/extension.dart';
 import 'package:sync_pro/config/measurement.dart';
-import 'package:sync_pro/config/app_drawer.dart';
 import 'package:sync_pro/presentation/admin/display_models/invoice_item_display_model.dart';
 import 'package:sync_pro/presentation/admin/widgets/invoice_list_item.dart';
 import 'package:sync_pro/config/routing.dart';
@@ -23,10 +22,11 @@ class _InvoicesCustomerScreenState extends State<InvoicesCustomerScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final List<InvoiceModel> filtered = mockInvoices.where((e) {
-      // simple status filter demo
+    // TODO: Replace with repository/API once available. Using empty list to compile.
+    final List<InvoiceModel> all = [];
+    final List<InvoiceModel> filtered = all.where((e) {
       if (_statusFilter == AppString.all) return true;
-      return e.status.name.toLowerCase() == _statusFilter.toLowerCase();
+      return e.status.toLowerCase() == _statusFilter.toLowerCase();
     }).toList();
 
     return Scaffold(

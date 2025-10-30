@@ -6,7 +6,7 @@ import 'package:sync_pro/config/extension.dart';
 import 'package:sync_pro/config/measurement.dart';
 import 'package:sync_pro/presentation/customer/display_models/building_item_display_model.dart';
 import 'package:sync_pro/presentation/customer/display_models/asset_item_display_model.dart';
-import 'package:sync_pro/presentation/customer/display_models/task_display_model.dart';
+import 'package:sync_pro/presentation/shared/mock.dart';
 
 class RequestServiceScreen extends StatefulWidget {
   const RequestServiceScreen({super.key});
@@ -21,8 +21,8 @@ class _RequestServiceScreenState extends State<RequestServiceScreen> {
   final _descriptionController = TextEditingController();
   final _specialInstructionsController = TextEditingController();
 
-  TaskType? _selectedServiceType;
-  TaskPriority? _selectedPriority;
+  String? _selectedServiceType;
+  String? _selectedPriority;
   String? _selectedBuilding;
   String? _selectedAsset;
   DateTime? _selectedPreferredDate;
@@ -30,6 +30,15 @@ class _RequestServiceScreenState extends State<RequestServiceScreen> {
 
   final List<BuildingModel> _buildings = mockBuildings;
   final List<AssetModel> _assets = mockAssets;
+  final List<String> _serviceTypes = const [
+    'maintenance',
+    'repair',
+    'installation',
+    'inspection',
+    'emergency',
+    'other'
+  ];
+  final List<String> _priorities = const ['low', 'medium', 'high', 'urgent'];
   final List<String> _timeSlots = [
     '8:00 AM',
     '9:00 AM',
@@ -47,16 +56,12 @@ class _RequestServiceScreenState extends State<RequestServiceScreen> {
   List<AssetModel> get _selectedBuildingAssets {
     if (_selectedBuilding == null) return [];
     return _assets
-        .where((asset) => asset.buildingId == _selectedBuilding)
+        .where((asset) => asset.building.id == _selectedBuilding)
         .toList();
   }
 
   String _getDisplayText<T>(T item) {
-    if (item is TaskType) {
-      return getTaskTypeText(item);
-    } else if (item is TaskPriority) {
-      return getTaskPriorityText(item);
-    } else if (item is String) {
+    if (item is String) {
       // For building IDs, get the building name
       if (item.startsWith('B')) {
         try {
@@ -107,12 +112,11 @@ class _RequestServiceScreenState extends State<RequestServiceScreen> {
               // Service Type Field
               Text(AppString.serviceType).mediumBold(AppColor.white),
               Measurement.generalSize8.height,
-              _DropdownField<TaskType>(
+              _DropdownField<String>(
                 value: _selectedServiceType,
                 hint: AppString.selectServiceType,
-                items: TaskType.values,
-                displayText: (item) => getTaskTypeText(item),
-                onChanged: (TaskType? newValue) {
+                items: _serviceTypes,
+                onChanged: (String? newValue) {
                   setState(() {
                     _selectedServiceType = newValue;
                   });
@@ -123,12 +127,11 @@ class _RequestServiceScreenState extends State<RequestServiceScreen> {
               // Priority Field
               Text(AppString.priority).mediumBold(AppColor.white),
               Measurement.generalSize8.height,
-              _DropdownField<TaskPriority>(
+              _DropdownField<String>(
                 value: _selectedPriority,
                 hint: AppString.selectPriority,
-                items: TaskPriority.values,
-                displayText: (item) => getTaskPriorityText(item),
-                onChanged: (TaskPriority? newValue) {
+                items: _priorities,
+                onChanged: (String? newValue) {
                   setState(() {
                     _selectedPriority = newValue;
                   });

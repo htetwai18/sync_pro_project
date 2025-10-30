@@ -4,14 +4,13 @@ import 'package:sync_pro/config/app_color.dart';
 import 'package:sync_pro/config/app_string.dart';
 import 'package:sync_pro/config/extension.dart';
 import 'package:sync_pro/config/measurement.dart';
-import 'package:sync_pro/config/enum.dart';
 import 'package:sync_pro/config/routing.dart';
 import 'package:sync_pro/presentation/engineer/screen/add_part_to_task_screen.dart';
 import 'package:sync_pro/presentation/engineer/screen/service_report_screen.dart';
 
 class EngineerTaskDetailScreen extends StatelessWidget {
   final String title, asset, assetName;
-  final TaskStatus status;
+  final String status;
   final String description;
   final String locationName;
   final String address;
@@ -53,12 +52,12 @@ class EngineerTaskDetailScreen extends StatelessWidget {
                 Container(
                   padding: Measurement.generalSize8.horizontalIsToVertical,
                   decoration: BoxDecoration(
-                    color: getTaskStatusInnerColor(status).withOpacity(0.15),
+                    color: _statusColor(status).withOpacity(0.15),
                     borderRadius: Measurement.generalSize12.allRadius,
                   ),
                   child: Text(
                     _statusLabel(status),
-                  ).smallBold(getTaskStatusInnerColor(status)),
+                  ).smallBold(_statusColor(status)),
                 ),
               ],
             ),
@@ -185,16 +184,26 @@ class EngineerTaskDetailScreen extends StatelessWidget {
     );
   }
 
-  String _statusLabel(TaskStatus s) {
+  String _statusLabel(String s) {
+    if (s.isEmpty) return '';
+    return s[0].toUpperCase() + s.substring(1).replaceAll('_', ' ');
+  }
+
+  Color _statusColor(String s) {
     switch (s) {
-      case TaskStatus.notStarted:
-        return AppString.notStarted;
-      case TaskStatus.inProgress:
-        return AppString.inProgress;
-      case TaskStatus.completed:
-        return AppString.completed;
-      case TaskStatus.overdue:
-        return AppString.overdue;
+      case 'pending':
+        return AppColor.greyStatusInner;
+      case 'scheduled':
+      case 'in_progress':
+        return AppColor.orangeStatusInner;
+      case 'completed':
+        return AppColor.greenStatusInner;
+      case 'cancelled':
+      case 'on_hold':
+      case 'overdue':
+        return AppColor.redStatusInner;
+      default:
+        return AppColor.blueField;
     }
   }
 

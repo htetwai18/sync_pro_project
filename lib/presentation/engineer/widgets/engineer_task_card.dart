@@ -38,10 +38,9 @@ class EngineerTaskCard extends StatelessWidget {
                 children: [
                   Text(task.title).mediumBold(AppColor.white),
                   Measurement.generalSize8.height,
-                  Text(task.customerName??"").smallNormal(AppColor.grey),
-
+                  Text(task.customer.name).smallNormal(AppColor.grey),
                   Measurement.generalSize4.height,
-                  Text(task.buildingName??"").smallNormal(AppColor.grey),
+                  Text(task.building.name).smallNormal(AppColor.grey),
                 ],
               ),
             ),

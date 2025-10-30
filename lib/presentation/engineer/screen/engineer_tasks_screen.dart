@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:sync_pro/config/app_color.dart';
-import 'package:sync_pro/config/enum.dart';
 import 'package:sync_pro/config/extension.dart';
 import 'package:sync_pro/config/measurement.dart';
 import 'package:sync_pro/config/routing.dart';
 import 'package:sync_pro/presentation/admin/display_models/task_item_display_model.dart';
 import 'package:sync_pro/presentation/engineer/screen/engineer_task_detail_screen.dart';
 import 'package:sync_pro/presentation/engineer/widgets/engineer_task_card.dart';
+import 'package:sync_pro/presentation/shared/mock.dart';
 
 class EngineerTasksScreen extends StatefulWidget {
   const EngineerTasksScreen({super.key});
@@ -33,10 +33,10 @@ class _EngineerTasksScreenState extends State<EngineerTasksScreen>
             (t.scheduledDate?.month == now.month) &&
             (t.scheduledDate?.day == now.day);
       } else if (tab == 1) {
-        return (t.status != TaskStatus.completed) &&
-            (t.scheduledDate?.isAfter(now)??false);
+        return (t.status != 'completed') &&
+            (t.scheduledDate?.isAfter(now) ?? false);
       } else {
-        return t.status == TaskStatus.completed;
+        return t.status == 'completed';
       }
     }).toList();
   }
@@ -74,16 +74,16 @@ class _EngineerTasksScreenState extends State<EngineerTasksScreen>
                       Routing.transition(
                         context,
                         EngineerTaskDetailScreen(
-                          asset: task.id,
-                          assetName: task.title,
+                          asset: task.asset.id,
+                          assetName: task.asset.name,
                           title: task.title,
                           status: task.status,
                           description: task.description.isNotEmpty
                               ? task.description
                               : 'Task detail description for ${task.title}.',
-                          locationName: task.customerName??"",
-                          address: task.buildingName,
-                          priority: task.priority.name,
+                          locationName: task.customer.name,
+                          address: task.building.address,
+                          priority: task.priority,
                           scheduledAt: task.scheduledDate,
                           assignedAt: task.assignedDate,
                         ),
