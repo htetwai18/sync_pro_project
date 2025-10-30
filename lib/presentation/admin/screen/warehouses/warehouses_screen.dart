@@ -20,6 +20,17 @@ class WarehousesScreen extends StatefulWidget {
 
 class _WarehousesScreenState extends State<WarehousesScreen> {
   final TextEditingController _search = TextEditingController();
+  late List<InventoryModel> _items;
+
+  @override
+  void initState() {
+    super.initState();
+    _items = {
+      for (final level in mockParts.expand(
+          (PartModel p) => (p.stockLevels ?? const <PartInventoryModel>[])))
+        level.location.id: level.location
+    }.values.toList();
+  }
 
   @override
   void dispose() {
@@ -29,14 +40,7 @@ class _WarehousesScreenState extends State<WarehousesScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // Derive unique inventories from part stock levels (mock data source)
-    final List<InventoryModel> items = {
-      for (final level in mockParts.expand(
-          (PartModel p) => (p.stockLevels ?? const <PartInventoryModel>[])))
-        level.location.id: level.location
-    }.values.toList();
-
-    final filtered = items
+    final filtered = _items
         .where((w) =>
             _search.text.isEmpty ||
             w.name.toLowerCase().contains(_search.text.toLowerCase()) ||
@@ -85,6 +89,7 @@ class _WarehousesScreenState extends State<WarehousesScreen> {
                       );
                       if (updated == true) setState(() {});
                     },
+                    onDelete: () => _confirmDelete(w.id),
                   );
                 },
               ),
@@ -116,14 +121,53 @@ class _WarehousesScreenState extends State<WarehousesScreen> {
       ),
     );
   }
+
+  Future<void> _confirmDelete(String id) async {
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        backgroundColor: AppColor.background,
+        shape: RoundedRectangleBorder(
+          borderRadius: Measurement.generalSize12.allRadius,
+        ),
+        title: Text(AppString.delete).mediumBold(AppColor.white),
+        content: Text(AppString.areYouSureDelete).mediumNormal(AppColor.white),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(ctx, false),
+            child: const Text(AppString.cancelButton),
+          ),
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(
+                backgroundColor: AppColor.redStatusInner),
+            onPressed: () => Navigator.pop(ctx, true),
+            child: Text(AppString.delete),
+          ),
+        ],
+      ),
+    );
+
+    if (confirmed == true) {
+      setState(() {
+        _items.removeWhere((w) => w.id == id);
+      });
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Deleted successfully.')),
+      );
+    }
+  }
 }
 
 class _WarehouseItem extends StatelessWidget {
   final InventoryModel warehouse;
   final VoidCallback onTap;
   final VoidCallback onEdit;
+  final VoidCallback onDelete;
   const _WarehouseItem(
-      {required this.warehouse, required this.onTap, required this.onEdit});
+      {required this.warehouse,
+      required this.onTap,
+      required this.onEdit,
+      required this.onDelete});
 
   @override
   Widget build(BuildContext context) {
@@ -150,6 +194,10 @@ class _WarehouseItem extends StatelessWidget {
             IconButton(
               onPressed: onEdit,
               icon: const Icon(Icons.edit, color: AppColor.grey),
+            ),
+            IconButton(
+              onPressed: onDelete,
+              icon: const Icon(Icons.delete_outline, color: AppColor.grey),
             ),
           ],
         ),

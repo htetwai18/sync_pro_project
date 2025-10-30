@@ -11,6 +11,7 @@ import 'package:sync_pro/config/routing.dart';
 import 'package:sync_pro/presentation/admin/screen/parts/part_detail_screen.dart';
 import 'package:sync_pro/presentation/admin/screen/parts/add_part_screen.dart';
 import 'package:sync_pro/presentation/shared/mock.dart';
+import 'package:sync_pro/presentation/admin/display_models/part_item_display_model.dart';
 
 class PartsScreen extends StatefulWidget {
   const PartsScreen({super.key});
@@ -22,6 +23,13 @@ class PartsScreen extends StatefulWidget {
 class _PartsScreenState extends State<PartsScreen> {
   final TextEditingController _search = TextEditingController();
   String _query = '';
+  late List<PartModel> _items;
+
+  @override
+  void initState() {
+    super.initState();
+    _items = List<PartModel>.from(mockParts);
+  }
 
   @override
   void dispose() {
@@ -31,7 +39,7 @@ class _PartsScreenState extends State<PartsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final filtered = mockParts
+    final filtered = _items
         .where((e) =>
             e.name.toLowerCase().contains(_query.toLowerCase()) ||
             e.number.toLowerCase().contains(_query.toLowerCase()))
@@ -75,14 +83,26 @@ class _PartsScreenState extends State<PartsScreen> {
               separatorBuilder: (_, __) => Measurement.generalSize16.height,
               itemBuilder: (context, index) {
                 final item = filtered[index];
-                return PartListItem(
-                  item: item,
-                  onTap: () {
-                    Routing.transition(
-                      context,
-                      PartDetailScreen(part: item),
-                    );
-                  },
+                return Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Expanded(
+                      child: PartListItem(
+                        item: item,
+                        onTap: () {
+                          Routing.transition(
+                            context,
+                            PartDetailScreen(part: item),
+                          );
+                        },
+                      ),
+                    ),
+                    IconButton(
+                      icon: const Icon(Icons.delete_outline,
+                          color: AppColor.grey),
+                      onPressed: () => _confirmDelete(item.id),
+                    ),
+                  ],
                 );
               },
             ),
@@ -98,5 +118,40 @@ class _PartsScreenState extends State<PartsScreen> {
         child: const Icon(Icons.add),
       ),
     );
+  }
+
+  Future<void> _confirmDelete(String id) async {
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        backgroundColor: AppColor.background,
+        shape: RoundedRectangleBorder(
+          borderRadius: Measurement.generalSize12.allRadius,
+        ),
+        title: Text(AppString.delete).mediumBold(AppColor.white),
+        content: Text(AppString.areYouSureDelete).mediumNormal(AppColor.white),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(ctx, false),
+            child: const Text(AppString.cancelButton),
+          ),
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(
+                backgroundColor: AppColor.redStatusInner),
+            onPressed: () => Navigator.pop(ctx, true),
+            child: Text(AppString.delete),
+          ),
+        ],
+      ),
+    );
+
+    if (confirmed == true) {
+      setState(() {
+        _items.removeWhere((p) => p.id == id);
+      });
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Deleted successfully.')),
+      );
+    }
   }
 }
