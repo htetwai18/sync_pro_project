@@ -19,6 +19,21 @@ class SeedLoader {
   static List<Map<String, dynamic>> loadInvoiceLineItems() =>
       (json.decode(_invoiceLineItemsJson) as List).cast<Map<String, dynamic>>();
 
+  static List<Map<String, dynamic>> loadUsers() =>
+      (json.decode(_usersJson) as List).cast<Map<String, dynamic>>();
+
+  static List<Map<String, dynamic>> loadBuildings() =>
+      (json.decode(_buildingsJson) as List).cast<Map<String, dynamic>>();
+
+  static List<Map<String, dynamic>> loadAssets() =>
+      (json.decode(_assetsJson) as List).cast<Map<String, dynamic>>();
+
+  static List<Map<String, dynamic>> loadTasks() =>
+      (json.decode(_tasksJson) as List).cast<Map<String, dynamic>>();
+
+  static List<Map<String, dynamic>> loadReports() =>
+      (json.decode(_reportsJson) as List).cast<Map<String, dynamic>>();
+
   static const String _customersJson = '''
   [
     {"id":"cust-0001","name":"Acme Corp","phone":"+1 555-0100","email":"ops@acme.example"}
@@ -57,6 +72,41 @@ class SeedLoader {
   [
     {"id":"li-1","invoiceId":"inv-0001","name":"Labor for task","quantity":2,"unitPrice":100.0},
     {"id":"li-2","invoiceId":"inv-0001","name":"Daikin AC Filter","quantity":1,"unitPrice":50.0}
+  ]
+  ''';
+
+  static const String _usersJson = '''
+  [
+    {"id":"user-admin-0001","name":"Admin One","phone":"+1 555-0000","email":"admin@syncpro.test","role":"admin"},
+    {"id":"user-eng-0002","name":"Alice Engineer","phone":"+1 555-9999","email":"alice@syncpro.test","role":"engineer"}
+  ]
+  ''';
+
+  static const String _buildingsJson = '''
+  [
+    {"id":"bldg-hq-0001","name":"Headquarters","address":"123 Main St","roomNumber":"R001","customerId":"cust-0001"}
+  ]
+  ''';
+
+  static const String _assetsJson = '''
+  [
+    {"id":"asset-ac-0001","name":"Daikin AC Unit","manufacturer":"Daikin","model":"DX-2000","installationDate":"2024-05-10","buildingId":"bldg-hq-0001"}
+  ]
+  ''';
+
+  static const String _tasksJson = '''
+  [
+    {"id":"task-0001-hq-ac","title":"HVAC Unit Not Cooling","description":"Blowing warm air","status":"in_progress","type":"repair","priority":"high","requestDate":"2025-07-25T10:00:00.000Z","completedDate":null,
+      "preferredDate":"2025-07-27T00:00:00.000Z","preferredTime":"10:00","notes":"","specialInstructions":"Please bring replacement filters",
+      "assignedDate":"2025-07-26T00:00:00.000Z","scheduledDate":"2025-07-27T10:00:00.000Z",
+      "customerId":"cust-0001","buildingId":"bldg-hq-0001","assetId":"asset-ac-0001","createdById":"user-admin-0001","assignedToId":"user-eng-0002","reportId":null
+    }
+  ]
+  ''';
+
+  static const String _reportsJson = '''
+  [
+    {"id":"rep-0002","title":"Camera Inspection Report","submittedDate":"2025-07-12","approvedDate":"2025-07-13","content":"All cameras operational.","attachmentUrl":null,"status":"approved","taskId":"task-0001-hq-ac","submittedById":"user-eng-0002","reviewedById":"user-admin-0001"}
   ]
   ''';
 }

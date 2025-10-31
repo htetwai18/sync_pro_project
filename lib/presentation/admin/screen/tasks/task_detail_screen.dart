@@ -1,17 +1,29 @@
 import 'package:flutter/material.dart';
-import 'package:sync_pro/config/app_bar.dart';
 import 'package:sync_pro/config/app_color.dart';
 import 'package:sync_pro/config/app_string.dart';
 import 'package:sync_pro/config/extension.dart';
 import 'package:sync_pro/config/measurement.dart';
-import 'package:sync_pro/config/routing.dart';
 import 'package:sync_pro/presentation/admin/display_models/task_item_display_model.dart';
 import 'package:sync_pro/presentation/admin/screen/tasks/report_detail_screen.dart';
 
-class TaskDetailScreen extends StatelessWidget {
+class TaskDetailScreen extends StatefulWidget {
   final TaskItemDisplayModel item;
 
   const TaskDetailScreen({super.key, required this.item});
+
+  @override
+  State<TaskDetailScreen> createState() => _TaskDetailScreenState();
+}
+
+class _TaskDetailScreenState extends State<TaskDetailScreen> {
+  late TaskItemDisplayModel item;
+  bool _changed = false;
+
+  @override
+  void initState() {
+    super.initState();
+    item = widget.item;
+  }
 
   String _format(DateTime? dt) {
     if (dt == null) return '';
@@ -25,124 +37,143 @@ class TaskDetailScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColor.background,
-      appBar: getAppBar(title: AppString.taskDetailsTitle, context: context),
-      body: SingleChildScrollView(
-        padding: Measurement.generalSize16.horizontalIsToVertical,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text(AppString.taskDescription).mediumBold(AppColor.white),
-            Measurement.generalSize12.height,
-            Text(item.description).mediumNormal(AppColor.grey),
-            Measurement.generalSize24.height,
-            const Text(AppString.assetUpper).mediumBold(AppColor.white),
-            Measurement.generalSize12.height,
-            Container(
-              padding: Measurement.generalSize16.horizontalIsToVertical,
-              decoration: BoxDecoration(
-                color: AppColor.blueField,
-                borderRadius: Measurement.generalSize12.allRadius,
+    return WillPopScope(
+      onWillPop: () async {
+        Navigator.pop(context, _changed);
+        return false;
+      },
+      child: Scaffold(
+        backgroundColor: AppColor.background,
+        appBar: AppBar(
+          backgroundColor: AppColor.background,
+          elevation: 0,
+          automaticallyImplyLeading: false,
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back, color: AppColor.white),
+            onPressed: () => Navigator.pop(context, _changed),
+          ),
+          title: const Text(AppString.taskDetailsTitle),
+          centerTitle: true,
+        ),
+        body: SingleChildScrollView(
+          padding: Measurement.generalSize16.horizontalIsToVertical,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text(AppString.taskDescription).mediumBold(AppColor.white),
+              Measurement.generalSize12.height,
+              Text(item.description).mediumNormal(AppColor.grey),
+              Measurement.generalSize24.height,
+              const Text(AppString.assetUpper).mediumBold(AppColor.white),
+              Measurement.generalSize12.height,
+              Container(
+                padding: Measurement.generalSize16.horizontalIsToVertical,
+                decoration: BoxDecoration(
+                  color: AppColor.blueField,
+                  borderRadius: Measurement.generalSize12.allRadius,
+                ),
+                child: Row(
+                  children: [
+                    Container(
+                      width: Measurement.generalSize48,
+                      height: Measurement.generalSize48,
+                      decoration: BoxDecoration(
+                        color: AppColor.blueStatusOuter,
+                        borderRadius: Measurement.generalSize10.allRadius,
+                      ),
+                      child: const Icon(
+                        Icons.insert_drive_file,
+                        color: AppColor.blueStatusInner,
+                      ),
+                    ),
+                    Measurement.generalSize12.width,
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text('${AppString.assetID}: ${item.asset.id}')
+                              .mediumBold(AppColor.white),
+                          Measurement.generalSize4.height,
+                          Text(item.title).smallNormal(AppColor.grey),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
               ),
-              child: Row(
-                children: [
-                  Container(
-                    width: Measurement.generalSize48,
-                    height: Measurement.generalSize48,
+              Measurement.generalSize24.height,
+              const Text(AppString.timeline).mediumBold(AppColor.grey),
+              Measurement.generalSize12.height,
+              _TimelineTile(
+                icon: Icons.radio_button_unchecked,
+                title: AppString.taskCreated,
+                subtitle: _format(item.requestDate),
+              ),
+              _TimelineDivider(),
+              _TimelineTile(
+                icon: Icons.radio_button_unchecked,
+                title: AppString.assignedToEngineer,
+                subtitle: _format(item.assignedDate),
+              ),
+              _TimelineDivider(),
+              _TimelineTile(
+                icon: Icons.check_circle,
+                iconColor: AppColor.greenStatusInner,
+                title: AppString.taskCompleted,
+                subtitle: _format(item.completedDate),
+              ),
+              Measurement.generalSize24.height,
+              if (item.report != null)
+                const Text(AppString.serviceReport).mediumBold(AppColor.white),
+              Measurement.generalSize12.height,
+              if (item.report != null)
+                InkWell(
+                  onTap: () async {
+                    final updated = await Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => ReportDetailScreen(item: item.report!),
+                      ),
+                    );
+                    if (updated == true) setState(() => _changed = true);
+                  },
+                  child: Container(
+                    padding: Measurement.generalSize16.horizontalIsToVertical,
                     decoration: BoxDecoration(
-                      color: AppColor.blueStatusOuter,
-                      borderRadius: Measurement.generalSize10.allRadius,
+                      color: AppColor.blueField,
+                      borderRadius: Measurement.generalSize12.allRadius,
                     ),
-                    child: const Icon(
-                      Icons.insert_drive_file,
-                      color: AppColor.blueStatusInner,
-                    ),
-                  ),
-                  Measurement.generalSize12.width,
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                    child: Row(
                       children: [
-                        Text('${AppString.assetID}: ${item.asset.id}')
-                            .mediumBold(AppColor.white),
-                        Measurement.generalSize4.height,
-                        Text(item.title).smallNormal(AppColor.grey),
+                        Container(
+                          width: Measurement.generalSize48,
+                          height: Measurement.generalSize48,
+                          decoration: BoxDecoration(
+                            color: AppColor.blueStatusOuter,
+                            borderRadius: Measurement.generalSize10.allRadius,
+                          ),
+                          child: const Icon(Icons.description,
+                              color: AppColor.blueStatusInner),
+                        ),
+                        Measurement.generalSize12.width,
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Text(AppString.viewReport)
+                                  .mediumBold(AppColor.white),
+                              Measurement.generalSize4.height,
+                              Text('${AppString.submittedOn} ${_format(item.completedDate).split(' ').first}')
+                                  .smallNormal(AppColor.grey),
+                            ],
+                          ),
+                        ),
                       ],
                     ),
                   ),
-                ],
-              ),
-            ),
-            Measurement.generalSize24.height,
-            const Text(AppString.timeline).mediumBold(AppColor.grey),
-            Measurement.generalSize12.height,
-            _TimelineTile(
-              icon: Icons.radio_button_unchecked,
-              title: AppString.taskCreated,
-              subtitle: _format(item.requestDate),
-            ),
-            _TimelineDivider(),
-            _TimelineTile(
-              icon: Icons.radio_button_unchecked,
-              title: AppString.assignedToEngineer,
-              subtitle: _format(item.assignedDate),
-            ),
-            _TimelineDivider(),
-            _TimelineTile(
-              icon: Icons.check_circle,
-              iconColor: AppColor.greenStatusInner,
-              title: AppString.taskCompleted,
-              subtitle: _format(item.completedDate),
-            ),
-            Measurement.generalSize24.height,
-            if (item.report != null)
-              const Text(AppString.serviceReport).mediumBold(AppColor.white),
-            Measurement.generalSize12.height,
-            if (item.report != null)
-              InkWell(
-                onTap: () {
-                  Routing.transition(
-                    context,
-                    ReportDetailScreen(item: item.report!),
-                  );
-                },
-                child: Container(
-                  padding: Measurement.generalSize16.horizontalIsToVertical,
-                  decoration: BoxDecoration(
-                    color: AppColor.blueField,
-                    borderRadius: Measurement.generalSize12.allRadius,
-                  ),
-                  child: Row(
-                    children: [
-                      Container(
-                        width: Measurement.generalSize48,
-                        height: Measurement.generalSize48,
-                        decoration: BoxDecoration(
-                          color: AppColor.blueStatusOuter,
-                          borderRadius: Measurement.generalSize10.allRadius,
-                        ),
-                        child: const Icon(Icons.description,
-                            color: AppColor.blueStatusInner),
-                      ),
-                      Measurement.generalSize12.width,
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const Text(AppString.viewReport)
-                                .mediumBold(AppColor.white),
-                            Measurement.generalSize4.height,
-                            Text('${AppString.submittedOn} ${_format(item.completedDate).split(' ').first}')
-                                .smallNormal(AppColor.grey),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
                 ),
-              ),
-          ],
+            ],
+          ),
         ),
       ),
     );

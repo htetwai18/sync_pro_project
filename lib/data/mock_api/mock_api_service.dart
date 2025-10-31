@@ -4,7 +4,12 @@ import 'package:sync_pro/presentation/admin/display_models/invoice_line_item_mod
 import 'package:sync_pro/presentation/admin/display_models/part_inventory_model.dart';
 import 'package:sync_pro/presentation/admin/display_models/part_item_display_model.dart';
 import 'package:sync_pro/presentation/admin/display_models/warehouse_display_model.dart';
+import 'package:sync_pro/presentation/customer/display_models/task_display_model.dart';
+import 'package:sync_pro/presentation/customer/display_models/building_item_display_model.dart';
+import 'package:sync_pro/presentation/customer/display_models/asset_item_display_model.dart';
 import 'seed_loader.dart';
+import 'package:sync_pro/presentation/admin/display_models/user_item_display_model.dart';
+import 'package:sync_pro/presentation/admin/display_models/report_item_display_model.dart';
 
 class MockApiService {
   MockApiService._internal() {
@@ -14,15 +19,29 @@ class MockApiService {
 
   // In-memory stores (raw JSON rows)
   final Map<String, Map<String, dynamic>> _customers = {};
+  final Map<String, Map<String, dynamic>> _users = {};
+  final Map<String, Map<String, dynamic>> _buildings = {};
+  final Map<String, Map<String, dynamic>> _assets = {};
   final Map<String, Map<String, dynamic>> _inventories = {};
   final Map<String, Map<String, dynamic>> _parts = {};
   final List<Map<String, dynamic>> _partInventory = [];
   final Map<String, Map<String, dynamic>> _invoices = {};
   final List<Map<String, dynamic>> _invoiceLineItems = [];
+  final Map<String, Map<String, dynamic>> _tasks = {};
+  final Map<String, Map<String, dynamic>> _reports = {};
 
   void _seed() {
     for (final c in SeedLoader.loadCustomers()) {
       _customers[c['id'] as String] = c;
+    }
+    for (final u in SeedLoader.loadUsers()) {
+      _users[u['id'] as String] = u;
+    }
+    for (final b in SeedLoader.loadBuildings()) {
+      _buildings[b['id'] as String] = b;
+    }
+    for (final a in SeedLoader.loadAssets()) {
+      _assets[a['id'] as String] = a;
     }
     for (final w in SeedLoader.loadInventories()) {
       _inventories[w['id'] as String] = w;
@@ -35,6 +54,13 @@ class MockApiService {
       _invoices[inv['id'] as String] = inv;
     }
     _invoiceLineItems.addAll(SeedLoader.loadInvoiceLineItems());
+
+    for (final t in SeedLoader.loadTasks()) {
+      _tasks[t['id'] as String] = t;
+    }
+    for (final r in SeedLoader.loadReports()) {
+      _reports[r['id'] as String] = r;
+    }
   }
 
   // ===== Parts =====
@@ -305,5 +331,193 @@ class MockApiService {
       });
     }
     return _buildInvoice(_invoices[id]!);
+  }
+}
+
+// ======== TASKS & REPORTS ========
+extension TasksApi on MockApiService {
+  Future<List<TaskOrRequestedServiceModel>> listTasks({String? status}) async {
+    final list = _tasks.values.map(_buildTask).toList();
+    if (status == null || status.toLowerCase() == 'all') return list;
+    return list
+        .where((t) => t.status.toLowerCase() == status.toLowerCase())
+        .toList();
+  }
+
+  Future<TaskOrRequestedServiceModel> getTask(String id) async {
+    final row = _tasks[id];
+    if (row == null) throw StateError('Task not found');
+    return _buildTask(row);
+  }
+
+  Future<TaskOrRequestedServiceModel> createTask({
+    required String customerId,
+    required String buildingId,
+    required String assetId,
+    required String title,
+    required String description,
+    required String type,
+    required String priority,
+    required DateTime requestDate,
+    String status = 'pending',
+    String? assignedToId,
+    DateTime? scheduledDate,
+  }) async {
+    final id = 'task-${DateTime.now().millisecondsSinceEpoch}';
+    _tasks[id] = {
+      'id': id,
+      'title': title,
+      'description': description,
+      'status': status,
+      'type': type,
+      'priority': priority,
+      'requestDate': requestDate.toIso8601String(),
+      'completedDate': null,
+      'preferredDate': requestDate.toIso8601String(),
+      'preferredTime': '10:00',
+      'notes': '',
+      'specialInstructions': '',
+      'assignedDate':
+          assignedToId != null ? DateTime.now().toIso8601String() : null,
+      'scheduledDate': scheduledDate?.toIso8601String(),
+      'customerId': customerId,
+      'buildingId': buildingId,
+      'assetId': assetId,
+      'createdById': _users.keys.first,
+      'assignedToId': assignedToId,
+      'reportId': null,
+    };
+    return _buildTask(_tasks[id]!);
+  }
+
+  Future<TaskOrRequestedServiceModel> updateTaskStatus(
+      String id, String status) async {
+    final row = _tasks[id];
+    if (row == null) throw StateError('Task not found');
+    row['status'] = status;
+    if (status == 'completed') {
+      row['completedDate'] = DateTime.now().toIso8601String();
+    }
+    return _buildTask(row);
+  }
+
+  Future<TaskOrRequestedServiceModel> assignTask(
+      String id, String userId) async {
+    final row = _tasks[id];
+    if (row == null) throw StateError('Task not found');
+    row['assignedToId'] = userId;
+    row['assignedDate'] = DateTime.now().toIso8601String();
+    return _buildTask(row);
+  }
+
+  Future<TaskOrRequestedServiceModel> scheduleTask(
+      String id, DateTime when) async {
+    final row = _tasks[id];
+    if (row == null) throw StateError('Task not found');
+    row['scheduledDate'] = when.toIso8601String();
+    return _buildTask(row);
+  }
+
+  Future<void> deleteTask(String id) async {
+    _tasks.remove(id);
+    _reports.removeWhere((_, r) => r['taskId'] == id);
+  }
+
+  TaskOrRequestedServiceModel _buildTask(Map<String, dynamic> row) {
+    final customer = _buildCustomer(_customers[row['customerId']]!);
+    final building = _buildBuilding(_buildings[row['buildingId']]!, customer);
+    final asset = _buildAsset(_assets[row['assetId']]!, building);
+    final createdBy = _buildUser(_users[row['createdById']]!);
+    final assignedTo = row['assignedToId'] != null
+        ? _buildUser(_users[row['assignedToId']]!)
+        : null;
+    final report = row['reportId'] != null
+        ? _buildReport(_reports[row['reportId']]!)
+        : null;
+
+    return TaskOrRequestedServiceModel(
+      id: row['id'] as String,
+      title: row['title'] as String,
+      description: row['description'] as String,
+      status: row['status'] as String,
+      type: row['type'] as String,
+      priority: row['priority'] as String,
+      requestDate: DateTime.parse(row['requestDate'] as String),
+      completedDate: row['completedDate'] != null
+          ? DateTime.tryParse(row['completedDate'] as String)
+          : null,
+      preferredDate:
+          DateTime.tryParse(row['preferredDate'] as String) ?? DateTime.now(),
+      preferredTime: row['preferredTime'] as String? ?? '10:00',
+      notes: row['notes'] as String? ?? '',
+      specialInstructions: row['specialInstructions'] as String? ?? '',
+      assignedDate: row['assignedDate'] != null
+          ? DateTime.tryParse(row['assignedDate'] as String)
+          : null,
+      scheduledDate: row['scheduledDate'] != null
+          ? DateTime.tryParse(row['scheduledDate'] as String)
+          : null,
+      customer: customer,
+      building: building,
+      asset: asset,
+      createdBy: createdBy,
+      assignedTo: assignedTo,
+      report: report,
+      parts: const [],
+    );
+  }
+
+  UserModel _buildUser(Map<String, dynamic> row) {
+    return UserModel(
+      id: row['id'] as String,
+      name: row['name'] as String,
+      phone: row['phone'] as String,
+      email: row['email'] as String,
+      role: row['role'] as String,
+    );
+  }
+
+  BuildingModel _buildBuilding(
+      Map<String, dynamic> row, CustomerModel customer) {
+    return BuildingModel(
+      id: row['id'] as String,
+      name: row['name'] as String,
+      address: row['address'] as String,
+      roomNumber: row['roomNumber'] as String?,
+      customer: customer,
+    );
+  }
+
+  AssetModel _buildAsset(Map<String, dynamic> row, BuildingModel building) {
+    return AssetModel(
+      id: row['id'] as String,
+      name: row['name'] as String,
+      manufacturer: row['manufacturer'] as String,
+      model: row['model'] as String,
+      installationDate: row['installationDate'] != null
+          ? DateTime.tryParse(row['installationDate'] as String)
+          : null,
+      building: building,
+    );
+  }
+
+  ReportModel _buildReport(Map<String, dynamic> row) {
+    final task = _buildTask(_tasks[row['taskId']]!);
+    final submittedBy = _buildUser(_users[row['submittedById']]!);
+    final reviewedBy = row['reviewedById'] != null
+        ? _buildUser(_users[row['reviewedById']]!)
+        : null;
+    return ReportModel(
+      id: row['id'] as String,
+      title: row['title'] as String,
+      submittedDate: row['submittedDate'] as String,
+      approvedDate: row['approvedDate'] as String?,
+      content: row['content'] as String,
+      attachmentUrl: row['attachmentUrl'] as String?,
+      status: row['status'] as String,
+      task: task,
+      submittedBy: submittedBy,
+      reviewedBy: reviewedBy,
+    );
   }
 }

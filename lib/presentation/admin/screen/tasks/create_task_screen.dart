@@ -4,6 +4,7 @@ import 'package:sync_pro/config/app_color.dart';
 import 'package:sync_pro/config/app_string.dart';
 import 'package:sync_pro/config/extension.dart';
 import 'package:sync_pro/config/measurement.dart';
+import 'package:sync_pro/data/mock_api/mock_api_service.dart';
 
 class CreateTaskScreen extends StatefulWidget {
   const CreateTaskScreen({super.key});
@@ -233,7 +234,31 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
                     borderRadius: Measurement.generalSize12.allRadius,
                   ),
                 ),
-                onPressed: () {},
+                onPressed: () async {
+                  // Minimal payload using seeds
+                  if (_titleController.text.trim().isEmpty ||
+                      _descController.text.trim().isEmpty) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                          content: Text('Please enter title and description.')),
+                    );
+                    return;
+                  }
+                  await MockApiService.instance.createTask(
+                    customerId: 'cust-0001',
+                    buildingId: 'bldg-hq-0001',
+                    assetId: 'asset-ac-0001',
+                    title: _titleController.text.trim(),
+                    description: _descController.text.trim(),
+                    type: 'repair',
+                    priority: (_selectedPriority ?? 'medium').toLowerCase(),
+                    requestDate: DateTime.now(),
+                    assignedToId: null,
+                    scheduledDate: _dueDate,
+                  );
+                  if (!mounted) return;
+                  Navigator.pop(context, true);
+                },
                 child:
                     const Text(AppString.createTask).mediumBold(AppColor.white),
               ),
