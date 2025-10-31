@@ -430,6 +430,16 @@ extension TasksApi on MockApiService {
     final now = DateTime.now();
     bool Function(Map<String, dynamic>) scopeFilter;
     switch (scope) {
+      case 'overdue':
+        scopeFilter = (t) {
+          final status = (t['status'] as String);
+          if (status == 'completed') return false;
+          final sd = t['scheduledDate'] != null
+              ? DateTime.tryParse(t['scheduledDate'] as String)
+              : null;
+          return sd != null && sd.isBefore(now);
+        };
+        break;
       case 'upcoming':
         scopeFilter = (t) =>
             (t['status'] as String) != 'completed' &&
@@ -511,6 +521,10 @@ extension TasksApi on MockApiService {
     final parts = partsRaw
         .map((e) => _buildPart(_parts[e['partId'] as String]!))
         .toList();
+    final partsQuantity = partsRaw.isEmpty
+        ? null
+        : Map<String, int>.fromEntries(partsRaw
+            .map((e) => MapEntry(e['partId'] as String, e['quantity'] as int)));
 
     return TaskOrRequestedServiceModel(
       id: row['id'] as String,
@@ -541,6 +555,7 @@ extension TasksApi on MockApiService {
       assignedTo: assignedTo,
       report: report,
       parts: parts,
+      partsQuantity: partsQuantity,
     );
   }
 
@@ -645,6 +660,37 @@ extension LookupsApi on MockApiService {
     final row = _users[id];
     if (row == null) throw StateError('User not found');
     return _buildUser(row);
+  }
+
+  Future<Map<String, dynamic>?> authenticateUser(
+      String emailOrUsername, String password) async {
+    // Check users first (admin/engineer)
+    for (final userRow in _users.values) {
+      final email = (userRow['email'] as String).toLowerCase();
+      final name = (userRow['name'] as String).toLowerCase();
+      final input = emailOrUsername.toLowerCase();
+      if (email == input || name == input) {
+        // For now, accept any password since seeds don't have passwords
+        return {
+          'user': _buildUser(userRow),
+          'role': userRow['role'] as String,
+        };
+      }
+    }
+    // Check customers
+    for (final customerRow in _customers.values) {
+      final email = (customerRow['email'] as String).toLowerCase();
+      final name = (customerRow['name'] as String).toLowerCase();
+      final input = emailOrUsername.toLowerCase();
+      if (email == input || name == input) {
+        // For now, accept any password
+        return {
+          'user': _buildCustomer(customerRow),
+          'role': 'customer',
+        };
+      }
+    }
+    return null; // Invalid credentials
   }
 }
 

@@ -4,6 +4,7 @@ import 'package:sync_pro/config/app_string.dart';
 import 'package:sync_pro/config/extension.dart';
 import 'package:sync_pro/config/measurement.dart';
 import 'package:sync_pro/config/routing.dart';
+import 'package:sync_pro/data/mock_api/mock_api_service.dart';
 import 'package:sync_pro/presentation/admin/screen/dashboard_screen.dart';
 import 'package:sync_pro/presentation/customer/screen/bottom_navigation_customer.dart';
 import 'package:sync_pro/presentation/engineer/screen/bottom_navigation_engineer.dart';
@@ -114,12 +115,48 @@ class _LoginScreenState extends State<LoginScreen> {
                       borderRadius: Measurement.generalSize12.allRadius,
                     ),
                   ),
-                  onPressed: () {
-                     // Routing.transition(context, const DashboardScreen());
-                    Routing.transition(
-                        context, const BottomNavigationEngineer());
-                    // Routing.transition(
-                    //     context, const BottomNavigationCustomer());
+                  onPressed: () async {
+                    final email = _usernameController.text.trim();
+                    final password = _passwordController.text.trim();
+
+                    if (email.isEmpty || password.isEmpty) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text('Please enter email and password'),
+                        ),
+                      );
+                      return;
+                    }
+
+                    final authResult = await MockApiService.instance
+                        .authenticateUser(email, password);
+
+                    if (authResult == null) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text('Invalid email or password'),
+                        ),
+                      );
+                      return;
+                    }
+
+                    final role = authResult['role'] as String;
+
+                    if (!mounted) return;
+
+                    // Admin: admin@syncpro.test (or "Admin One")
+                    // Engineer: alice@syncpro.test (or "Alice Engineer")
+                    // Customer: ops@acme.example (or "Acme Corp")
+
+                    if (role == 'admin') {
+                      Routing.transition(context, const DashboardScreen());
+                    } else if (role == 'engineer') {
+                      Routing.transition(
+                          context, const BottomNavigationEngineer());
+                    } else if (role == 'customer') {
+                      Routing.transition(
+                          context, const BottomNavigationCustomer());
+                    }
                   },
                   child: const Text(AppString.logIn).mediumBold(AppColor.white),
                 ),

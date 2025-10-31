@@ -342,6 +342,7 @@ _MockBundle _buildMocks() {
     asset: asset1Final,
     createdBy: mockAdmin,
     assignedTo: mockEngineer,
+    partsQuantity: null,
   );
   final task2Base = TaskOrRequestedServiceModel(
     id: 'task-0002-inspect',
@@ -364,6 +365,7 @@ _MockBundle _buildMocks() {
     asset: asset2Final,
     createdBy: mockAdmin,
     assignedTo: mockEngineer,
+    partsQuantity: null,
   );
 
   // Reports linked to base tasks
@@ -419,6 +421,7 @@ _MockBundle _buildMocks() {
       assignedTo: task1Base.assignedTo,
       report: report1,
       parts: [part1],
+      partsQuantity: {'part-0001': 2},
     ),
     TaskOrRequestedServiceModel(
       id: task2Base.id,
@@ -442,6 +445,7 @@ _MockBundle _buildMocks() {
       assignedTo: task2Base.assignedTo,
       report: report2,
       parts: [part2],
+      partsQuantity: {'part-0002': 1},
     ),
   ];
 

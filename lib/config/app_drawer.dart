@@ -11,6 +11,7 @@ import 'package:sync_pro/presentation/admin/screen/invoices/invoices_screen.dart
 import 'package:sync_pro/presentation/admin/screen/customers/customers_screen.dart';
 import 'package:sync_pro/presentation/admin/screen/parts/parts_screen.dart';
 import 'package:sync_pro/presentation/admin/screen/warehouses/warehouses_screen.dart';
+import 'package:sync_pro/presentation/shared/login_screen.dart';
 
 class AppDrawer extends StatelessWidget {
   const AppDrawer({super.key});
@@ -73,6 +74,21 @@ class AppDrawer extends StatelessWidget {
               leading: const Icon(Icons.warehouse, color: AppColor.white),
               title: const Text('Warehouses').mediumBold(AppColor.white),
               onTap: () => _navigate(context, const WarehousesScreen()),
+            ),
+            const Divider(
+              color: AppColor.greyPercentCircle,
+              thickness: 1,
+            ),
+            ListTile(
+              leading: const Icon(Icons.logout, color: AppColor.white),
+              title: const Text(AppString.logout).mediumBold(AppColor.white),
+              onTap: () {
+                Navigator.of(context).pop();
+                Navigator.of(context).pushAndRemoveUntil(
+                  MaterialPageRoute(builder: (_) => const LoginScreen()),
+                  (route) => false,
+                );
+              },
             ),
           ],
         ),

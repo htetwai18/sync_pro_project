@@ -69,7 +69,9 @@ class _EngineerServiceReportScreenState
                     icon: Icons.image_outlined,
                     title: AppString.addPhotosAttachments,
                     trailing: Icons.chevron_right,
-                    onTap: () {},
+                    onTap: () {
+
+                    },
                   ),
                   Measurement.generalSize24.height,
                   _ActionTile(

@@ -36,6 +36,7 @@ class TaskOrRequestedServiceModel {
   // --- Populated ERD Links (Children) ---
   final ReportModel? report;
   final List<PartModel>? parts;
+  final Map<String, int>? partsQuantity; // partId -> quantity
 
   const TaskOrRequestedServiceModel({
     required this.id,
@@ -59,7 +60,6 @@ class TaskOrRequestedServiceModel {
     this.assignedTo,
     this.report,
     this.parts,
+    this.partsQuantity,
   });
 }
-
-

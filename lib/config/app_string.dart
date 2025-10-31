@@ -289,7 +289,7 @@ class AppString {
   static const String summaryPlaceholder =
       "Describe the work performed, issues found, and resolutions...";
   static const String attachmentsLabel = "Attachments";
-  static const String addPhotosAttachments = "Add Photos / Attachments";
+  static const String addPhotosAttachments = "Attachments (optional)";
   static const String customerSignature = "Customer Signature";
   static const String optionalLabel = "(Optional)";
   static const String submitReport = "Submit Report";

@@ -7,7 +7,7 @@ import 'package:sync_pro/presentation/customer/screen/customer_profile_screen.da
 import 'package:sync_pro/presentation/customer/screen/customer_buildings_screen.dart';
 import 'package:sync_pro/presentation/customer/screen/customer_service_list_screen.dart';
 import 'package:sync_pro/presentation/customer/screen/customer_invoices_screen.dart';
-import 'package:sync_pro/presentation/shared/mock.dart';
+import 'package:sync_pro/data/mock_api/mock_api_service.dart';
 
 class BottomNavigationCustomer extends StatefulWidget {
   const BottomNavigationCustomer({
@@ -26,17 +26,32 @@ class _BottomNavigationCustomerState extends State<BottomNavigationCustomer> {
   @override
   void initState() {
     super.initState();
-    mobileScreens = [
-      const CustomerDashboardScreen(),
-      const CustomerBuildingsScreen(),
-      const CustomerServiceListScreen(),
-      CustomerProfileScreen(isFromAdmin: false, customer: mockCustomer),
-      const CustomerInvoicesScreen(),
-    ];
+    _init();
+  }
+
+  Future<void> _init() async {
+    final customers = await MockApiService.instance.listCustomers();
+    if (customers.isEmpty) return;
+    final customer = customers.first;
+    setState(() {
+      mobileScreens = [
+        const CustomerDashboardScreen(),
+        const CustomerBuildingsScreen(),
+        const CustomerServiceListScreen(),
+        CustomerProfileScreen(isFromAdmin: false, customer: customer),
+        const CustomerInvoicesScreen(),
+      ];
+    });
   }
 
   @override
   Widget build(BuildContext context) {
+    if (mobileScreens.isEmpty) {
+      return const Scaffold(
+        backgroundColor: AppColor.background,
+        body: Center(child: CircularProgressIndicator()),
+      );
+    }
     return Padding(
       padding: const EdgeInsets.all(Measurement.generalSize10),
       child: SafeArea(

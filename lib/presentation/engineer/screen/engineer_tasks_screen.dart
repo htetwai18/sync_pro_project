@@ -23,7 +23,7 @@ class _EngineerTasksScreenState extends State<EngineerTasksScreen>
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 3, vsync: this);
+    _tabController = TabController(length: 4, vsync: this);
     _tabController.addListener(() => _load());
     _load();
   }
@@ -33,7 +33,9 @@ class _EngineerTasksScreenState extends State<EngineerTasksScreen>
         ? 'today'
         : _tabController.index == 1
             ? 'upcoming'
-            : 'completed';
+            : _tabController.index == 2
+                ? 'overdue'
+                : 'completed';
     final list = await MockApiService.instance
         .listEngineerTasks(engineerId: widget.engineerId, scope: scope);
     setState(() => _items = list);
@@ -53,7 +55,8 @@ class _EngineerTasksScreenState extends State<EngineerTasksScreen>
             tabs: const [
               Tab(text: 'Today'),
               Tab(text: 'Upcoming'),
-              Tab(text: 'Completed')
+              Tab(text: 'Overdue'),
+              Tab(text: 'Done')
             ],
             onTap: (_) => setState(() {}),
           ),

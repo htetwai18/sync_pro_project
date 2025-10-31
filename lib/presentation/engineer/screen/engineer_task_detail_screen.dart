@@ -232,34 +232,41 @@ class _EngineerTaskDetailScreenState extends State<EngineerTaskDetailScreen> {
                   Text('No parts added').smallNormal(AppColor.grey)
                 else
                   Column(
-                    children: task.parts!
-                        .map((p) => Container(
-                              margin: Measurement.generalSize8.verticalPadding,
-                              padding: Measurement
-                                  .generalSize12.horizontalIsToVertical,
-                              decoration: BoxDecoration(
-                                color: AppColor.blueField,
-                                borderRadius:
-                                    Measurement.generalSize12.allRadius,
-                              ),
-                              child: Row(
+                    children: task.parts!.map((p) {
+                      final qty = task.partsQuantity?[p.id] ?? 0;
+                      return Container(
+                        margin: Measurement.generalSize8.verticalPadding,
+                        padding:
+                            Measurement.generalSize12.horizontalIsToVertical,
+                        decoration: BoxDecoration(
+                          color: AppColor.blueField,
+                          borderRadius: Measurement.generalSize12.allRadius,
+                        ),
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Expanded(
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(p.name).mediumBold(AppColor.white),
-                                        Measurement.generalSize4.height,
-                                        Text(p.number)
-                                            .smallNormal(AppColor.grey),
+                                  Text(p.name).mediumBold(AppColor.white),
+                                  Measurement.generalSize4.height,
+                                  Row(
+                                    children: [
+                                      Text(p.number).smallNormal(AppColor.grey),
+                                      if (qty > 0) ...[
+                                        Measurement.generalSize8.width,
+                                        Text('Qty: $qty')
+                                            .smallNormal(AppColor.white),
                                       ],
-                                    ),
+                                    ],
                                   ),
                                 ],
                               ),
-                            ))
-                        .toList(),
+                            ),
+                          ],
+                        ),
+                      );
+                    }).toList(),
                   ),
               ],
             ),
