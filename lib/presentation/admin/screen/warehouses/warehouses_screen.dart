@@ -7,9 +7,7 @@ import 'package:sync_pro/config/extension.dart';
 import 'package:sync_pro/config/measurement.dart';
 import 'package:sync_pro/presentation/admin/display_models/warehouse_display_model.dart';
 import 'package:sync_pro/presentation/admin/screen/warehouses/create_edit_warehouse_screen.dart';
-import 'package:sync_pro/presentation/shared/mock.dart';
-import 'package:sync_pro/presentation/admin/display_models/part_item_display_model.dart';
-import 'package:sync_pro/presentation/admin/display_models/part_inventory_model.dart';
+import 'package:sync_pro/data/mock_api/mock_api_service.dart';
 
 class WarehousesScreen extends StatefulWidget {
   const WarehousesScreen({super.key});
@@ -20,16 +18,13 @@ class WarehousesScreen extends StatefulWidget {
 
 class _WarehousesScreenState extends State<WarehousesScreen> {
   final TextEditingController _search = TextEditingController();
-  late List<InventoryModel> _items;
+  List<InventoryModel> _items = [];
 
   @override
   void initState() {
     super.initState();
-    _items = {
-      for (final level in mockParts.expand(
-          (PartModel p) => (p.stockLevels ?? const <PartInventoryModel>[])))
-        level.location.id: level.location
-    }.values.toList();
+    _load();
+    _search.addListener(() => _load());
   }
 
   @override
@@ -40,7 +35,7 @@ class _WarehousesScreenState extends State<WarehousesScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final filtered = _items
+    final filtered = (_items)
         .where((w) =>
             _search.text.isEmpty ||
             w.name.toLowerCase().contains(_search.text.toLowerCase()) ||
@@ -60,7 +55,7 @@ class _WarehousesScreenState extends State<WarehousesScreen> {
               builder: (_) => const CreateEditWarehouseScreen(),
             ),
           );
-          if (created == true) setState(() {});
+          if (created == true) await _load();
         },
         child: const Icon(Icons.add, color: AppColor.white),
       ),
@@ -87,7 +82,7 @@ class _WarehousesScreenState extends State<WarehousesScreen> {
                               CreateEditWarehouseScreen(warehouse: w),
                         ),
                       );
-                      if (updated == true) setState(() {});
+                      if (updated == true) await _load();
                     },
                     onDelete: () => _confirmDelete(w.id),
                   );
@@ -117,7 +112,7 @@ class _WarehousesScreenState extends State<WarehousesScreen> {
           border: InputBorder.none,
           contentPadding: Measurement.generalSize16.horizontalIsToVertical,
         ),
-        onChanged: (_) => setState(() {}),
+        onChanged: (_) {},
       ),
     );
   }
@@ -148,13 +143,20 @@ class _WarehousesScreenState extends State<WarehousesScreen> {
     );
 
     if (confirmed == true) {
-      setState(() {
-        _items.removeWhere((w) => w.id == id);
-      });
+      await MockApiService.instance.deleteInventory(id);
+      await _load();
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Deleted successfully.')),
       );
     }
+  }
+
+  Future<void> _load() async {
+    final list =
+        await MockApiService.instance.listInventories(query: _search.text);
+    setState(() {
+      _items = list;
+    });
   }
 }
 

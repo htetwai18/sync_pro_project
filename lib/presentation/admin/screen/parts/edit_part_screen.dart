@@ -5,6 +5,7 @@ import 'package:sync_pro/config/app_string.dart';
 import 'package:sync_pro/config/extension.dart';
 import 'package:sync_pro/config/measurement.dart';
 import 'package:sync_pro/presentation/admin/display_models/part_item_display_model.dart';
+import 'package:sync_pro/data/mock_api/mock_api_service.dart';
 
 class EditPartScreen extends StatefulWidget {
   final PartModel part;
@@ -83,7 +84,21 @@ class _EditPartScreenState extends State<EditPartScreen> {
                     borderRadius: Measurement.generalSize12.allRadius,
                   ),
                 ),
-                onPressed: () {},
+                onPressed: () async {
+                  final name = _nameController.text.trim();
+                  final number = _numberController.text.trim();
+                  final manufacturer = _manufacturerController.text.trim();
+                  final price = double.tryParse(_priceController.text.trim());
+                  await MockApiService.instance.updatePart(
+                    id: widget.part.id,
+                    name: name.isEmpty ? null : name,
+                    number: number.isEmpty ? null : number,
+                    manufacturer: manufacturer.isEmpty ? null : manufacturer,
+                    unitPrice: price,
+                  );
+                  if (!mounted) return;
+                  Navigator.pop(context, true);
+                },
                 child: const Text(AppString.saveChangesAction)
                     .mediumBold(AppColor.white),
               ),

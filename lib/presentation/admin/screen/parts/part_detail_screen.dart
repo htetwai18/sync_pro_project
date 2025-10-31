@@ -5,14 +5,28 @@ import 'package:sync_pro/config/app_string.dart';
 import 'package:sync_pro/config/extension.dart';
 import 'package:sync_pro/config/measurement.dart';
 import 'package:sync_pro/presentation/admin/display_models/part_item_display_model.dart';
-import 'package:sync_pro/config/routing.dart';
+
 import 'package:sync_pro/presentation/admin/screen/parts/edit_part_screen.dart';
 import 'package:sync_pro/presentation/admin/screen/parts/adjust_stock_screen.dart';
 import 'package:sync_pro/presentation/admin/display_models/part_inventory_model.dart';
+import 'package:sync_pro/data/mock_api/mock_api_service.dart';
 
-class PartDetailScreen extends StatelessWidget {
+class PartDetailScreen extends StatefulWidget {
   final PartModel part;
   const PartDetailScreen({super.key, required this.part});
+
+  @override
+  State<PartDetailScreen> createState() => _PartDetailScreenState();
+}
+
+class _PartDetailScreenState extends State<PartDetailScreen> {
+  late PartModel _part;
+
+  @override
+  void initState() {
+    super.initState();
+    _part = widget.part;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -34,11 +48,19 @@ class PartDetailScreen extends StatelessWidget {
                       const Text(AppString.partDetails)
                           .mediumBold(AppColor.white),
                       TextButton.icon(
-                        onPressed: () {
-                          Routing.transition(
+                        onPressed: () async {
+                          final updated = await Navigator.push(
                             context,
-                            EditPartScreen(part: part),
+                            MaterialPageRoute(
+                              builder: (_) => EditPartScreen(part: _part),
+                            ),
                           );
+                          if (updated == true) {
+                            await _reload();
+                            if (!mounted) return;
+                            // bubble up that something changed
+                            // we'll pop(true) when user goes back
+                          }
                         },
                         icon: const Icon(Icons.edit, color: AppColor.white),
                         label: const Text(AppString.editAction)
@@ -47,15 +69,15 @@ class PartDetailScreen extends StatelessWidget {
                     ],
                   ),
                   Measurement.generalSize8.height,
-                  _KV(k: AppString.partName, v: part.name),
+                  _KV(k: AppString.partName, v: _part.name),
                   _Divider(),
-                  _KV(k: AppString.partNumber, v: part.number),
+                  _KV(k: AppString.partNumber, v: _part.number),
                   _Divider(),
-                  _KV(k: AppString.manufacturer, v: part.manufacturer),
+                  _KV(k: AppString.manufacturer, v: _part.manufacturer),
                   _Divider(),
                   _KV(
                       k: AppString.unitPrice,
-                      v: '\$${part.unitPrice.toStringAsFixed(2)}'),
+                      v: '\$${_part.unitPrice.toStringAsFixed(2)}'),
                 ],
               ),
             ),
@@ -70,15 +92,22 @@ class PartDetailScreen extends StatelessWidget {
                       const Text(AppString.inventoryStock)
                           .largeBold(AppColor.white),
                       TextButton(
-                        onPressed: () {
-                          Routing.transition(
+                        onPressed: () async {
+                          final changed = await Navigator.push(
                             context,
-                            AdjustStockScreen(
-                              partId: part.id,
-                              partName: part.name,
-                              partNumber: part.number,
+                            MaterialPageRoute(
+                              builder: (_) => AdjustStockScreen(
+                                partId: _part.id,
+                                partName: _part.name,
+                                partNumber: _part.number,
+                              ),
                             ),
                           );
+                          if (changed == true) {
+                            await _reload();
+                            if (!mounted) return;
+                            // Let parent list refresh when this detail is popped
+                          }
                         },
                         style: TextButton.styleFrom(
                           backgroundColor: AppColor.blueStatusOuter,
@@ -95,7 +124,7 @@ class PartDetailScreen extends StatelessWidget {
                     ],
                   ),
                   Measurement.generalSize12.height,
-                  ..._stockForPart(part).map((s) => Column(
+                  ..._stockForPart(_part).map((s) => Column(
                         children: [
                           Row(
                             children: [
@@ -119,7 +148,7 @@ class PartDetailScreen extends StatelessWidget {
                               ),
                             ],
                           ),
-                          if (s != _stockForPart(part).last)
+                          if (s != _stockForPart(_part).last)
                             Divider(
                               height: Measurement.generalSize24,
                               color:
@@ -138,6 +167,15 @@ class PartDetailScreen extends StatelessWidget {
 
   List<PartInventoryModel> _stockForPart(PartModel p) {
     return p.stockLevels ?? const [];
+  }
+
+  Future<void> _reload() async {
+    final list = await MockApiService.instance.listParts();
+    final latest =
+        list.firstWhere((e) => e.id == _part.id, orElse: () => _part);
+    setState(() {
+      _part = latest;
+    });
   }
 }
 

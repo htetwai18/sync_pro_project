@@ -5,6 +5,7 @@ import 'package:sync_pro/config/app_string.dart';
 import 'package:sync_pro/config/extension.dart';
 import 'package:sync_pro/config/measurement.dart';
 import 'package:sync_pro/presentation/admin/display_models/warehouse_display_model.dart';
+import 'package:sync_pro/data/mock_api/mock_api_service.dart';
 
 class CreateEditWarehouseScreen extends StatefulWidget {
   final InventoryModel? warehouse;
@@ -166,9 +167,34 @@ class _CreateEditWarehouseScreenState extends State<CreateEditWarehouseScreen> {
         child: child,
       );
 
-  void _save() {
+  void _save() async {
     if (!_formKey.currentState!.validate()) return;
-    // In v1, just return true to trigger list refresh (mock only)
+    final isEdit = widget.warehouse != null;
+    if (isEdit) {
+      await MockApiService.instance.updateInventory(
+        id: widget.warehouse!.id,
+        name: _name.text.trim(),
+        code: _code.text.trim(),
+        contactName:
+            _contactName.text.trim().isEmpty ? null : _contactName.text.trim(),
+        contactPhone: _contactPhone.text.trim().isEmpty
+            ? null
+            : _contactPhone.text.trim(),
+        isActive: _isActive,
+      );
+    } else {
+      await MockApiService.instance.createInventory(
+        name: _name.text.trim(),
+        code: _code.text.trim(),
+        contactName:
+            _contactName.text.trim().isEmpty ? null : _contactName.text.trim(),
+        contactPhone: _contactPhone.text.trim().isEmpty
+            ? null
+            : _contactPhone.text.trim(),
+        isActive: _isActive,
+      );
+    }
+    if (!mounted) return;
     Navigator.pop(context, true);
   }
 }

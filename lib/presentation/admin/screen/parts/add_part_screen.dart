@@ -4,6 +4,8 @@ import 'package:sync_pro/config/app_color.dart';
 import 'package:sync_pro/config/app_string.dart';
 import 'package:sync_pro/config/extension.dart';
 import 'package:sync_pro/config/measurement.dart';
+import 'package:sync_pro/data/mock_api/mock_api_service.dart';
+import 'package:sync_pro/presentation/admin/display_models/warehouse_display_model.dart';
 
 class AddPartScreen extends StatefulWidget {
   const AddPartScreen({super.key});
@@ -19,6 +21,21 @@ class _AddPartScreenState extends State<AddPartScreen> {
   final TextEditingController _priceController = TextEditingController();
   final TextEditingController _quantityController = TextEditingController();
   String? _warehouse;
+  List<InventoryModel> _inventories = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _loadInventories();
+  }
+
+  Future<void> _loadInventories() async {
+    final list = await MockApiService.instance.listInventories();
+    setState(() {
+      _inventories = list;
+      if (_inventories.isNotEmpty) _warehouse = _inventories.first.id;
+    });
+  }
 
   @override
   void dispose() {
@@ -90,12 +107,12 @@ class _AddPartScreenState extends State<AddPartScreen> {
                 iconEnabledColor: AppColor.grey,
                 hint: const Text(AppString.hintWarehouse)
                     .mediumNormal(AppColor.grey),
-                items: const [
-                  DropdownMenuItem(
-                      value: 'Warehouse A', child: Text('Warehouse A')),
-                  DropdownMenuItem(
-                      value: 'Engineer Van 5', child: Text('Engineer Van 5')),
-                ],
+                items: _inventories
+                    .map((w) => DropdownMenuItem(
+                          value: w.id,
+                          child: Text(w.name),
+                        ))
+                    .toList(),
                 onChanged: (v) => setState(() => _warehouse = v),
               ),
             ),
@@ -111,9 +128,29 @@ class _AddPartScreenState extends State<AddPartScreen> {
                     borderRadius: Measurement.generalSize12.allRadius,
                   ),
                 ),
-                onPressed: () {},
-                child: const Text(AppString.addNewPart)
-                    .mediumBold(AppColor.white),
+                onPressed: () async {
+                  final name = _nameController.text.trim();
+                  final number = _numberController.text.trim();
+                  final manufacturer = _manufacturerController.text.trim();
+                  final price = double.tryParse(_priceController.text.trim());
+                  final qty = int.tryParse(_quantityController.text.trim());
+                  if (name.isEmpty ||
+                      number.isEmpty ||
+                      manufacturer.isEmpty ||
+                      price == null) return;
+                  await MockApiService.instance.createPart(
+                    name: name,
+                    number: number,
+                    manufacturer: manufacturer,
+                    unitPrice: price,
+                    inventoryId: _warehouse,
+                    initialQuantity: qty,
+                  );
+                  if (!mounted) return;
+                  Navigator.pop(context, true);
+                },
+                child:
+                    const Text(AppString.addNewPart).mediumBold(AppColor.white),
               ),
             ),
             Measurement.generalSize16.height,

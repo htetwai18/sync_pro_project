@@ -7,10 +7,9 @@ import 'package:sync_pro/config/measurement.dart';
 import 'package:sync_pro/config/app_drawer.dart';
 // PartModel imported through shared mocks usage in this file
 import 'package:sync_pro/presentation/admin/widgets/part_list_item.dart';
-import 'package:sync_pro/config/routing.dart';
 import 'package:sync_pro/presentation/admin/screen/parts/part_detail_screen.dart';
 import 'package:sync_pro/presentation/admin/screen/parts/add_part_screen.dart';
-import 'package:sync_pro/presentation/shared/mock.dart';
+import 'package:sync_pro/data/mock_api/mock_api_service.dart';
 import 'package:sync_pro/presentation/admin/display_models/part_item_display_model.dart';
 
 class PartsScreen extends StatefulWidget {
@@ -23,12 +22,16 @@ class PartsScreen extends StatefulWidget {
 class _PartsScreenState extends State<PartsScreen> {
   final TextEditingController _search = TextEditingController();
   String _query = '';
-  late List<PartModel> _items;
+  List<PartModel> _items = [];
 
   @override
   void initState() {
     super.initState();
-    _items = List<PartModel>.from(mockParts);
+    _load();
+    _search.addListener(() {
+      _query = _search.text;
+      _load();
+    });
   }
 
   @override
@@ -39,7 +42,7 @@ class _PartsScreenState extends State<PartsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final filtered = _items
+    final filtered = (_items)
         .where((e) =>
             e.name.toLowerCase().contains(_query.toLowerCase()) ||
             e.number.toLowerCase().contains(_query.toLowerCase()))
@@ -72,7 +75,7 @@ class _PartsScreenState extends State<PartsScreen> {
                     vertical: Measurement.generalSize14,
                   ),
                 ),
-                onChanged: (v) => setState(() => _query = v),
+                onChanged: (v) {},
               ),
             ),
           ),
@@ -80,7 +83,8 @@ class _PartsScreenState extends State<PartsScreen> {
             child: ListView.separated(
               padding: Measurement.generalSize16.horizontalIsToVertical,
               itemCount: filtered.length,
-              separatorBuilder: (_, __) => Measurement.generalSize16.height,
+              separatorBuilder: (context, index) =>
+                  Measurement.generalSize16.height,
               itemBuilder: (context, index) {
                 final item = filtered[index];
                 return Row(
@@ -89,11 +93,16 @@ class _PartsScreenState extends State<PartsScreen> {
                     Expanded(
                       child: PartListItem(
                         item: item,
-                        onTap: () {
-                          Routing.transition(
+                        onTap: () async {
+                          final changed = await Navigator.push(
                             context,
-                            PartDetailScreen(part: item),
+                            MaterialPageRoute(
+                              builder: (_) => PartDetailScreen(part: item),
+                            ),
                           );
+                          if (changed == true) {
+                            await _load();
+                          }
                         },
                       ),
                     ),
@@ -110,8 +119,14 @@ class _PartsScreenState extends State<PartsScreen> {
         ],
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Routing.transition(context, const AddPartScreen());
+        onPressed: () async {
+          final created = await Navigator.push(
+            context,
+            MaterialPageRoute(builder: (_) => const AddPartScreen()),
+          );
+          if (created == true) {
+            await _load();
+          }
         },
         backgroundColor: AppColor.blueStatusInner,
         foregroundColor: AppColor.white,
@@ -146,12 +161,18 @@ class _PartsScreenState extends State<PartsScreen> {
     );
 
     if (confirmed == true) {
-      setState(() {
-        _items.removeWhere((p) => p.id == id);
-      });
+      await MockApiService.instance.deletePart(id);
+      await _load();
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Deleted successfully.')),
       );
     }
+  }
+
+  Future<void> _load() async {
+    final list = await MockApiService.instance.listParts(query: _query);
+    setState(() {
+      _items = list;
+    });
   }
 }
