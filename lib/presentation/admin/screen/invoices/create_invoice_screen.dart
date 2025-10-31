@@ -8,6 +8,7 @@ import 'package:sync_pro/presentation/admin/display_models/invoice_item_display_
 import 'package:sync_pro/presentation/admin/display_models/invoice_line_item_model.dart';
 import 'package:sync_pro/presentation/admin/widgets/invoice_line_item_tile.dart';
 import 'package:sync_pro/presentation/shared/mock.dart';
+import 'package:sync_pro/data/mock_api/mock_api_service.dart';
 
 class CreateInvoiceScreen extends StatefulWidget {
   const CreateInvoiceScreen({super.key});
@@ -18,7 +19,9 @@ class CreateInvoiceScreen extends StatefulWidget {
 
 class _CreateInvoiceScreenState extends State<CreateInvoiceScreen> {
   String? _selectedCustomer;
+  DateTime _invoiceDate = DateTime.now();
   DateTime? _dueDate;
+  String _status = 'sent';
   final List<InvoiceLineItemModel> _items = [];
 
   late InvoiceModel _draftInvoice = InvoiceModel(
@@ -204,6 +207,43 @@ class _CreateInvoiceScreenState extends State<CreateInvoiceScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            // Invoice Date
+            const Text(AppString.invoiceDate).mediumBold(AppColor.white),
+            Measurement.generalSize8.height,
+            Container(
+              decoration: BoxDecoration(
+                color: AppColor.blueField,
+                borderRadius: Measurement.generalSize12.allRadius,
+              ),
+              child: InkWell(
+                onTap: () async {
+                  final now = DateTime.now();
+                  final picked = await showDatePicker(
+                    context: context,
+                    initialDate: _invoiceDate,
+                    firstDate: DateTime(now.year - 2),
+                    lastDate: DateTime(now.year + 3),
+                    builder: (context, child) =>
+                        Theme(data: ThemeData.dark(), child: child!),
+                  );
+                  if (picked != null) setState(() => _invoiceDate = picked);
+                },
+                child: Padding(
+                  padding: Measurement.generalSize16.horizontalIsToVertical,
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: Text(
+                          '${_invoiceDate.month.toString().padLeft(2, '0')}/${_invoiceDate.day.toString().padLeft(2, '0')}/${_invoiceDate.year}',
+                        ).mediumNormal(AppColor.white),
+                      ),
+                      const Icon(Icons.calendar_today, color: AppColor.grey),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            Measurement.generalSize16.height,
             const Text(AppString.selectCustomerLabel)
                 .mediumBold(AppColor.white),
             Measurement.generalSize8.height,
@@ -232,6 +272,41 @@ class _CreateInvoiceScreenState extends State<CreateInvoiceScreen> {
                   ),
                 ],
                 onChanged: (v) => setState(() => _selectedCustomer = v),
+              ),
+            ),
+            Measurement.generalSize16.height,
+            // Status selector
+            const Text(AppString.statusFilter).mediumBold(AppColor.white),
+            Measurement.generalSize8.height,
+            Container(
+              decoration: BoxDecoration(
+                color: AppColor.blueField,
+                borderRadius: Measurement.generalSize12.allRadius,
+              ),
+              child: DropdownButtonFormField<String>(
+                value: _status,
+                decoration: const InputDecoration(
+                  border: InputBorder.none,
+                  contentPadding: EdgeInsets.symmetric(
+                    horizontal: Measurement.generalSize16,
+                    vertical: Measurement.generalSize14,
+                  ),
+                ),
+                dropdownColor: AppColor.blueField,
+                iconEnabledColor: AppColor.grey,
+                items: const [
+                  DropdownMenuItem(
+                      value: 'draft',
+                      child: Text(
+                        'draft',
+                        style: TextStyle(color: AppColor.white),
+                      )),
+                  DropdownMenuItem(
+                      value: 'sent',
+                      child: Text('sent',
+                          style: TextStyle(color: AppColor.white))),
+                ],
+                onChanged: (v) => setState(() => _status = v ?? _status),
               ),
             ),
             Measurement.generalSize16.height,
@@ -334,26 +409,31 @@ class _CreateInvoiceScreenState extends State<CreateInvoiceScreen> {
                     borderRadius: Measurement.generalSize12.allRadius,
                   ),
                 ),
-                onPressed: () {
+                onPressed: () async {
                   final due = _dueDate != null ? _formatDate(_dueDate!) : '';
-                  final created = _formatDate(DateTime.now());
-                  final invoice = InvoiceModel(
-                    id: DateTime.now().millisecondsSinceEpoch.toString(),
-                    dueDate: due,
-                    amount: _total,
-                    status: 'sent',
+                  final created = _formatDate(_invoiceDate);
+                  final payloadItems = _items
+                      .map((e) => {
+                            'name': e.name,
+                            'quantity': e.quantity,
+                            'unitPrice': e.unitPrice,
+                          })
+                      .toList();
+                  final createdInvoice =
+                      await MockApiService.instance.createInvoice(
+                    customerId: 'cust-0001',
+                    status: _status,
                     invoiceDate: created,
-                    customer: mockCustomer,
-                    lineItems: _items,
+                    dueDate: due,
+                    items: payloadItems,
                   );
+                  if (!mounted) return;
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
-                      content: Text(
-                        'Invoice created: ${invoice.id}',
-                      ),
+                      content: Text('Invoice created: ${createdInvoice.id}'),
                     ),
                   );
-                  Navigator.pop(context);
+                  Navigator.pop(context, true);
                 },
                 onLongPress: null,
                 child: const Text(AppString.generateInvoice)

@@ -7,10 +7,9 @@ import 'package:sync_pro/config/measurement.dart';
 import 'package:sync_pro/config/app_drawer.dart';
 import 'package:sync_pro/presentation/admin/display_models/invoice_item_display_model.dart';
 import 'package:sync_pro/presentation/admin/widgets/invoice_list_item.dart';
-import 'package:sync_pro/config/routing.dart';
 import 'package:sync_pro/presentation/admin/screen/invoices/invoice_detail_screen.dart';
 import 'package:sync_pro/presentation/admin/screen/invoices/create_invoice_screen.dart';
-import 'package:sync_pro/presentation/shared/mock.dart';
+import 'package:sync_pro/data/mock_api/mock_api_service.dart';
 
 class InvoicesScreen extends StatefulWidget {
   const InvoicesScreen({super.key});
@@ -22,10 +21,17 @@ class InvoicesScreen extends StatefulWidget {
 class _InvoicesScreenState extends State<InvoicesScreen> {
   String _statusFilter = 'All';
   String _dateRange = 'All';
+  List<InvoiceModel> _items = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _load();
+  }
 
   @override
   Widget build(BuildContext context) {
-    final List<InvoiceModel> all = mockInvoices;
+    final List<InvoiceModel> all = _items;
     final List<InvoiceModel> filtered = all.where((e) {
       // simple status filter demo
       if (_statusFilter == 'All') return true;
@@ -48,7 +54,10 @@ class _InvoicesScreenState extends State<InvoicesScreen> {
                   onTap: () async {
                     final value =
                         await _showStatusSheet(context, _statusFilter);
-                    if (value != null) setState(() => _statusFilter = value);
+                    if (value != null) {
+                      setState(() => _statusFilter = value);
+                      await _load();
+                    }
                   },
                 ),
                 Measurement.generalSize16.width,
@@ -58,7 +67,10 @@ class _InvoicesScreenState extends State<InvoicesScreen> {
                   onTap: () async {
                     final value =
                         await _showDateRangeSheet(context, _dateRange);
-                    if (value != null) setState(() => _dateRange = value);
+                    if (value != null) {
+                      setState(() => _dateRange = value);
+                      await _load();
+                    }
                   },
                 ),
               ],
@@ -76,11 +88,16 @@ class _InvoicesScreenState extends State<InvoicesScreen> {
                 final item = filtered[index];
                 return InvoiceListItem(
                   item: item,
-                  onTap: () {
-                    Routing.transition(
+                  onTap: () async {
+                    final changed = await Navigator.push(
                       context,
-                      InvoiceDetailScreen(invoice: item),
+                      MaterialPageRoute(
+                        builder: (_) => InvoiceDetailScreen(invoice: item),
+                      ),
                     );
+                    if (changed == true) {
+                      await _load();
+                    }
                   },
                 );
               },
@@ -89,8 +106,12 @@ class _InvoicesScreenState extends State<InvoicesScreen> {
         ],
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Routing.transition(context, const CreateInvoiceScreen());
+        onPressed: () async {
+          final created = await Navigator.push(
+            context,
+            MaterialPageRoute(builder: (_) => const CreateInvoiceScreen()),
+          );
+          if (created == true) await _load();
         },
         backgroundColor: AppColor.blueStatusInner,
         foregroundColor: AppColor.white,
@@ -152,6 +173,14 @@ class _InvoicesScreenState extends State<InvoicesScreen> {
             .toList(),
       ),
     );
+  }
+
+  Future<void> _load() async {
+    final list =
+        await MockApiService.instance.listInvoices(status: _statusFilter);
+    setState(() {
+      _items = list;
+    });
   }
 }
 

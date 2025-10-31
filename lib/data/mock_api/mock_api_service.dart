@@ -225,6 +225,13 @@ class MockApiService {
     _invoiceLineItems.removeWhere((li) => li['invoiceId'] == id);
   }
 
+  Future<InvoiceModel> updateInvoiceStatus(String id, String status) async {
+    final row = _invoices[id];
+    if (row == null) throw StateError('Invoice not found');
+    row['status'] = status;
+    return _buildInvoice(row);
+  }
+
   InvoiceModel _buildInvoice(Map<String, dynamic> row) {
     final customer = _buildCustomer(_customers[row['customerId']]!);
     final invId = row['id'] as String;
@@ -265,5 +272,38 @@ class MockApiService {
       phone: row['phone'] as String,
       email: row['email'] as String,
     );
+  }
+
+  Future<InvoiceModel> createInvoice({
+    required String customerId,
+    required String status,
+    required String invoiceDate,
+    required String dueDate,
+    required List<Map<String, dynamic>> items, // {name, quantity, unitPrice}
+  }) async {
+    final id = 'inv-${DateTime.now().millisecondsSinceEpoch}';
+    final amount = items.fold<double>(
+        0.0,
+        (p, e) =>
+            p + (e['quantity'] as int) * (e['unitPrice'] as num).toDouble());
+    _invoices[id] = {
+      'id': id,
+      'invoiceDate': invoiceDate,
+      'dueDate': dueDate,
+      'amount': amount,
+      'status': status,
+      'customerId': customerId,
+    };
+    for (final it in items) {
+      _invoiceLineItems.add({
+        'id':
+            'li-${DateTime.now().microsecondsSinceEpoch}-${_invoiceLineItems.length}',
+        'invoiceId': id,
+        'name': it['name'],
+        'quantity': it['quantity'],
+        'unitPrice': it['unitPrice'],
+      });
+    }
+    return _buildInvoice(_invoices[id]!);
   }
 }
