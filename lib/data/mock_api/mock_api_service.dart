@@ -479,6 +479,14 @@ extension TasksApi on MockApiService {
     return _buildTask(row);
   }
 
+  Future<List<ReportModel>> listReports({String? status}) async {
+    final all = _reports.values.map(_buildReport).toList();
+    if (status == null || status.isEmpty) return all;
+    return all
+        .where((r) => r.status.toLowerCase() == status.toLowerCase())
+        .toList();
+  }
+
   Future<ReportModel> createReport({
     required String taskId,
     required String title,

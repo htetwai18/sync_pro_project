@@ -4,8 +4,10 @@ import 'package:sync_pro/config/app_color.dart';
 import 'package:sync_pro/config/app_string.dart';
 import 'package:sync_pro/config/extension.dart';
 import 'package:sync_pro/config/measurement.dart';
+import 'package:sync_pro/config/routing.dart';
 import 'package:sync_pro/presentation/admin/display_models/part_item_display_model.dart';
 import 'package:sync_pro/data/mock_api/mock_api_service.dart';
+import 'package:sync_pro/presentation/admin/screen/parts/parts_screen.dart';
 
 class EditPartScreen extends StatefulWidget {
   final PartModel part;
@@ -97,7 +99,8 @@ class _EditPartScreenState extends State<EditPartScreen> {
                     unitPrice: price,
                   );
                   if (!mounted) return;
-                  Navigator.pop(context, true);
+                  Routing.transition(context, const PartsScreen());
+                  // Navigator.pop(context, true);
                 },
                 child: const Text(AppString.saveChangesAction)
                     .mediumBold(AppColor.white),

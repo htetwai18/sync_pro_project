@@ -86,7 +86,9 @@ class _EngineerTaskDetailScreenState extends State<EngineerTaskDetailScreen> {
                     Expanded(
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: AppColor.blueStatusInner,
+                          backgroundColor: task.report != null
+                              ? AppColor.greyPercentCircle
+                              : AppColor.blueStatusInner,
                           foregroundColor: AppColor.white,
                           padding:
                               Measurement.generalSize16.horizontalIsToVertical,
@@ -94,54 +96,71 @@ class _EngineerTaskDetailScreenState extends State<EngineerTaskDetailScreen> {
                             borderRadius: Measurement.generalSize12.allRadius,
                           ),
                         ),
-                        onPressed: () async {
-                          final selected =
-                              await Navigator.push<List<Map<String, dynamic>>>(
-                            context,
-                            MaterialPageRoute(
-                              builder: (_) =>
-                                  const EngineerAddPartToTaskScreen(),
-                            ),
-                          );
-                          if (selected != null && selected.isNotEmpty) {
-                            await MockApiService.instance
-                                .addTaskParts(task.id, selected);
-                            await _load();
-                            _changed = true;
-                          }
-                        },
-                        child: const Text(AppString.addParts)
-                            .mediumBold(AppColor.white),
+                        onPressed: task.report != null
+                            ? null
+                            : () async {
+                                final selected = await Navigator.push<
+                                    List<Map<String, dynamic>>>(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (_) =>
+                                        const EngineerAddPartToTaskScreen(),
+                                  ),
+                                );
+                                if (selected != null && selected.isNotEmpty) {
+                                  await MockApiService.instance
+                                      .addTaskParts(task.id, selected);
+                                  await _load();
+                                  _changed = true;
+                                }
+                              },
+                        child:
+                            Text(AppString.addParts).mediumBold(AppColor.white),
                       ),
                     ),
                     Measurement.generalSize16.width,
                     Expanded(
                       child: OutlinedButton(
                         style: OutlinedButton.styleFrom(
-                          side: const BorderSide(
-                              color: AppColor.greyPercentCircle),
-                          foregroundColor: AppColor.white,
-                          backgroundColor: AppColor.blueField,
+                          side: BorderSide(
+                              color: task.report != null
+                                  ? AppColor.greyPercentCircle.withOpacity(0.5)
+                                  : AppColor.greyPercentCircle),
+                          foregroundColor: task.report != null
+                              ? AppColor.grey
+                              : AppColor.white,
+                          backgroundColor: task.report != null
+                              ? AppColor.greyPercentCircle.withOpacity(0.3)
+                              : AppColor.blueField,
                           padding:
                               Measurement.generalSize16.horizontalIsToVertical,
                           shape: RoundedRectangleBorder(
                             borderRadius: Measurement.generalSize12.allRadius,
                           ),
                         ),
-                        onPressed: () async {
-                          final ok = await Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (_) =>
-                                  EngineerServiceReportScreen(taskId: task.id),
-                            ),
-                          );
-                          if (ok == true) {
-                            await _load();
-                            _changed = true;
-                          }
-                        },
-                        child: const Text(AppString.reportAction)
+                        onPressed: task.report != null
+                            ? null
+                            : () async {
+                                final ok = await Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (_) => EngineerServiceReportScreen(
+                                        taskId: task.id),
+                                  ),
+                                );
+                                if (ok == true) {
+                                  await _load();
+                                  _changed = true;
+                                  if (!mounted) return;
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                      content:
+                                          Text('Report submitted successfully'),
+                                    ),
+                                  );
+                                }
+                              },
+                        child: Text(AppString.reportAction)
                             .mediumBold(AppColor.white),
                       ),
                     ),

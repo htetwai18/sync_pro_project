@@ -71,10 +71,11 @@ class AppString {
   // Dashboard
   static const String adminDashboard = "Admin Dashboard";
   static const String dashboard = "Dashboard";
-  static const String activeTasks = "Active Tasks";
-  static const String pendingTasks = "Pending Tasks";
+  static const String totalCustomers = "Total Customers";
+  static const String totalEngineers = "Total Engineers";
   static const String reportsToReview = "Reports to Review";
   static const String pendingApprovals = "Pending Approvals";
+  static const String overdueTasks = "Overdue Tasks";
   static const String overdueInvoices = "Overdue Invoices";
   static const String taskStatus = "Task Status";
   static const String completedStatus = "Completed";
