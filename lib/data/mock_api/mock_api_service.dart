@@ -474,6 +474,9 @@ extension TasksApi on MockApiService {
       phone: row['phone'] as String,
       email: row['email'] as String,
       role: row['role'] as String,
+      department: row['department'] as String?,
+      specialization: row['specialization'] as String?,
+      hireDate: row['hireDate'] as String?,
     );
   }
 
@@ -542,11 +545,88 @@ extension LookupsApi on MockApiService {
     return rows.map((r) => _buildAsset(r, building)).toList();
   }
 
-  Future<List<UserModel>> listUsers({String? role}) async {
-    final all = _users.values.map(_buildUser).toList();
-    if (role == null) return all;
-    return all
-        .where((u) => (u.role).toLowerCase() == role.toLowerCase())
-        .toList();
+  Future<List<UserModel>> listUsers({String? role, String query = ''}) async {
+    final q = query.toLowerCase();
+    var all = _users.values.map(_buildUser).toList();
+    if (role != null) {
+      all = all
+          .where((u) => (u.role).toLowerCase() == role.toLowerCase())
+          .toList();
+    }
+    if (q.isNotEmpty) {
+      all = all
+          .where((u) =>
+              u.name.toLowerCase().contains(q) ||
+              u.email.toLowerCase().contains(q) ||
+              u.role.toLowerCase().contains(q))
+          .toList();
+    }
+    return all;
+  }
+
+  Future<UserModel> getUser(String id) async {
+    final row = _users[id];
+    if (row == null) throw StateError('User not found');
+    return _buildUser(row);
+  }
+}
+
+// ======== USERS CRUD ========
+extension UsersApi on MockApiService {
+  Future<UserModel> createUser({
+    required String name,
+    required String email,
+    String? phone,
+    required String role,
+    String? department,
+    String? specialization,
+    String? hireDate,
+  }) async {
+    final id = 'user-${DateTime.now().millisecondsSinceEpoch}';
+    _users[id] = {
+      'id': id,
+      'name': name,
+      'email': email,
+      'phone': phone ?? '',
+      'role': role,
+      'isActive': true,
+      if (department != null) 'department': department,
+      if (specialization != null) 'specialization': specialization,
+      if (hireDate != null) 'hireDate': hireDate,
+    };
+    return _buildUser(_users[id]!);
+  }
+
+  Future<UserModel> updateUser({
+    required String id,
+    String? name,
+    String? email,
+    String? phone,
+    String? role,
+    String? department,
+    String? specialization,
+    String? hireDate,
+  }) async {
+    final row = _users[id];
+    if (row == null) throw StateError('User not found');
+    if (name != null) row['name'] = name;
+    if (email != null) row['email'] = email;
+    if (phone != null) row['phone'] = phone;
+    if (role != null) row['role'] = role;
+    if (department != null) row['department'] = department;
+    if (specialization != null) row['specialization'] = specialization;
+    if (hireDate != null) row['hireDate'] = hireDate;
+    return _buildUser(row);
+  }
+
+  Future<UserModel> setUserActive(String id, bool isActive) async {
+    final row = _users[id];
+    if (row == null) throw StateError('User not found');
+    row['isActive'] = isActive;
+    return _buildUser(row);
+  }
+
+  Future<void> deleteUser(String id) async {
+    _users.remove(id);
   }
 }

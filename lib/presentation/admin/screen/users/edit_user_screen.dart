@@ -5,6 +5,7 @@ import 'package:sync_pro/config/app_string.dart';
 import 'package:sync_pro/config/extension.dart';
 import 'package:sync_pro/config/measurement.dart';
 import 'package:sync_pro/presentation/admin/display_models/user_item_display_model.dart';
+import 'package:sync_pro/data/mock_api/mock_api_service.dart';
 
 class EditUserScreen extends StatefulWidget {
   final UserModel user;
@@ -20,6 +21,24 @@ class _EditUserScreenState extends State<EditUserScreen> {
   late final TextEditingController _phoneController;
   String _role = 'engineer';
   String _status = AppString.active;
+  String? _department;
+  String? _specialization;
+  DateTime? _hireDate;
+
+  final List<String> _roles = const ['admin', 'engineer'];
+  final List<String> _departments = const [
+    'Admin',
+    'HVAC',
+    'Electrical',
+    'Plumbing',
+    'Field Ops'
+  ];
+  final List<String> _specializations = const [
+    'HVAC',
+    'Electrical',
+    'Plumbing',
+    'General'
+  ];
 
   @override
   void initState() {
@@ -29,6 +48,11 @@ class _EditUserScreenState extends State<EditUserScreen> {
     _phoneController = TextEditingController(text: widget.user.phone);
     _role = widget.user.role;
     _status = 'Active';
+    _department = widget.user.department;
+    _specialization = widget.user.specialization;
+    if (widget.user.hireDate != null && widget.user.hireDate!.isNotEmpty) {
+      _hireDate = DateTime.tryParse(widget.user.hireDate!);
+    }
   }
 
   @override
@@ -103,14 +127,12 @@ class _EditUserScreenState extends State<EditUserScreen> {
                 iconEnabledColor: AppColor.grey,
                 style: Measurement.mediumFont
                     .textStyle(AppColor.white, Measurement.font400),
-                items: const [
-                  DropdownMenuItem(
-                      value: 'admin', child: Text(AppString.adminRole)),
-                  DropdownMenuItem(
-                      value: 'engineer', child: Text(AppString.engineerRole)),
-                  DropdownMenuItem(
-                      value: 'manager', child: Text(AppString.managerRole)),
-                ],
+                items: _roles
+                    .map((r) => DropdownMenuItem<String>(
+                          value: r,
+                          child: Text(r),
+                        ))
+                    .toList(),
                 onChanged: (val) => setState(() => _role = val ?? _role),
               ),
             ),
@@ -131,6 +153,98 @@ class _EditUserScreenState extends State<EditUserScreen> {
                   hintText:
                       _phoneController.text.isEmpty ? 'Enter phone' : null,
                 ),
+              ),
+            ),
+            Measurement.generalSize16.height,
+            const Text(AppString.department).mediumBold(AppColor.white),
+            Measurement.generalSize8.height,
+            _Field(
+              child: DropdownButtonFormField<String>(
+                value: _department,
+                decoration: const InputDecoration(
+                  border: InputBorder.none,
+                  contentPadding: EdgeInsets.symmetric(
+                      horizontal: Measurement.generalSize16,
+                      vertical: Measurement.generalSize8),
+                ),
+                dropdownColor: AppColor.blueField,
+                iconEnabledColor: AppColor.grey,
+                style: Measurement.mediumFont
+                    .textStyle(AppColor.white, Measurement.font400),
+                hint:
+                    const Text('Select department').mediumNormal(AppColor.grey),
+                items: _departments
+                    .map((d) => DropdownMenuItem<String>(
+                          value: d,
+                          child: Text(d),
+                        ))
+                    .toList(),
+                onChanged: (val) => setState(() => _department = val),
+              ),
+            ),
+            Measurement.generalSize16.height,
+            const Text(AppString.hireDate).mediumBold(AppColor.white),
+            Measurement.generalSize8.height,
+            _Field(
+              child: InkWell(
+                onTap: () async {
+                  final now = DateTime.now();
+                  final picked = await showDatePicker(
+                    context: context,
+                    initialDate: _hireDate ?? now,
+                    firstDate: DateTime(now.year - 10),
+                    lastDate: DateTime(now.year + 1),
+                    builder: (context, child) => Theme(
+                      data: ThemeData.dark(),
+                      child: child!,
+                    ),
+                  );
+                  if (picked != null) setState(() => _hireDate = picked);
+                },
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: Measurement.generalSize16,
+                      vertical: Measurement.generalSize8),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: Text(
+                          _hireDate == null
+                              ? 'mm/dd/yyyy'
+                              : '${_hireDate!.month.toString().padLeft(2, '0')}/${_hireDate!.day.toString().padLeft(2, '0')}/${_hireDate!.year}',
+                        ).mediumNormal(AppColor.white),
+                      ),
+                      const Icon(Icons.calendar_today, color: AppColor.grey),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            Measurement.generalSize16.height,
+            const Text(AppString.specialization).mediumBold(AppColor.white),
+            Measurement.generalSize8.height,
+            _Field(
+              child: DropdownButtonFormField<String>(
+                value: _specialization,
+                decoration: const InputDecoration(
+                  border: InputBorder.none,
+                  contentPadding: EdgeInsets.symmetric(
+                      horizontal: Measurement.generalSize16,
+                      vertical: Measurement.generalSize8),
+                ),
+                dropdownColor: AppColor.blueField,
+                iconEnabledColor: AppColor.grey,
+                style: Measurement.mediumFont
+                    .textStyle(AppColor.white, Measurement.font400),
+                hint: const Text('Select specialization')
+                    .mediumNormal(AppColor.grey),
+                items: _specializations
+                    .map((s) => DropdownMenuItem<String>(
+                          value: s,
+                          child: Text(s),
+                        ))
+                    .toList(),
+                onChanged: (val) => setState(() => _specialization = val),
               ),
             ),
             Measurement.generalSize16.height,
@@ -212,7 +326,25 @@ class _EditUserScreenState extends State<EditUserScreen> {
                         borderRadius: Measurement.generalSize12.allRadius,
                       ),
                     ),
-                    onPressed: () {},
+                    onPressed: () async {
+                      final name = _nameController.text.trim();
+                      final email = _emailController.text.trim();
+                      final phone = _phoneController.text.trim();
+                      await MockApiService.instance.updateUser(
+                        id: widget.user.id,
+                        name: name.isEmpty ? null : name,
+                        email: email.isEmpty ? null : email,
+                        phone: phone.isEmpty ? null : phone,
+                        role: _role,
+                        department: _department,
+                        specialization: _specialization,
+                        hireDate: _hireDate == null
+                            ? null
+                            : '${_hireDate!.year.toString().padLeft(4, '0')}-${_hireDate!.month.toString().padLeft(2, '0')}-${_hireDate!.day.toString().padLeft(2, '0')}',
+                      );
+                      if (!mounted) return;
+                      Navigator.pop(context, true);
+                    },
                     child: const Text(AppString.saveChanges)
                         .mediumBold(AppColor.white),
                   ),

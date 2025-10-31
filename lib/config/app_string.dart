@@ -121,6 +121,7 @@ class AppString {
   static const String locationLabel = "Location";
   static const String hireDate = "Hire Date";
   static const String lastLogin = "Last Login";
+  static const String specialization = "Specialization";
 
   // Edit User
   static const String editUser = "Edit User";
