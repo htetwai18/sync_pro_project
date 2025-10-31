@@ -4,15 +4,19 @@ import 'package:sync_pro/config/app_color.dart';
 import 'package:sync_pro/config/app_string.dart';
 import 'package:sync_pro/config/extension.dart';
 import 'package:sync_pro/config/measurement.dart';
+import 'package:sync_pro/data/mock_api/mock_api_service.dart';
 
 class EngineerServiceReportScreen extends StatefulWidget {
-  const EngineerServiceReportScreen({super.key});
+  final String taskId;
+  const EngineerServiceReportScreen({super.key, required this.taskId});
 
   @override
-  State<EngineerServiceReportScreen> createState() => _EngineerServiceReportScreenState();
+  State<EngineerServiceReportScreen> createState() =>
+      _EngineerServiceReportScreenState();
 }
 
-class _EngineerServiceReportScreenState extends State<EngineerServiceReportScreen> {
+class _EngineerServiceReportScreenState
+    extends State<EngineerServiceReportScreen> {
   final TextEditingController _summaryController = TextEditingController();
 
   @override
@@ -92,7 +96,35 @@ class _EngineerServiceReportScreenState extends State<EngineerServiceReportScree
                     borderRadius: Measurement.generalSize12.allRadius,
                   ),
                 ),
-                onPressed: () {},
+                onPressed: () async {
+                  final content = _summaryController.text.trim();
+                  if (content.isEmpty) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                          content: Text('Please enter report content')),
+                    );
+                    return;
+                  }
+                  final engineers =
+                      await MockApiService.instance.listUsers(role: 'engineer');
+                  final submitter =
+                      engineers.isNotEmpty ? engineers.first : null;
+                  if (submitter == null) {
+                    if (!mounted) return;
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text('No engineer found')),
+                    );
+                    return;
+                  }
+                  await MockApiService.instance.createReport(
+                    taskId: widget.taskId,
+                    title: 'Service Report',
+                    content: content,
+                    submittedById: submitter.id,
+                  );
+                  if (!mounted) return;
+                  Navigator.pop(context, true);
+                },
                 child: const Text(AppString.submitReport)
                     .mediumBold(AppColor.white),
               ),

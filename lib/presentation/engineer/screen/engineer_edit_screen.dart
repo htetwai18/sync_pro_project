@@ -5,6 +5,7 @@ import 'package:sync_pro/config/app_string.dart';
 import 'package:sync_pro/config/extension.dart';
 import 'package:sync_pro/config/measurement.dart';
 import 'package:sync_pro/presentation/admin/display_models/user_item_display_model.dart';
+import 'package:sync_pro/data/mock_api/mock_api_service.dart';
 
 class EngineerEditScreen extends StatefulWidget {
   final UserModel user;
@@ -44,7 +45,7 @@ class _EngineerEditScreenState extends State<EngineerEditScreen> {
     return Scaffold(
       backgroundColor: AppColor.background,
       appBar: getAppBar(title: AppString.editProfile, context: context),
-      body: Padding(
+      body: SingleChildScrollView(
         padding: Measurement.generalSize16.horizontalIsToVertical,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -150,44 +151,58 @@ class _EngineerEditScreenState extends State<EngineerEditScreen> {
                 ),
               ],
             ),
-            const Spacer(),
-            Row(
-              children: [
-                Expanded(
-                  child: OutlinedButton(
-                    style: OutlinedButton.styleFrom(
-                      side: const BorderSide(color: AppColor.greyPercentCircle),
-                      foregroundColor: AppColor.white,
-                      backgroundColor: AppColor.blueField,
-                      padding: Measurement.generalSize16.horizontalIsToVertical,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: Measurement.generalSize12.allRadius,
-                      ),
-                    ),
-                    onPressed: () => Navigator.pop(context),
-                    child:
-                        const Text(AppString.cancel).mediumBold(AppColor.white),
+            SizedBox(height: MediaQuery.of(context).viewInsets.bottom + 24),
+          ],
+        ),
+      ),
+      bottomNavigationBar: Padding(
+        padding: Measurement.generalSize16.horizontalIsToVertical,
+        child: Row(
+          children: [
+            Expanded(
+              child: OutlinedButton(
+                style: OutlinedButton.styleFrom(
+                  side: const BorderSide(color: AppColor.greyPercentCircle),
+                  foregroundColor: AppColor.white,
+                  backgroundColor: AppColor.blueField,
+                  padding: Measurement.generalSize16.horizontalIsToVertical,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: Measurement.generalSize12.allRadius,
                   ),
                 ),
-                Measurement.generalSize16.width,
-                Expanded(
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: AppColor.blueStatusInner,
-                      foregroundColor: AppColor.white,
-                      padding: Measurement.generalSize16.horizontalIsToVertical,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: Measurement.generalSize12.allRadius,
-                      ),
-                    ),
-                    onPressed: () {},
-                    child: const Text(AppString.saveChanges)
-                        .mediumBold(AppColor.white),
-                  ),
-                ),
-              ],
+                onPressed: () => Navigator.pop(context),
+                child: const Text(AppString.cancel).mediumBold(AppColor.white),
+              ),
             ),
-            Measurement.generalSize16.height,
+            Measurement.generalSize16.width,
+            Expanded(
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: AppColor.blueStatusInner,
+                  foregroundColor: AppColor.white,
+                  padding: Measurement.generalSize16.horizontalIsToVertical,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: Measurement.generalSize12.allRadius,
+                  ),
+                ),
+                onPressed: () async {
+                  final name = _nameController.text.trim();
+                  final email = _emailController.text.trim();
+                  final phone = _phoneController.text.trim();
+                  await MockApiService.instance.updateUser(
+                    id: widget.user.id,
+                    name: name.isEmpty ? null : name,
+                    email: email.isEmpty ? null : email,
+                    phone: phone.isEmpty ? null : phone,
+                    role: _role,
+                  );
+                  if (!mounted) return;
+                  Navigator.pop(context, true);
+                },
+                child: const Text(AppString.saveChanges)
+                    .mediumBold(AppColor.white),
+              ),
+            ),
           ],
         ),
       ),

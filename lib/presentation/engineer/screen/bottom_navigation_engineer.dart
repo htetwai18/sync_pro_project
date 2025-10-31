@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:sync_pro/config/app_color.dart';
 import 'package:sync_pro/config/app_string.dart';
-import 'package:sync_pro/config/enum.dart';
 import 'package:sync_pro/config/measurement.dart';
 import 'package:sync_pro/presentation/admin/display_models/user_item_display_model.dart';
 import 'package:sync_pro/presentation/engineer/screen/engineer_detail_screen.dart';
 import 'package:sync_pro/presentation/engineer/screen/engineer_tasks_screen.dart';
-import 'package:sync_pro/presentation/shared/mock.dart';
+import 'package:sync_pro/data/mock_api/mock_api_service.dart';
 
 class BottomNavigationEngineer extends StatefulWidget {
   const BottomNavigationEngineer({
@@ -22,18 +21,32 @@ class _BottomNavigationEngineerState extends State<BottomNavigationEngineer> {
   int currentIndex = 0;
   List<Widget> mobileScreens = [];
 
-
   @override
   void initState() {
     super.initState();
-    mobileScreens = [
-      const EngineerTasksScreen(),
-      const EngineerDetailScreen(user: mockEngineer),
-    ];
+    _init();
+  }
+
+  Future<void> _init() async {
+    final engineers = await MockApiService.instance.listUsers(role: 'engineer');
+    if (engineers.isEmpty) return;
+    final engineer = engineers.first;
+    setState(() {
+      mobileScreens = [
+        EngineerTasksScreen(engineerId: engineer.id),
+        EngineerDetailScreen(user: engineer),
+      ];
+    });
   }
 
   @override
   Widget build(BuildContext context) {
+    if (mobileScreens.isEmpty) {
+      return const Scaffold(
+        backgroundColor: AppColor.background,
+        body: Center(child: CircularProgressIndicator()),
+      );
+    }
     return Padding(
       padding: const EdgeInsets.all(Measurement.generalSize10),
       child: SafeArea(

@@ -4,7 +4,7 @@ import 'package:sync_pro/config/app_color.dart';
 import 'package:sync_pro/config/app_string.dart';
 import 'package:sync_pro/config/extension.dart';
 import 'package:sync_pro/config/measurement.dart';
-import 'package:sync_pro/presentation/shared/mock.dart';
+import 'package:sync_pro/data/mock_api/mock_api_service.dart';
 import 'package:sync_pro/presentation/admin/display_models/part_item_display_model.dart';
 
 class EngineerAddPartToTaskScreen extends StatefulWidget {
@@ -18,12 +18,21 @@ class EngineerAddPartToTaskScreen extends StatefulWidget {
 class _EngineerAddPartToTaskScreenState
     extends State<EngineerAddPartToTaskScreen> {
   final TextEditingController _searchController = TextEditingController();
-  late final List<int> _counts;
+  List<int> _counts = [];
+  List<PartModel> _parts = [];
 
   @override
   void initState() {
     super.initState();
-    _counts = List<int>.filled(mockParts.length, 0);
+    _load();
+  }
+
+  Future<void> _load() async {
+    final list = await MockApiService.instance.listParts();
+    setState(() {
+      _parts = list;
+      _counts = List<int>.filled(_parts.length, 0);
+    });
   }
 
   @override
@@ -35,7 +44,7 @@ class _EngineerAddPartToTaskScreenState
   @override
   Widget build(BuildContext context) {
     final query = _searchController.text.toLowerCase();
-    final filtered = mockParts
+    final filtered = _parts
         .where((p) =>
             p.name.toLowerCase().contains(query) ||
             p.number.toLowerCase().contains(query))
@@ -89,7 +98,7 @@ class _EngineerAddPartToTaskScreenState
               separatorBuilder: (_, __) => Measurement.generalSize12.height,
               itemBuilder: (context, index) {
                 final part = filtered[index];
-                final originalIndex = mockParts.indexOf(part);
+                final originalIndex = _parts.indexOf(part);
                 final onHand = part.stockLevels
                         ?.fold<int>(0, (prev, s) => prev + s.quantityOnHand) ??
                     0;
@@ -152,13 +161,16 @@ class _EngineerAddPartToTaskScreenState
                   ),
                 ),
                 onPressed: () {
-                  final selected = <PartModel>[];
-                  for (int i = 0; i < mockParts.length; i++) {
+                  final selected = <Map<String, dynamic>>[];
+                  for (int i = 0; i < _parts.length; i++) {
                     if (_counts[i] > 0) {
-                      selected.add(mockParts[i]);
+                      selected.add({
+                        'partId': _parts[i].id,
+                        'quantity': _counts[i],
+                      });
                     }
                   }
-                  Navigator.pop<List<PartModel>>(context, selected);
+                  Navigator.pop<List<Map<String, dynamic>>>(context, selected);
                 },
                 child:
                     const Text(AppString.addToTask).mediumBold(AppColor.white),

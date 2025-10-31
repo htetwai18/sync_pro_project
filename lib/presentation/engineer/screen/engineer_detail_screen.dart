@@ -4,14 +4,34 @@ import 'package:sync_pro/config/app_color.dart';
 import 'package:sync_pro/config/app_string.dart';
 import 'package:sync_pro/config/extension.dart';
 import 'package:sync_pro/config/measurement.dart';
-import 'package:sync_pro/presentation/admin/display_models/user_item_display_model.dart';
 import 'package:sync_pro/config/routing.dart';
+import 'package:sync_pro/presentation/admin/display_models/user_item_display_model.dart';
 import 'package:sync_pro/presentation/engineer/screen/engineer_edit_screen.dart';
+import 'package:sync_pro/data/mock_api/mock_api_service.dart';
+import 'package:sync_pro/presentation/shared/login_screen.dart';
 
-class EngineerDetailScreen extends StatelessWidget {
+class EngineerDetailScreen extends StatefulWidget {
   final UserModel user;
 
   const EngineerDetailScreen({super.key, required this.user});
+
+  @override
+  State<EngineerDetailScreen> createState() => _EngineerDetailScreenState();
+}
+
+class _EngineerDetailScreenState extends State<EngineerDetailScreen> {
+  late UserModel _user;
+
+  @override
+  void initState() {
+    super.initState();
+    _user = widget.user;
+  }
+
+  Future<void> _reload() async {
+    final fresh = await MockApiService.instance.getUser(_user.id);
+    setState(() => _user = fresh);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -26,14 +46,15 @@ class EngineerDetailScreen extends StatelessWidget {
           children: [
             CircleAvatar(
               radius: 52,
-              backgroundImage: NetworkImage('https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150'),
+              backgroundImage: NetworkImage(
+                  'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150'),
             ),
             Measurement.generalSize16.height,
-            Text(user.name).xLargeBold(AppColor.white),
+            Text(_user.name).xLargeBold(AppColor.white),
             Measurement.generalSize8.height,
-            Text(user.role).mediumNormal(AppColor.grey),
+            Text(_user.role).mediumNormal(AppColor.grey),
             Measurement.generalSize8.height,
-            Text('${AppString.id}: ${user.id}').smallNormal(AppColor.grey),
+            Text('${AppString.id}: ${_user.id}').smallNormal(AppColor.grey),
             Measurement.generalSize24.height,
             Row(
               children: [
@@ -48,11 +69,16 @@ class EngineerDetailScreen extends StatelessWidget {
                         borderRadius: Measurement.generalSize12.allRadius,
                       ),
                     ),
-                    onPressed: () {
-                      Routing.transition(
+                    onPressed: () async {
+                      final ok = await Navigator.push(
                         context,
-                        EngineerEditScreen(user: user),
+                        MaterialPageRoute(
+                          builder: (_) => EngineerEditScreen(user: _user),
+                        ),
                       );
+                      if (ok == true) {
+                        await _reload();
+                      }
                     },
                     child:
                         const Text(AppString.edit).mediumBold(AppColor.white),
@@ -69,7 +95,9 @@ class EngineerDetailScreen extends StatelessWidget {
                         borderRadius: Measurement.generalSize12.allRadius,
                       ),
                     ),
-                    onPressed: () {},
+                    onPressed: () {
+                      Routing.transition(context, const LoginScreen());
+                    },
                     child:
                         const Text(AppString.logout).mediumBold(AppColor.white),
                   ),
@@ -77,25 +105,27 @@ class EngineerDetailScreen extends StatelessWidget {
               ],
             ),
             Measurement.generalSize24.height,
-            _DetailRow(label: AppString.emailAddress, value: user.email),
+            _DetailRow(label: AppString.emailAddress, value: _user.email),
             _Divider(),
-            _DetailRow(label: AppString.phone, value: user.phone),
+            _DetailRow(label: AppString.phone, value: _user.phone),
             _Divider(),
-            _DetailRow(label: AppString.role, value: user.role),
+            _DetailRow(label: AppString.role, value: _user.role),
             _Divider(),
-            _DetailRow(label: AppString.department, value: user.department??''),
+            _DetailRow(
+                label: AppString.department, value: _user.department ?? ''),
             _Divider(),
             _DetailRow(label: AppString.statusUpper, value: 'Active'),
             _Divider(),
-            _DetailRow(label: AppString.locationLabel, value: 'All'),
-            // _Divider(),
-            // _DetailRow(label: AppString.hireDate, value: user.hireDate),
+            _DetailRow(
+                label: AppString.specialization,
+                value: _user.specialization ?? "-"),
+            _Divider(),
+            _DetailRow(label: AppString.hireDate, value: _user.hireDate ?? "-"),
             // _Divider(),
             // _DetailRow(label: AppString.lastLogin, value: user.lastLogin),
           ],
         ),
       ),
-
     );
   }
 }

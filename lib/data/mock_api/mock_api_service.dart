@@ -423,6 +423,77 @@ extension TasksApi on MockApiService {
     _reports.removeWhere((_, r) => r['taskId'] == id);
   }
 
+  Future<List<TaskOrRequestedServiceModel>> listEngineerTasks({
+    required String engineerId,
+    String scope = 'today',
+  }) async {
+    final now = DateTime.now();
+    bool Function(Map<String, dynamic>) scopeFilter;
+    switch (scope) {
+      case 'upcoming':
+        scopeFilter = (t) =>
+            (t['status'] as String) != 'completed' &&
+            (t['scheduledDate'] != null &&
+                DateTime.tryParse(t['scheduledDate'] as String)!.isAfter(now));
+        break;
+      case 'completed':
+        scopeFilter = (t) => (t['status'] as String) == 'completed';
+        break;
+      case 'today':
+      default:
+        scopeFilter = (t) {
+          final sd = t['scheduledDate'] != null
+              ? DateTime.tryParse(t['scheduledDate'] as String)
+              : null;
+          return sd != null &&
+              sd.year == now.year &&
+              sd.month == now.month &&
+              sd.day == now.day;
+        };
+    }
+    final rows = _tasks.values
+        .where((t) => t['assignedToId'] == engineerId && scopeFilter(t));
+    return rows.map(_buildTask).toList();
+  }
+
+  Future<TaskOrRequestedServiceModel> addTaskParts(
+    String taskId,
+    List<Map<String, dynamic>> items, // {partId, quantity}
+  ) async {
+    final row = _tasks[taskId];
+    if (row == null) throw StateError('Task not found');
+    final existing =
+        (row['parts'] as List?)?.cast<Map<String, dynamic>>() ?? [];
+    existing.addAll(items);
+    row['parts'] = existing;
+    return _buildTask(row);
+  }
+
+  Future<ReportModel> createReport({
+    required String taskId,
+    required String title,
+    required String content,
+    required String submittedById,
+  }) async {
+    final repId = 'rep-${DateTime.now().millisecondsSinceEpoch}';
+    final row = {
+      'id': repId,
+      'title': title,
+      'submittedDate': DateTime.now().toIso8601String(),
+      'approvedDate': null,
+      'content': content,
+      'attachmentUrl': null,
+      'status': 'submitted',
+      'taskId': taskId,
+      'submittedById': submittedById,
+      'reviewedById': null,
+    };
+    _reports[repId] = row;
+    final t = _tasks[taskId];
+    if (t != null) t['reportId'] = repId;
+    return _buildReport(row);
+  }
+
   TaskOrRequestedServiceModel _buildTask(Map<String, dynamic> row) {
     final customer = _buildCustomer(_customers[row['customerId']]!);
     final building = _buildBuilding(_buildings[row['buildingId']]!, customer);
@@ -434,6 +505,12 @@ extension TasksApi on MockApiService {
     final report = row['reportId'] != null
         ? _buildReport(_reports[row['reportId']]!)
         : null;
+
+    final partsRaw =
+        (row['parts'] as List?)?.cast<Map<String, dynamic>>() ?? const [];
+    final parts = partsRaw
+        .map((e) => _buildPart(_parts[e['partId'] as String]!))
+        .toList();
 
     return TaskOrRequestedServiceModel(
       id: row['id'] as String,
@@ -463,7 +540,7 @@ extension TasksApi on MockApiService {
       createdBy: createdBy,
       assignedTo: assignedTo,
       report: report,
-      parts: const [],
+      parts: parts,
     );
   }
 

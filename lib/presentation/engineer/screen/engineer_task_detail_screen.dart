@@ -4,34 +4,15 @@ import 'package:sync_pro/config/app_color.dart';
 import 'package:sync_pro/config/app_string.dart';
 import 'package:sync_pro/config/extension.dart';
 import 'package:sync_pro/config/measurement.dart';
-import 'package:sync_pro/config/routing.dart';
 import 'package:sync_pro/presentation/engineer/screen/engineer_add_part_to_task_screen.dart';
-import 'package:sync_pro/presentation/admin/display_models/part_item_display_model.dart';
+// removed unused part model import
 import 'package:sync_pro/presentation/engineer/screen/engineer_service_report_screen.dart';
+import 'package:sync_pro/data/mock_api/mock_api_service.dart';
+import 'package:sync_pro/presentation/customer/display_models/task_display_model.dart';
 
 class EngineerTaskDetailScreen extends StatefulWidget {
-  final String title, asset, assetName;
-  final String status;
-  final String description;
-  final String locationName;
-  final String address;
-  final String? priority;
-  final DateTime? scheduledAt;
-  final DateTime? assignedAt;
-
-  const EngineerTaskDetailScreen({
-    super.key,
-    required this.title,
-    required this.asset,
-    required this.assetName,
-    required this.status,
-    required this.description,
-    required this.locationName,
-    required this.address,
-    this.priority,
-    this.scheduledAt,
-    this.assignedAt,
-  });
+  final String taskId;
+  const EngineerTaskDetailScreen({super.key, required this.taskId});
 
   @override
   State<EngineerTaskDetailScreen> createState() =>
@@ -39,208 +20,251 @@ class EngineerTaskDetailScreen extends StatefulWidget {
 }
 
 class _EngineerTaskDetailScreenState extends State<EngineerTaskDetailScreen> {
-  final List<PartModel> _addedParts = [];
+  TaskOrRequestedServiceModel? _task;
+  bool _changed = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _load();
+  }
+
+  Future<void> _load() async {
+    final t = await MockApiService.instance.getTask(widget.taskId);
+    setState(() => _task = t);
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColor.background,
-      appBar: getAppBar(title: AppString.taskDetailsTitle, context: context),
-      body: SingleChildScrollView(
-        padding: Measurement.generalSize16.horizontalIsToVertical,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Title and status
-            Text(widget.title).xLargeBold(AppColor.white),
-            Measurement.generalSize24.height,
-            Row(
+    if (_task == null) {
+      return const Scaffold(
+        backgroundColor: AppColor.background,
+        body: Center(child: CircularProgressIndicator()),
+      );
+    }
+    final task = _task!;
+    return WillPopScope(
+        onWillPop: () async {
+          Navigator.pop(context, _changed);
+          return false;
+        },
+        child: Scaffold(
+          backgroundColor: AppColor.background,
+          appBar:
+              getAppBar(title: AppString.taskDetailsTitle, context: context),
+          body: SingleChildScrollView(
+            padding: Measurement.generalSize16.horizontalIsToVertical,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text(AppString.statusUpper).smallNormal(AppColor.grey),
-                Measurement.generalSize8.width,
-                Container(
-                  padding: Measurement.generalSize8.horizontalIsToVertical,
-                  decoration: BoxDecoration(
-                    color: _statusColor(widget.status).withOpacity(0.15),
-                    borderRadius: Measurement.generalSize12.allRadius,
-                  ),
-                  child: Text(
-                    _statusLabel(widget.status),
-                  ).smallBold(_statusColor(widget.status)),
-                ),
-              ],
-            ),
-
-            Measurement.generalSize24.height,
-
-            // Action buttons row
-            Row(
-              children: [
-                Expanded(
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: AppColor.blueStatusInner,
-                      foregroundColor: AppColor.white,
-                      padding: Measurement.generalSize16.horizontalIsToVertical,
-                      shape: RoundedRectangleBorder(
+                // Title and status
+                Text(task.title).xLargeBold(AppColor.white),
+                Measurement.generalSize24.height,
+                Row(
+                  children: [
+                    const Text(AppString.statusUpper)
+                        .smallNormal(AppColor.grey),
+                    Measurement.generalSize8.width,
+                    Container(
+                      padding: Measurement.generalSize8.horizontalIsToVertical,
+                      decoration: BoxDecoration(
+                        color: _statusColor(task.status).withOpacity(0.15),
                         borderRadius: Measurement.generalSize12.allRadius,
                       ),
+                      child: Text(
+                        _statusLabel(task.status),
+                      ).smallBold(_statusColor(task.status)),
                     ),
-                    onPressed: () async {
-                      final selected = await Navigator.push<List<PartModel>>(
-                        context,
-                        MaterialPageRoute(
-                          builder: (_) => const EngineerAddPartToTaskScreen(),
-                        ),
-                      );
-                      if (selected != null && selected.isNotEmpty) {
-                        setState(() {
-                          _addedParts
-                            ..clear()
-                            ..addAll(selected.toSet());
-                        });
-                      }
-                    },
-                    child: const Text(AppString.addParts)
-                        .mediumBold(AppColor.white),
-                  ),
+                  ],
                 ),
-                Measurement.generalSize16.width,
-                Expanded(
-                  child: OutlinedButton(
-                    style: OutlinedButton.styleFrom(
-                      side: const BorderSide(color: AppColor.greyPercentCircle),
-                      foregroundColor: AppColor.white,
-                      backgroundColor: AppColor.blueField,
-                      padding: Measurement.generalSize16.horizontalIsToVertical,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: Measurement.generalSize12.allRadius,
-                      ),
-                    ),
-                    onPressed: () {
-                      Routing.transition(
-                          context, const EngineerServiceReportScreen());
-                    },
-                    child: const Text(AppString.reportAction)
-                        .mediumBold(AppColor.white),
-                  ),
-                ),
-              ],
-            ),
 
-            Measurement.generalSize24.height,
-
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(widget.locationName).smallNormal(AppColor.grey),
-                Measurement.generalSize8.height,
-                Text(widget.address).mediumBold(AppColor.white),
-              ],
-            ),
-            Measurement.generalSize24.height,
-
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text('${AppString.assetID}: ${widget.asset}')
-                    .smallNormal(AppColor.grey),
-                Measurement.generalSize4.height,
-                Text(widget.assetName).mediumBold(AppColor.white),
-              ],
-            ),
-
-            Measurement.generalSize24.height,
-
-            // Meta (priority/scheduled/assigned)
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                if (widget.priority != null) ...[
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Text('Priority').smallNormal(AppColor.grey),
-                      Measurement.generalSize4.height,
-                      Text(widget.priority!).mediumBold(AppColor.white),
-                    ],
-                  ),
-                ],
                 Measurement.generalSize24.height,
-                if (widget.scheduledAt != null) ...[
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Text(AppString.scheduledAtLabel)
-                          .smallNormal(AppColor.grey),
-                      Measurement.generalSize4.height,
-                      Text(_fmtDateTime(widget.scheduledAt!))
-                          .mediumBold(AppColor.white),
-                    ],
-                  ),
-                ],
-                Measurement.generalSize24.height,
-                if (widget.assignedAt != null) ...[
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Text(AppString.assignedAtLabel)
-                          .smallNormal(AppColor.grey),
-                      Measurement.generalSize4.height,
-                      Text(_fmtDateTime(widget.assignedAt!))
-                          .mediumBold(AppColor.white),
-                    ],
-                  ),
-                ],
-              ],
-            ),
 
-            Measurement.generalSize24.height,
-
-            // Description
-            const Text(AppString.taskDescription).smallNormal(AppColor.grey),
-            Measurement.generalSize12.height,
-            Text(widget.description).mediumBold(AppColor.white),
-
-            Measurement.generalSize24.height,
-
-            // Parts section
-            const Text('Parts').smallNormal(AppColor.grey),
-            Measurement.generalSize8.height,
-            if (_addedParts.isEmpty)
-              Text('No parts added').smallNormal(AppColor.grey)
-            else
-              Column(
-                children: _addedParts
-                    .map((p) => Container(
-                          margin: Measurement.generalSize8.verticalPadding,
+                // Action buttons row
+                Row(
+                  children: [
+                    Expanded(
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: AppColor.blueStatusInner,
+                          foregroundColor: AppColor.white,
                           padding:
-                              Measurement.generalSize12.horizontalIsToVertical,
-                          decoration: BoxDecoration(
-                            color: AppColor.blueField,
+                              Measurement.generalSize16.horizontalIsToVertical,
+                          shape: RoundedRectangleBorder(
                             borderRadius: Measurement.generalSize12.allRadius,
                           ),
-                          child: Row(
-                            children: [
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(p.name).mediumBold(AppColor.white),
-                                    Measurement.generalSize4.height,
-                                    Text(p.number).smallNormal(AppColor.grey),
-                                  ],
-                                ),
-                              ),
-                            ],
+                        ),
+                        onPressed: () async {
+                          final selected =
+                              await Navigator.push<List<Map<String, dynamic>>>(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) =>
+                                  const EngineerAddPartToTaskScreen(),
+                            ),
+                          );
+                          if (selected != null && selected.isNotEmpty) {
+                            await MockApiService.instance
+                                .addTaskParts(task.id, selected);
+                            await _load();
+                            _changed = true;
+                          }
+                        },
+                        child: const Text(AppString.addParts)
+                            .mediumBold(AppColor.white),
+                      ),
+                    ),
+                    Measurement.generalSize16.width,
+                    Expanded(
+                      child: OutlinedButton(
+                        style: OutlinedButton.styleFrom(
+                          side: const BorderSide(
+                              color: AppColor.greyPercentCircle),
+                          foregroundColor: AppColor.white,
+                          backgroundColor: AppColor.blueField,
+                          padding:
+                              Measurement.generalSize16.horizontalIsToVertical,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: Measurement.generalSize12.allRadius,
                           ),
-                        ))
-                    .toList(),
-              ),
-          ],
-        ),
-      ),
-    );
+                        ),
+                        onPressed: () async {
+                          final ok = await Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) =>
+                                  EngineerServiceReportScreen(taskId: task.id),
+                            ),
+                          );
+                          if (ok == true) {
+                            await _load();
+                            _changed = true;
+                          }
+                        },
+                        child: const Text(AppString.reportAction)
+                            .mediumBold(AppColor.white),
+                      ),
+                    ),
+                  ],
+                ),
+
+                Measurement.generalSize24.height,
+
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(task.customer.name).smallNormal(AppColor.grey),
+                    Measurement.generalSize8.height,
+                    Text(task.building.address).mediumBold(AppColor.white),
+                  ],
+                ),
+                Measurement.generalSize24.height,
+
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text('${AppString.assetID}: ${task.asset.id}')
+                        .smallNormal(AppColor.grey),
+                    Measurement.generalSize4.height,
+                    Text(task.asset.name).mediumBold(AppColor.white),
+                  ],
+                ),
+
+                Measurement.generalSize24.height,
+
+                // Meta (priority/scheduled/assigned)
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    if (task.priority.isNotEmpty) ...[
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Text('Priority').smallNormal(AppColor.grey),
+                          Measurement.generalSize4.height,
+                          Text(task.priority).mediumBold(AppColor.white),
+                        ],
+                      ),
+                    ],
+                    Measurement.generalSize24.height,
+                    if (task.scheduledDate != null) ...[
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Text(AppString.scheduledAtLabel)
+                              .smallNormal(AppColor.grey),
+                          Measurement.generalSize4.height,
+                          Text(_fmtDateTime(task.scheduledDate!))
+                              .mediumBold(AppColor.white),
+                        ],
+                      ),
+                    ],
+                    Measurement.generalSize24.height,
+                    if (task.assignedDate != null) ...[
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Text(AppString.assignedAtLabel)
+                              .smallNormal(AppColor.grey),
+                          Measurement.generalSize4.height,
+                          Text(_fmtDateTime(task.assignedDate!))
+                              .mediumBold(AppColor.white),
+                        ],
+                      ),
+                    ],
+                  ],
+                ),
+
+                Measurement.generalSize24.height,
+
+                // Description
+                const Text(AppString.taskDescription)
+                    .smallNormal(AppColor.grey),
+                Measurement.generalSize12.height,
+                Text(task.description).mediumBold(AppColor.white),
+
+                Measurement.generalSize24.height,
+
+                // Parts section
+                const Text('Parts').smallNormal(AppColor.grey),
+                Measurement.generalSize8.height,
+                if ((task.parts?.isEmpty ?? true))
+                  Text('No parts added').smallNormal(AppColor.grey)
+                else
+                  Column(
+                    children: task.parts!
+                        .map((p) => Container(
+                              margin: Measurement.generalSize8.verticalPadding,
+                              padding: Measurement
+                                  .generalSize12.horizontalIsToVertical,
+                              decoration: BoxDecoration(
+                                color: AppColor.blueField,
+                                borderRadius:
+                                    Measurement.generalSize12.allRadius,
+                              ),
+                              child: Row(
+                                children: [
+                                  Expanded(
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(p.name).mediumBold(AppColor.white),
+                                        Measurement.generalSize4.height,
+                                        Text(p.number)
+                                            .smallNormal(AppColor.grey),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ))
+                        .toList(),
+                  ),
+              ],
+            ),
+          ),
+        ));
   }
 
   String _statusLabel(String s) {

@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:sync_pro/config/app_color.dart';
 import 'package:sync_pro/config/extension.dart';
 import 'package:sync_pro/config/measurement.dart';
-import 'package:sync_pro/config/routing.dart';
-import 'package:sync_pro/presentation/admin/display_models/task_item_display_model.dart';
+import 'package:sync_pro/data/mock_api/mock_api_service.dart';
+import 'package:sync_pro/presentation/customer/display_models/task_display_model.dart';
 import 'package:sync_pro/presentation/engineer/screen/engineer_task_detail_screen.dart';
 import 'package:sync_pro/presentation/engineer/widgets/engineer_task_card.dart';
-import 'package:sync_pro/presentation/shared/mock.dart';
 
 class EngineerTasksScreen extends StatefulWidget {
-  const EngineerTasksScreen({super.key});
+  final String engineerId;
+  const EngineerTasksScreen({super.key, required this.engineerId});
 
   @override
   State<EngineerTasksScreen> createState() => _EngineerTasksScreenState();
@@ -18,27 +18,25 @@ class EngineerTasksScreen extends StatefulWidget {
 class _EngineerTasksScreenState extends State<EngineerTasksScreen>
     with SingleTickerProviderStateMixin {
   late final TabController _tabController;
+  List<TaskOrRequestedServiceModel> _items = [];
 
   @override
   void initState() {
     super.initState();
     _tabController = TabController(length: 3, vsync: this);
+    _tabController.addListener(() => _load());
+    _load();
   }
 
-  List<TaskItemDisplayModel> _filterByTab(int tab) {
-    final now = DateTime.now();
-    return mockTasks.where((t) {
-      if (tab == 0) {
-        return (t.scheduledDate?.year == now.year) &&
-            (t.scheduledDate?.month == now.month) &&
-            (t.scheduledDate?.day == now.day);
-      } else if (tab == 1) {
-        return (t.status != 'completed') &&
-            (t.scheduledDate?.isAfter(now) ?? false);
-      } else {
-        return t.status == 'completed';
-      }
-    }).toList();
+  Future<void> _load() async {
+    final scope = _tabController.index == 0
+        ? 'today'
+        : _tabController.index == 1
+            ? 'upcoming'
+            : 'completed';
+    final list = await MockApiService.instance
+        .listEngineerTasks(engineerId: widget.engineerId, scope: scope);
+    setState(() => _items = list);
   }
 
   @override
@@ -64,30 +62,21 @@ class _EngineerTasksScreenState extends State<EngineerTasksScreen>
             child: Padding(
               padding: Measurement.generalSize16.horizontalIsToVertical,
               child: ListView.separated(
-                itemCount: _filterByTab(_tabController.index).length,
+                itemCount: _items.length,
                 separatorBuilder: (_, __) => Measurement.generalSize12.height,
                 itemBuilder: (context, index) {
-                  final task = _filterByTab(_tabController.index)[index];
+                  final task = _items[index];
                   return EngineerTaskCard(
                     task: task,
-                    onTap: () {
-                      Routing.transition(
+                    onTap: () async {
+                      final changed = await Navigator.push(
                         context,
-                        EngineerTaskDetailScreen(
-                          asset: task.asset.id,
-                          assetName: task.asset.name,
-                          title: task.title,
-                          status: task.status,
-                          description: task.description.isNotEmpty
-                              ? task.description
-                              : 'Task detail description for ${task.title}.',
-                          locationName: task.customer.name,
-                          address: task.building.address,
-                          priority: task.priority,
-                          scheduledAt: task.scheduledDate,
-                          assignedAt: task.assignedDate,
+                        MaterialPageRoute(
+                          builder: (_) =>
+                              EngineerTaskDetailScreen(taskId: task.id),
                         ),
                       );
+                      if (changed == true) await _load();
                     },
                   );
                 },
