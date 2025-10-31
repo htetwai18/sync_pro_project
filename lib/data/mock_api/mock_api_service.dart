@@ -521,3 +521,32 @@ extension TasksApi on MockApiService {
     );
   }
 }
+
+// ======== LOOKUPS ========
+extension LookupsApi on MockApiService {
+  Future<List<CustomerModel>> listCustomers() async {
+    return _customers.values.map(_buildCustomer).toList();
+  }
+
+  Future<List<BuildingModel>> listBuildings(String customerId) async {
+    final rows = _buildings.values.where((b) => b['customerId'] == customerId);
+    final customer = _buildCustomer(_customers[customerId]!);
+    return rows.map((r) => _buildBuilding(r, customer)).toList();
+  }
+
+  Future<List<AssetModel>> listAssets(String buildingId) async {
+    final rows = _assets.values.where((a) => a['buildingId'] == buildingId);
+    final bRow = _buildings[buildingId]!;
+    final customer = _buildCustomer(_customers[bRow['customerId']]!);
+    final building = _buildBuilding(bRow, customer);
+    return rows.map((r) => _buildAsset(r, building)).toList();
+  }
+
+  Future<List<UserModel>> listUsers({String? role}) async {
+    final all = _users.values.map(_buildUser).toList();
+    if (role == null) return all;
+    return all
+        .where((u) => (u.role).toLowerCase() == role.toLowerCase())
+        .toList();
+  }
+}

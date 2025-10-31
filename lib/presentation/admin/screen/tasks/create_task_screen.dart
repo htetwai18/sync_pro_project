@@ -5,6 +5,10 @@ import 'package:sync_pro/config/app_string.dart';
 import 'package:sync_pro/config/extension.dart';
 import 'package:sync_pro/config/measurement.dart';
 import 'package:sync_pro/data/mock_api/mock_api_service.dart';
+import 'package:sync_pro/presentation/admin/display_models/customer_item_display_model.dart';
+import 'package:sync_pro/presentation/customer/display_models/building_item_display_model.dart';
+import 'package:sync_pro/presentation/customer/display_models/asset_item_display_model.dart';
+import 'package:sync_pro/presentation/admin/display_models/user_item_display_model.dart';
 
 class CreateTaskScreen extends StatefulWidget {
   const CreateTaskScreen({super.key});
@@ -18,33 +22,68 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
   final TextEditingController _descController = TextEditingController();
   DateTime? _dueDate;
 
-  // Mock data for cascading dropdowns
-  final List<String> _customers = const [
-    'Tech Solutions Inc.',
-    'DataStream Corp.',
-  ];
-  final Map<String, List<String>> _customerToBuildings = const {
-    'Tech Solutions Inc.': ['HQ', 'West Campus'],
-    'DataStream Corp.': ['Main Office'],
-  };
-  final Map<String, List<String>> _buildingToAssets = const {
-    'HQ': ['HVAC Unit', 'Router', 'Switch'],
-    'West Campus': ['Projector', 'Printer'],
-    'Main Office': ['Server Rack', 'UPS'],
-  };
+  // Service-backed cascading dropdowns
+  List<CustomerModel> _customers = [];
+  List<BuildingModel> _buildings = [];
+  List<AssetModel> _assets = [];
+  List<UserModel> _engineerUsers = [];
 
-  String? _selectedCustomer;
-  String? _selectedBuilding;
-  String? _selectedAsset;
-  String? _selectedEngineer;
+  String? _selectedCustomer; // id
+  String? _selectedBuilding; // id
+  String? _selectedAsset; // id
+  String? _selectedEngineer; // id
   String? _selectedPriority;
-
-  final List<String> _engineers = const [
-    'Alex Johnson',
-    'Maria Garcia',
-    'Emily White',
+  final List<String> _priorities = const ['low', 'medium', 'high'];
+  String? _selectedType;
+  final List<String> _taskTypes = const [
+    'repair',
+    'maintenance',
+    'installation',
+    'inspection',
+    'emergency',
   ];
-  final List<String> _priorities = const ['Low', 'Medium', 'High'];
+
+  @override
+  void initState() {
+    super.initState();
+    _loadCustomers();
+    _loadEngineers();
+  }
+
+  Future<void> _loadCustomers() async {
+    final list = await MockApiService.instance.listCustomers();
+    setState(() {
+      _customers = list;
+      _selectedCustomer = _customers.isNotEmpty ? _customers.first.id : null;
+    });
+    if (_selectedCustomer != null) await _loadBuildings(_selectedCustomer!);
+  }
+
+  Future<void> _loadBuildings(String customerId) async {
+    final list = await MockApiService.instance.listBuildings(customerId);
+    setState(() {
+      _buildings = list;
+      _selectedBuilding = _buildings.isNotEmpty ? _buildings.first.id : null;
+    });
+    if (_selectedBuilding != null) await _loadAssets(_selectedBuilding!);
+  }
+
+  Future<void> _loadAssets(String buildingId) async {
+    final list = await MockApiService.instance.listAssets(buildingId);
+    setState(() {
+      _assets = list;
+      _selectedAsset = _assets.isNotEmpty ? _assets.first.id : null;
+    });
+  }
+
+  Future<void> _loadEngineers() async {
+    final list = await MockApiService.instance.listUsers(role: 'engineer');
+    setState(() {
+      _engineerUsers = list;
+      _selectedEngineer =
+          _engineerUsers.isNotEmpty ? _engineerUsers.first.id : null;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -102,13 +141,14 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
             _DropdownField<String>(
               value: _selectedCustomer,
               hint: AppString.selectCustomer,
-              items: _customers,
-              onChanged: (val) {
+              items: _customers.map((c) => c.id).toList(),
+              onChanged: (val) async {
                 setState(() {
                   _selectedCustomer = val;
                   _selectedBuilding = null;
                   _selectedAsset = null;
                 });
+                if (val != null) await _loadBuildings(val);
               },
             ),
 
@@ -119,12 +159,13 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
               _DropdownField<String>(
                 value: _selectedBuilding,
                 hint: AppString.selectBuilding,
-                items: _customerToBuildings[_selectedCustomer] ?? const [],
-                onChanged: (val) {
+                items: _buildings.map((b) => b.id).toList(),
+                onChanged: (val) async {
                   setState(() {
                     _selectedBuilding = val;
                     _selectedAsset = null;
                   });
+                  if (val != null) await _loadAssets(val);
                 },
               ),
             ],
@@ -136,7 +177,7 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
               _DropdownField<String>(
                 value: _selectedAsset,
                 hint: AppString.selectAsset,
-                items: _buildingToAssets[_selectedBuilding] ?? const [],
+                items: _assets.map((a) => a.id).toList(),
                 onChanged: (val) => setState(() => _selectedAsset = val),
               ),
             ],
@@ -147,7 +188,7 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
             _DropdownField<String>(
               value: _selectedEngineer,
               hint: AppString.selectEngineer,
-              items: _engineers,
+              items: _engineerUsers.map((u) => u.id).toList(),
               onChanged: (val) => setState(() => _selectedEngineer = val),
             ),
 
@@ -223,6 +264,16 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
             ),
 
             Measurement.generalSize24.height,
+            Text('Task Type').mediumBold(AppColor.grey),
+            Measurement.generalSize8.height,
+            _DropdownField<String>(
+              value: _selectedType,
+              hint: 'Select task type',
+              items: _taskTypes,
+              onChanged: (val) => setState(() => _selectedType = val),
+            ),
+
+            Measurement.generalSize24.height,
             SizedBox(
               width: double.infinity,
               child: ElevatedButton(
@@ -244,16 +295,26 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
                     );
                     return;
                   }
+                  if (_selectedCustomer == null ||
+                      _selectedBuilding == null ||
+                      _selectedAsset == null) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                          content: Text(
+                              'Please select customer, building, and asset.')),
+                    );
+                    return;
+                  }
                   await MockApiService.instance.createTask(
-                    customerId: 'cust-0001',
-                    buildingId: 'bldg-hq-0001',
-                    assetId: 'asset-ac-0001',
+                    customerId: _selectedCustomer!,
+                    buildingId: _selectedBuilding!,
+                    assetId: _selectedAsset!,
                     title: _titleController.text.trim(),
                     description: _descController.text.trim(),
-                    type: 'repair',
+                    type: (_selectedType ?? 'repair'),
                     priority: (_selectedPriority ?? 'medium').toLowerCase(),
                     requestDate: DateTime.now(),
-                    assignedToId: null,
+                    assignedToId: _selectedEngineer,
                     scheduledDate: _dueDate,
                   );
                   if (!mounted) return;

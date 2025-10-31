@@ -9,6 +9,7 @@ import 'package:sync_pro/presentation/admin/display_models/invoice_line_item_mod
 import 'package:sync_pro/presentation/admin/widgets/invoice_line_item_tile.dart';
 import 'package:sync_pro/presentation/shared/mock.dart';
 import 'package:sync_pro/data/mock_api/mock_api_service.dart';
+import 'package:sync_pro/presentation/admin/display_models/customer_item_display_model.dart';
 
 class CreateInvoiceScreen extends StatefulWidget {
   const CreateInvoiceScreen({super.key});
@@ -23,6 +24,7 @@ class _CreateInvoiceScreenState extends State<CreateInvoiceScreen> {
   DateTime? _dueDate;
   String _status = 'sent';
   final List<InvoiceLineItemModel> _items = [];
+  List<CustomerModel> _customers = [];
 
   late InvoiceModel _draftInvoice = InvoiceModel(
     id: 'draft',
@@ -38,6 +40,20 @@ class _CreateInvoiceScreenState extends State<CreateInvoiceScreen> {
 
   String _formatDate(DateTime d) =>
       '${d.month.toString().padLeft(2, '0')}/${d.day.toString().padLeft(2, '0')}/${d.year}';
+
+  @override
+  void initState() {
+    super.initState();
+    _loadCustomers();
+  }
+
+  Future<void> _loadCustomers() async {
+    final list = await MockApiService.instance.listCustomers();
+    setState(() {
+      _customers = list;
+      _selectedCustomer = _customers.isNotEmpty ? _customers.first.id : null;
+    });
+  }
 
   Future<void> _openLineItemDialog({int? editIndex}) async {
     final isEdit = editIndex != null;
@@ -265,12 +281,12 @@ class _CreateInvoiceScreenState extends State<CreateInvoiceScreen> {
                 iconEnabledColor: AppColor.grey,
                 hint: const Text(AppString.selectCustomerHint)
                     .mediumNormal(AppColor.grey),
-                items: [
-                  DropdownMenuItem(
-                    value: 'Acme Corp',
-                    child: const Text('Acme Corp').smallNormal(AppColor.white),
-                  ),
-                ],
+                items: _customers
+                    .map((c) => DropdownMenuItem(
+                          value: c.id,
+                          child: Text(c.name).smallNormal(AppColor.white),
+                        ))
+                    .toList(),
                 onChanged: (v) => setState(() => _selectedCustomer = v),
               ),
             ),
@@ -421,7 +437,7 @@ class _CreateInvoiceScreenState extends State<CreateInvoiceScreen> {
                       .toList();
                   final createdInvoice =
                       await MockApiService.instance.createInvoice(
-                    customerId: 'cust-0001',
+                    customerId: _selectedCustomer ?? 'cust-0001',
                     status: _status,
                     invoiceDate: created,
                     dueDate: due,

@@ -60,6 +60,44 @@ class _TaskDetailScreenState extends State<TaskDetailScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              // Task Info
+              Container(
+                width: double.infinity,
+                padding: Measurement.generalSize8.horizontalIsToVertical,
+                decoration: BoxDecoration(
+                  color: AppColor.blueField,
+                  borderRadius: Measurement.generalSize12.allRadius,
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(item.title).largeBold(AppColor.white),
+                    Measurement.generalSize8.height,
+                    Row(
+                      children: [
+                        _Chip(label: 'Status', value: item.status),
+                        Measurement.generalSize8.width,
+                        _Chip(label: 'Priority', value: item.priority),
+                        Measurement.generalSize8.width,
+                        _Chip(label: 'Type', value: item.type),
+                      ],
+                    ),
+                    Measurement.generalSize12.height,
+                    const Divider(height: 1, color: AppColor.background),
+                    Measurement.generalSize12.height,
+                    _KV(k: 'Customer', v: item.customer.name),
+                    _KV(k: 'Building', v: item.building.name),
+                    if (item.building.roomNumber != null)
+                      _KV(k: 'Room', v: item.building.roomNumber!),
+                    _KV(k: 'Asset', v: '${item.asset.name} (${item.asset.id})'),
+                    _KV(
+                        k: 'Assigned Engineer',
+                        v: item.assignedTo?.name ?? '-'),
+                    _KV(k: 'Scheduled', v: _format(item.scheduledDate)),
+                  ],
+                ),
+              ),
+              Measurement.generalSize24.height,
               const Text(AppString.taskDescription).mediumBold(AppColor.white),
               Measurement.generalSize12.height,
               Text(item.description).mediumNormal(AppColor.grey),
@@ -229,6 +267,49 @@ class _TimelineDivider extends StatelessWidget {
         height: Measurement.generalSize24,
         width: Measurement.generalSize2,
         color: AppColor.greyPercentCircle.withOpacity(0.2),
+      ),
+    );
+  }
+}
+
+class _KV extends StatelessWidget {
+  final String k;
+  final String v;
+  const _KV({required this.k, required this.v});
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 6),
+      child: Row(
+        children: [
+          SizedBox(width: 140, child: Text(k).smallNormal(AppColor.grey)),
+          Expanded(child: Text(v).smallNormal(AppColor.white)),
+        ],
+      ),
+    );
+  }
+}
+
+class _Chip extends StatelessWidget {
+  final String label;
+  final String value;
+  const _Chip({required this.label, required this.value});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: Measurement.generalSize4.horizontalIsToVertical,
+      decoration: BoxDecoration(
+        color: AppColor.blueStatusOuter,
+        borderRadius: Measurement.generalSize12.allRadius,
+      ),
+      child: Row(
+        children: [
+          Text(label).smallBold(AppColor.grey),
+          const SizedBox(width: 6),
+          Text(value).smallBold(AppColor.white),
+        ],
       ),
     );
   }
