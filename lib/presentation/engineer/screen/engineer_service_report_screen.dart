@@ -5,6 +5,7 @@ import 'package:sync_pro/config/app_string.dart';
 import 'package:sync_pro/config/extension.dart';
 import 'package:sync_pro/config/measurement.dart';
 import 'package:sync_pro/data/mock_api/mock_api_service.dart';
+import 'package:sync_pro/presentation/customer/display_models/task_display_model.dart';
 
 class EngineerServiceReportScreen extends StatefulWidget {
   final String taskId;
@@ -18,6 +19,18 @@ class EngineerServiceReportScreen extends StatefulWidget {
 class _EngineerServiceReportScreenState
     extends State<EngineerServiceReportScreen> {
   final TextEditingController _summaryController = TextEditingController();
+  TaskOrRequestedServiceModel? _task;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadTask();
+  }
+
+  Future<void> _loadTask() async {
+    final task = await MockApiService.instance.getTask(widget.taskId);
+    setState(() => _task = task);
+  }
 
   @override
   void dispose() {
@@ -27,6 +40,14 @@ class _EngineerServiceReportScreenState
 
   @override
   Widget build(BuildContext context) {
+    if (_task == null) {
+      return Scaffold(
+        backgroundColor: AppColor.background,
+        appBar:
+            getAppBar(title: AppString.serviceReportTitle, context: context),
+        body: const Center(child: CircularProgressIndicator()),
+      );
+    }
     return Scaffold(
       backgroundColor: AppColor.background,
       appBar: getAppBar(title: AppString.serviceReportTitle, context: context),
@@ -73,14 +94,14 @@ class _EngineerServiceReportScreenState
 
                     },
                   ),
-                  Measurement.generalSize24.height,
-                  _ActionTile(
-                    icon: Icons.draw_outlined,
-                    title:
-                        '${AppString.customerSignature} ${AppString.optionalLabel}',
-                    trailing: Icons.chevron_right,
-                    onTap: () {},
-                  ),
+                  // Measurement.generalSize24.height,
+                  // _ActionTile(
+                  //   icon: Icons.draw_outlined,
+                  //   title:
+                  //       '${AppString.customerSignature} ${AppString.optionalLabel}',
+                  //   trailing: Icons.chevron_right,
+                  //   onTap: () {},
+                  // ),
                 ],
               ),
             ),
@@ -107,14 +128,12 @@ class _EngineerServiceReportScreenState
                     );
                     return;
                   }
-                  final engineers =
-                      await MockApiService.instance.listUsers(role: 'engineer');
-                  final submitter =
-                      engineers.isNotEmpty ? engineers.first : null;
-                  if (submitter == null) {
+                  final submitterId = _task!.assignedTo?.id;
+                  if (submitterId == null) {
                     if (!mounted) return;
                     ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('No engineer found')),
+                      const SnackBar(
+                          content: Text('No assigned engineer found')),
                     );
                     return;
                   }
@@ -122,7 +141,7 @@ class _EngineerServiceReportScreenState
                     taskId: widget.taskId,
                     title: 'Service Report',
                     content: content,
-                    submittedById: submitter.id,
+                    submittedById: submitterId,
                   );
                   if (!mounted) return;
                   Navigator.pop(context, true);

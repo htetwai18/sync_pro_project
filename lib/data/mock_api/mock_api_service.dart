@@ -559,6 +559,58 @@ extension TasksApi on MockApiService {
     );
   }
 
+  TaskOrRequestedServiceModel _buildTaskShallow(Map<String, dynamic> row) {
+    final customer = _buildCustomer(_customers[row['customerId']]!);
+    final building = _buildBuilding(_buildings[row['buildingId']]!, customer);
+    final asset = _buildAsset(_assets[row['assetId']]!, building);
+    final createdBy = _buildUser(_users[row['createdById']]!);
+    final assignedTo = row['assignedToId'] != null
+        ? _buildUser(_users[row['assignedToId']]!)
+        : null;
+
+    final partsRaw =
+        (row['parts'] as List?)?.cast<Map<String, dynamic>>() ?? const [];
+    final parts = partsRaw
+        .map((e) => _buildPart(_parts[e['partId'] as String]!))
+        .toList();
+    final partsQuantity = partsRaw.isEmpty
+        ? null
+        : Map<String, int>.fromEntries(partsRaw
+            .map((e) => MapEntry(e['partId'] as String, e['quantity'] as int)));
+
+    return TaskOrRequestedServiceModel(
+      id: row['id'] as String,
+      title: row['title'] as String,
+      description: row['description'] as String,
+      status: row['status'] as String,
+      type: row['type'] as String,
+      priority: row['priority'] as String,
+      requestDate: DateTime.parse(row['requestDate'] as String),
+      completedDate: row['completedDate'] != null
+          ? DateTime.tryParse(row['completedDate'] as String)
+          : null,
+      preferredDate:
+          DateTime.tryParse(row['preferredDate'] as String) ?? DateTime.now(),
+      preferredTime: row['preferredTime'] as String? ?? '10:00',
+      notes: row['notes'] as String? ?? '',
+      specialInstructions: row['specialInstructions'] as String? ?? '',
+      assignedDate: row['assignedDate'] != null
+          ? DateTime.tryParse(row['assignedDate'] as String)
+          : null,
+      scheduledDate: row['scheduledDate'] != null
+          ? DateTime.tryParse(row['scheduledDate'] as String)
+          : null,
+      customer: customer,
+      building: building,
+      asset: asset,
+      createdBy: createdBy,
+      assignedTo: assignedTo,
+      report: null,
+      parts: parts,
+      partsQuantity: partsQuantity,
+    );
+  }
+
   UserModel _buildUser(Map<String, dynamic> row) {
     return UserModel(
       id: row['id'] as String,
@@ -597,7 +649,7 @@ extension TasksApi on MockApiService {
   }
 
   ReportModel _buildReport(Map<String, dynamic> row) {
-    final task = _buildTask(_tasks[row['taskId']]!);
+    final task = _buildTaskShallow(_tasks[row['taskId']]!);
     final submittedBy = _buildUser(_users[row['submittedById']]!);
     final reviewedBy = row['reviewedById'] != null
         ? _buildUser(_users[row['reviewedById']]!)
